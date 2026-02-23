@@ -1,5 +1,13 @@
 package edu.gcc.VBASH;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.*;
+
+
 import java.util.Map;
 
 public class Search {
@@ -13,9 +21,18 @@ public class Search {
     private Iterable<Course> resultingCourses;
 
     public Iterable<Course> filterCourses (Filter providedFilter) { return null; }
-    public Iterable<Course> search(){
+    public static Iterable<Course> search() throws IOException, ParseException {
+        FileReader sourceFile = new FileReader("backend/src/main/resources/data_wolfe.json");
+        JSONObject classList = (JSONObject) new JSONParser().parse(sourceFile);
+        System.out.print(classList);
         return null;
     }
+
+    public static void main(String[] args) throws IOException, ParseException {
+        try { search(); }
+        catch (Exception e) { System.out.print(e); }
+    }
+
     public void resetFilter(){
 
     }
