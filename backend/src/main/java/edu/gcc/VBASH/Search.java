@@ -5,8 +5,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
-
-
 import java.util.Map;
 
 public class Search {
@@ -25,11 +23,6 @@ public class Search {
         JSONObject classList = (JSONObject) new JSONParser().parse(sourceFile);
         System.out.print(classList);
         return null;
-    }
-
-    public static void main(String[] args) throws IOException, ParseException {
-        try { search(); }
-        catch (Exception e) { System.out.print(e); }
     }
 
     public void resetFilter(){
