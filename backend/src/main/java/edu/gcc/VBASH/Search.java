@@ -27,7 +27,7 @@ public class Search {
         FileReader sourceFile = new FileReader("backend/src/main/resources/data_wolfe.json");
         JSONArray courseList = (JSONArray) ((JSONObject) new JSONParser().parse(sourceFile)).get("classes");
 
-        /*
+
         JSONObject test = (JSONObject) courseList.get(new Random().nextInt(courseList.size()));
 
         System.out.println((String) test.get("name"));
@@ -40,7 +40,7 @@ public class Search {
         System.out.println(Arrays.toString(startTimeParsing((JSONArray) test.get("times"))));
         System.out.println(Arrays.toString(durationParsing((JSONArray) test.get("times"))));
         System.out.println((String) test.get("semester"));
-        */
+
 
         ArrayList<Course> toReturn = new ArrayList<Course>();
         for (Object course : courseList) { toReturn.add(courseCreator((JSONObject) course)); }
@@ -97,7 +97,7 @@ public class Search {
 
     private static int timeParsing(String time) {
         String text = new Scanner(time).nextLine();
-        return (((int) text.charAt(0)) * 10 + ((int) text.charAt(1))) * 60 + ((int) text.charAt(3) * 10 + (int) text.charAt(4));
+        return (((int) text.charAt(0) - (int) '0') * 10 + ((int) text.charAt(1) - (int) '0')) * 60 + (((int) text.charAt(3) - (int) '0') * 10 + ((int) text.charAt(4)) - (int) '0');
     }
 
     // ----------------------------------------------------------------------------------------------------
