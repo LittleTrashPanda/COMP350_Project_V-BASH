@@ -16,7 +16,12 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // JSON
-    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation("com.googlecode.json-simple:json-simple:1.1.1")
+
+    // Javalin
+    implementation("io.javalin:javalin:6.7.0")
+    implementation("org.slf4j:slf4j-simple:2.0.16")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
 }
 
 test {

@@ -1,8 +1,6 @@
 package edu.gcc.VBASH;
 
 public class Schedule {
-
-
     private String name;
     private Iterable<Course> courses;
 
