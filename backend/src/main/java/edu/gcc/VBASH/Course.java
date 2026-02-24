@@ -16,8 +16,28 @@ public class Course {
     // ----------------------------------------------------------------------------------------------------
 
     // Constructor
-    public Course(String courseName, String department, String courseCode, String description, String[] professors, int credits, int days, int[] startTimes, int[] duration, String semester) {
-        this.courseName = courseName; this.department = department; this.courseCode = courseCode; this.description = description; this.professors = professors; this.credits = credits; this.days = days; this.startTimes = startTimes; this.duration = duration; this.semester = semester;
+    public Course(
+            String courseName,
+            String department,
+            String courseCode,
+            String description,
+            String[] professors,
+            int credits,
+            int days,
+            int[] startTimes,
+            int[] duration,
+            String semester
+    ) {
+        this.courseName = courseName;
+        this.department = department;
+        this.courseCode = courseCode;
+        this.description = description;
+        this.professors = professors;
+        this.credits = credits;
+        this.days = days;
+        this.startTimes = startTimes;
+        this.duration = duration;
+        this.semester = semester;
     }
 
     // ----------------------------------------------------------------------------------------------------
