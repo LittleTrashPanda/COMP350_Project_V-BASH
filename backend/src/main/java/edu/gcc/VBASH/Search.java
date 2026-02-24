@@ -23,26 +23,12 @@ public class Search {
     // Search Terms
     private static String[] keySearchTerms;
 
+    public static void SetKeySearchTerms(String[] newKeySearchTerms) { keySearchTerms = newKeySearchTerms; }
+
     // Accessing Database
-    public static void search() throws IOException, ParseException {
-        FileReader sourceFile = new FileReader("backend/src/main/resources/data_wolfe.json");
+    public static Iterable<Course> search() throws IOException, ParseException {
+        FileReader sourceFile = new FileReader("backend/src/main/resources/private/data_wolfe.json");
         JSONArray courseList = (JSONArray) ((JSONObject) new JSONParser().parse(sourceFile)).get("classes");
-
-        // Test Print
-        {
-            JSONObject test = (JSONObject) courseList.get(new Random().nextInt(courseList.size()));
-
-            System.out.println((String) test.get("name"));
-            System.out.println((String) test.get("subject"));
-            System.out.println(test.get("subject") + test.get("number").toString() + test.get("section"));
-            System.out.println();
-            System.out.println(Arrays.toString(professorParsing((JSONArray) test.get("faculty"))));
-            System.out.println(Math.toIntExact((long) test.get("credits")));
-            System.out.println(dayParsing((JSONArray) test.get("times")));
-            System.out.println(Arrays.toString(startTimeParsing((JSONArray) test.get("times"))));
-            System.out.println(Arrays.toString(durationParsing((JSONArray) test.get("times"))));
-            System.out.println((String) test.get("semester"));
-        }
 
         ArrayList<Course> toReturn = new ArrayList<Course>();
         for (Object course : courseList) {
@@ -50,7 +36,8 @@ public class Search {
             if (keySearchTerms == null || keySearchTerms.length == 0) { toReturn.add(toAdd); continue; }
             if (keySearchTermsFilter(toAdd)) { toReturn.add(toAdd); }
         }
-        resultingCourses = toReturn;
+
+        return toReturn;
     }
 
     // Helper Methods
@@ -58,7 +45,7 @@ public class Search {
         return new Course(
                 course.get("name").toString(), // Course Name
                 course.get("subject").toString(), // Department
-                (course.get("subject") + course.get("number").toString() + course.get("section")), // Course Number
+                (course.get("subject") + course.get("number").toString() + " " + course.get("section")), // Course Number
                 "No Description Provided", // Description
                 professorParsing((JSONArray) course.get("faculty")), // Professors
                 Math.toIntExact((long) course.get("credits")), // Credits
@@ -116,23 +103,23 @@ public class Search {
     private static boolean keySearchTermsFilter(Course course) {
         // Finding Key Search Terms in Course Attributes
         for (String term : keySearchTerms) {
-            if (course.getCourseName().toLowerCase().contains(term.toLowerCase())) { return true; }
-            if (course.getDepartment().toLowerCase().contains(term.toLowerCase())) { return true; }
-            if (course.getCourseCode().toLowerCase().contains(term.toLowerCase())) { return true; }
-            if (course.getDescription().toLowerCase().contains(term.toLowerCase())) { return true; }
-            for (String professor : course.getProfessors()) { if (professor.toLowerCase().contains(term.toLowerCase())) { return true; } }
+            if (course.getCourseName().toLowerCase().contains(term.toLowerCase())) { continue; }
+            if (course.getDepartment().toLowerCase().contains(term.toLowerCase())) { continue; }
+            if (course.getCourseCode().toLowerCase().contains(term.toLowerCase())) { continue; }
+            if (course.getDescription().toLowerCase().contains(term.toLowerCase())) { continue; }
+
+            boolean foundProfessor = false;
+            for (String professor : course.getProfessors()) { if (professor.toLowerCase().contains(term.toLowerCase())) { foundProfessor = true; } }
+            if (foundProfessor) { continue; }
+
+            return false;
         }
 
-        // Key Search Terms Not Found
-        return false;
+        // All Key Search Terms Found
+        return true;
     }
 
     // ----------------------------------------------------------------------------------------------------
-
-    public static void main(String[] args) throws IOException, ParseException {
-        try { search(); }
-        catch (Exception e) { System.out.print(e); }
-    }
 
     public void resetFilter(){
 
