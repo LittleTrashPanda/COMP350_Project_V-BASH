@@ -1,0 +1,75 @@
+html {
+	background-color: #F9FEFC;
+}
+
+.calendarContentContainer {
+    display: flex;
+
+    position: absolute;
+}
+
+.calendar {
+    background-color: #8E1600;
+
+    display: flex;
+    list-style-type: none;
+
+    padding: 10px;
+    margin: 10px;
+
+    border-radius: 10px;
+}
+
+.calendarDay {
+    background-color: #F9FEFC;
+    text-align: center;
+    color: #8E1600;
+
+    width: 10vw;
+    height: 150vh;
+
+    padding: 1vh;
+    margin: 0.5vh;
+
+    position: relative;
+
+    border-radius: 10px;
+}
+
+.dayTitle {
+    height: 3vh;
+
+    padding: 1vh;
+    margin: 0;
+}
+
+.dayCourseTimeTable {
+    background-color: #F0EAD6;
+    text-align: left;
+
+    height: 144vh;
+
+    padding: 0px;
+    margin: 0.5vh;
+
+    position: relative;
+
+    border-radius: 10px;
+}
+
+.dayCourse {
+    background-color: #8E1600;
+    color: #F9FEFC;
+
+    width: 100%;
+
+    margin: 0px;
+
+    position: absolute;
+
+    border-radius: 10px;
+}
+
+.dayCourseTitle {
+    padding: 5%;
+}
