@@ -20,8 +20,9 @@ public class Schedule {
     public static Iterable<Course> getCourses() throws IOException, ParseException {
         ArrayList<Course> test = new ArrayList<Course>();
 
-        test.add((Course) ((ArrayList) Search.search()).get(180));
+        test.add((Course) ((ArrayList) Search.search()).get(221));
         test.add((Course) ((ArrayList) Search.search()).get(400));
+        test.add((Course) ((ArrayList) Search.search()).get(120));
         return test;
     }
 

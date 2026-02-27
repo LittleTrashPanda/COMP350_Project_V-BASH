@@ -21,8 +21,8 @@ async function loadSchedule() {
             courseTitle.classList.add("dayCourseTitle");
             block.appendChild(courseTitle);
 
-            block.style.top = ((course.startTimes[0] - 8 * 60) / (14 * 60)) * 100 + "%";
-            block.style.height = (course.duration[0] / (14 * 60)) * 100 + "%";
+            block.style.top = ((course.startTimes[0] - 8 * 60) / (13 * 60)) * 100 + "%";
+            block.style.height = (course.duration[0] / (13 * 60)) * 100 + "%";
             block.classList.add("dayCourse");
 
             calendarDays[0].children[1].appendChild(block);
@@ -36,8 +36,8 @@ async function loadSchedule() {
             courseTitle.classList.add("dayCourseTitle");
             block.appendChild(courseTitle);
 
-            block.style.top = ((course.startTimes[1] - 8 * 60) / (14 * 60)) * 100 + "%";
-            block.style.height = (course.duration[1] / (14 * 60)) * 100 + "%";
+            block.style.top = ((course.startTimes[1] - 8 * 60) / (13 * 60)) * 100 + "%";
+            block.style.height = (course.duration[1] / (13 * 60)) * 100 + "%";
             block.classList.add("dayCourse");
 
             calendarDays[1].children[1].appendChild(block);
@@ -51,8 +51,8 @@ async function loadSchedule() {
             courseTitle.classList.add("dayCourseTitle");
             block.appendChild(courseTitle);
 
-            block.style.top = ((course.startTimes[2] - 8 * 60) / (14 * 60)) * 100 + "%";
-            block.style.height = (course.duration[2] / (14 * 60)) * 100 + "%";
+            block.style.top = ((course.startTimes[2] - 8 * 60) / (13 * 60)) * 100 + "%";
+            block.style.height = (course.duration[2] / (13 * 60)) * 100 + "%";
             block.classList.add("dayCourse");
 
             calendarDays[2].children[1].appendChild(block);
@@ -66,8 +66,8 @@ async function loadSchedule() {
             courseTitle.classList.add("dayCourseTitle");
             block.appendChild(courseTitle);
 
-            block.style.top = ((course.startTimes[3] - 8 * 60) / (14 * 60)) * 100 + "%";
-            block.style.height = (course.duration[3] / (14 * 60)) * 100 + "%";
+            block.style.top = ((course.startTimes[3] - 8 * 60) / (13 * 60)) * 100 + "%";
+            block.style.height = (course.duration[3] / (13 * 60)) * 100 + "%";
             block.classList.add("dayCourse");
 
             calendarDays[3].children[1].appendChild(block);
@@ -81,8 +81,8 @@ async function loadSchedule() {
             courseTitle.classList.add("dayCourseTitle");
             block.appendChild(courseTitle);
 
-            block.style.top = ((course.startTimes[4] - 8 * 60) / (14 * 60)) * 100 + "%";
-            block.style.height = (course.duration[4] / (14 * 60)) * 100 + "%";
+            block.style.top = ((course.startTimes[4] - 8 * 60) / (13 * 60)) * 100 + "%";
+            block.style.height = (course.duration[4] / (13 * 60)) * 100 + "%";
             block.classList.add("dayCourse");
 
             calendarDays[4].children[1].appendChild(block);
