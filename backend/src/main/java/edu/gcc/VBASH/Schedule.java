@@ -3,8 +3,6 @@ package edu.gcc.VBASH;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Schedule {
     private String name;
@@ -17,14 +15,7 @@ public class Schedule {
     public void removeCourse(Course enrolledCourse) { return; }
     public void replaceCourse(Course oldCourse, Course newCourse) { return; }
 
-    public static Iterable<Course> getCourses() throws IOException, ParseException {
-        ArrayList<Course> test = new ArrayList<Course>();
-
-        test.add((Course) ((ArrayList) Search.search()).get(221));
-        test.add((Course) ((ArrayList) Search.search()).get(400));
-        test.add((Course) ((ArrayList) Search.search()).get(120));
-        return test;
-    }
+    public static Iterable<Course> getCourses() throws IOException, ParseException { return courses; }
 
     public String getName() { return null; }
     public void setName(String newName) { name = newName; }
