@@ -3,7 +3,7 @@ package edu.gcc.VBASH;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.ArrayList;import java.util.Iterator;
 
 public class Schedule {
     private String name;
