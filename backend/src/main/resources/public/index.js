@@ -24,9 +24,30 @@ async function searchCourses() {
             const courseSpecifics = document.createElement("p");
                 courseSpecifics.textContent = course.department.toString() + " " + course.professors + " Credits: " + course.credits;
                 courseContent.appendChild(courseSpecifics);
+
+            const addButton = document.createElement("button");
+            addButton.textContent = "Add to Schedule";
+            addButton.onclick = () => addCourse(course);
+            courseContent.appendChild(addButton);
+
             courseContent.classList.add("courseListItemContent");
         li.appendChild(courseContent);
         li.classList.add("courseListItem");
         list.appendChild(li);
     }
+}
+function addCourse(course) {
+    fetch("/addCourse", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(course)
+    })
+    .then(res => res.json())
+    .then(result => {
+        alert(result.message);
+
+        if (result.success) {
+            window.location.href = "calendar.html";
+        }
+    });
 }
