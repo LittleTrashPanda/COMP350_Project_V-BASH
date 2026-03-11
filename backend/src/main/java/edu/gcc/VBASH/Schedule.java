@@ -32,9 +32,21 @@ public class Schedule {
 
         }
          }
-    public void removeCourse(Course enrolledCourse) { return; }
-    public void replaceCourse(Course oldCourse, Course newCourse) { return; }
+    public void removeCourse(Course enrolledCourse) {
+        Iterator<Course> iterator = courses.iterator();
+        while (iterator.hasNext()) {
+            if(iterator.next().equals(enrolledCourse)){
+                iterator.remove();
+            }
+        }
 
+    }
+    public void replaceCourse(Course oldCourse, Course newCourse) {
+        removeCourse(oldCourse);
+        if(!checkCourseConflict(newCourse)) {
+            addCourse(newCourse);
+        }
+    }
     public static Iterable<Course> getCourses() throws IOException, ParseException { return courses; }
 
     public String getName() { return null; }
