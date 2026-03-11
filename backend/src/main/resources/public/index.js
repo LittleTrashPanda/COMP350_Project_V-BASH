@@ -7,8 +7,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 /* Display Courses */
 async function searchCourses() {
     const keySearchTerms = document.getElementById("keySearchTerms").value.split();
-    console.log(keySearchTerms);
-
     await fetch("/keySearchTerms", { method: "POST", body: keySearchTerms});
 
     const res = await fetch("/search")
@@ -16,7 +14,6 @@ async function searchCourses() {
 
     const list = document.getElementById("resultingCourses");
     list.innerHTML = "";
-    list.classList.add("courseList");
 
     for (const course of courses) {
         const li = document.createElement("li");

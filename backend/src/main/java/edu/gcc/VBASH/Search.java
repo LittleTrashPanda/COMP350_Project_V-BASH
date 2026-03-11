@@ -93,7 +93,7 @@ public class Search {
         return toReturn;
     }
 
-    private static int timeParsing(String time) {
+    public static int timeParsing(String time) {
         String text = new Scanner(time).nextLine();
 
         // Manual Calculation of Minutes
@@ -109,7 +109,7 @@ public class Search {
             if (course.getDescription().toLowerCase().contains(term.toLowerCase())) { continue; }
 
             boolean foundProfessor = false;
-            for (String professor : course.getProfessors()) { if (professor.toLowerCase().contains(term.toLowerCase())) { foundProfessor = true; } }
+            for (String professor : course.getProfessors()) { if (professor.toLowerCase().contains(term.toLowerCase())) { foundProfessor = true; break; } }
             if (foundProfessor) { continue; }
 
             return false;
