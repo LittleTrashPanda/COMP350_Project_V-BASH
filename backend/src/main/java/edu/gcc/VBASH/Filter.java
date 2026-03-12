@@ -39,7 +39,7 @@ public class Filter {
                 //then up the number of matches
                 //also checks if the filter's startTime is within the duration of course's time
                 int curCourseTime = checkCourse.getStartTimes()[i];
-                if(curCourseTime == time || (time <= curCourseTime + duration[i] && time >= curCourseTime)){
+                if(curCourseTime == time || (time <= curCourseTime + checkCourse.getDuration()[i] && time >= curCourseTime)){
                     timeMatches++;
                 }
 
