@@ -68,7 +68,7 @@ public class Course {
                 int curCourseTime = potentialCourse.getStartTimes()[i];
                 if(curCourseTime == time
                         || (time <= curCourseTime + potentialCourse.getDuration()[i] && time >= curCourseTime)
-                        || (curCourseTime <= time + duration[i] && time >= curCourseTime)
+                        || (curCourseTime <= time + duration[i] && curCourseTime >= time)
                 ){
                     return true;
                 }
