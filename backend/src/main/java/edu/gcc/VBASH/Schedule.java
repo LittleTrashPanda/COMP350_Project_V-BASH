@@ -1,8 +1,4 @@
 package edu.gcc.VBASH;
-
-import org.json.simple.parser.ParseException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Schedule {
@@ -16,7 +12,7 @@ public class Schedule {
     public void removeCourse(Course enrolledCourse) { return; }
     public void replaceCourse(Course oldCourse, Course newCourse) { return; }
 
-    public static Iterable<Course> getCourses() throws IOException, ParseException { return courses; }
+    public static Iterable<Course> getCourses() { return courses; }
 
     public String getName() { return null; }
     public void setName(String newName) { name = newName; }
