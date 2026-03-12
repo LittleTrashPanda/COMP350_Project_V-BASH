@@ -53,10 +53,11 @@ public class Schedule {
 
     }
     public void replaceCourse(Course oldCourse, Course newCourse) {
-        removeCourse(oldCourse);
         if(!checkCourseConflict(newCourse)) {
             addCourse(newCourse);
         }
+
+        removeCourse(oldCourse);
     }
     public static Iterable<Course> getCourses() throws IOException, ParseException { return courses; }
 
