@@ -11,7 +11,18 @@ public class Schedule {
 
     public Schedule(String name, Iterable<Course> courses) { }
 
-    public boolean checkCourseConflict(Course potentialCourse) { return false; }
+    public boolean checkCourseConflict(Course potentialCourse) {
+        //goes through each course on courses, checking if there are any conflicts
+        Iterator<Course> iterator = courses.iterator();
+        while(iterator.hasNext()){
+            if(iterator.next().willConflict(potentialCourse)){
+                return true;
+            }
+        }
+
+        //if there are no conflicts, return such
+        return false;
+    }
     public void addCourse(Course potentialCourse) {
         //checks if there is a course conflict. If there is, the method does nothing yet.
         if (!checkCourseConflict(potentialCourse)){
@@ -32,9 +43,21 @@ public class Schedule {
 
         }
          }
-    public void removeCourse(Course enrolledCourse) { return; }
-    public void replaceCourse(Course oldCourse, Course newCourse) { return; }
+    public void removeCourse(Course enrolledCourse) {
+        Iterator<Course> iterator = courses.iterator();
+        while (iterator.hasNext()) {
+            if(iterator.next().equals(enrolledCourse)){
+                iterator.remove();
+            }
+        }
 
+    }
+    public void replaceCourse(Course oldCourse, Course newCourse) {
+        removeCourse(oldCourse);
+        if(!checkCourseConflict(newCourse)) {
+            addCourse(newCourse);
+        }
+    }
     public static Iterable<Course> getCourses() throws IOException, ParseException { return courses; }
 
     public String getName() { return null; }

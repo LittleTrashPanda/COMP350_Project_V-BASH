@@ -57,5 +57,25 @@ public class Course {
     // ----------------------------------------------------------------------------------------------------
 
     // Testing Overlap
-    public boolean willConflict(Course potentialCourse) { return true; }
+    public boolean willConflict(Course potentialCourse) {
+
+        //going through each startTime for our course, check each course time
+        //for the potential course seeing if they have the same startTime
+        //or if our course takes place over the duration of potentialCourse
+        //also checks if the potentialCourse falls within duration of our course
+        for(int time : startTimes){
+            for(int i = 0; i < potentialCourse.getStartTimes().length; i++){
+                int curCourseTime = potentialCourse.getStartTimes()[i];
+                if(curCourseTime == time
+                        || (time <= curCourseTime + potentialCourse.getDuration()[i] && time >= curCourseTime)
+                        || (curCourseTime <= time + duration[i] && curCourseTime >= time)
+                ){
+                    return true;
+                }
+            }
+        }
+
+        //if none of the times overlap, return false
+        return false;
+    }
 }
