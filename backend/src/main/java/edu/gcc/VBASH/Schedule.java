@@ -60,6 +60,14 @@ public class Schedule {
     }
     public static Iterable<Course> getCourses() throws IOException, ParseException { return courses; }
 
-    public String getName() { return null; }
+    public String getName() { return name; }
     public void setName(String newName) { name = newName; }
+
+    public static Course getCourse(String[] cCode) throws IOException, ParseException {
+        Search search = new Search();
+        search.SetKeySearchTerms(cCode);
+        Iterable<Course> temp = search.search();
+        //unless smth goes wrong, the code above should only return one class
+        return temp.iterator().next();
+    }
 }
