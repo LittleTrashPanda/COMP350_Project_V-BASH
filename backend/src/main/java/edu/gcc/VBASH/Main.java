@@ -21,7 +21,6 @@ public class Main {
             Search.SetKeySearchTerms(keySearchTerms);
             ctx.status(201);
         });
-
         app.post("/addCourse", ctx -> {
             Course c = ctx.bodyAsClass(Course.class);
 
