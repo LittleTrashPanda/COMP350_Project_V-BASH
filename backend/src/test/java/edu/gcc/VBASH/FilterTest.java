@@ -2,8 +2,6 @@ package edu.gcc.VBASH;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class FilterTest {
 
     @Test
@@ -16,5 +14,30 @@ class FilterTest {
 
     @Test
     void filterDay() {
+    }
+
+    @Test
+    void filterDept(){
+
+    }
+
+    @Test
+    void filterCreditNum(){
+
+    }
+
+    @Test
+    void filterCourseCode(){
+
+    }
+
+    @Test
+    void filterKeyWordTD(){
+
+    }
+
+    @Test
+    void filterProf(){
+
     }
 }
