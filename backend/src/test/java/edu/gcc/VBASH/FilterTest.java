@@ -1,5 +1,7 @@
 package edu.gcc.VBASH;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
 class FilterTest {
