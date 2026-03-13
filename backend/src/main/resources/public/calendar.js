@@ -21,6 +21,12 @@ async function loadSchedule() {
             courseTitle.classList.add("dayCourseTitle");
             block.appendChild(courseTitle);
 
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.classList.add("removeButton");
+            removeButton.onclick = () => removeCourse(course);
+            block.appendChild(removeButton);
+
             block.style.top = ((course.startTimes[0] - 8 * 60) / (13 * 60)) * 100 + "%";
             block.style.height = (course.duration[0] / (13 * 60)) * 100 + "%";
             block.classList.add("dayCourse");
@@ -35,6 +41,12 @@ async function loadSchedule() {
             courseTitle.textContent = course.courseName;
             courseTitle.classList.add("dayCourseTitle");
             block.appendChild(courseTitle);
+
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.classList.add("removeButton");
+            removeButton.onclick = () => removeCourse(course);
+            block.appendChild(removeButton);
 
             block.style.top = ((course.startTimes[1] - 8 * 60) / (13 * 60)) * 100 + "%";
             block.style.height = (course.duration[1] / (13 * 60)) * 100 + "%";
@@ -51,6 +63,12 @@ async function loadSchedule() {
             courseTitle.classList.add("dayCourseTitle");
             block.appendChild(courseTitle);
 
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.classList.add("removeButton");
+            removeButton.onclick = () => removeCourse(course);
+            block.appendChild(removeButton);
+
             block.style.top = ((course.startTimes[2] - 8 * 60) / (13 * 60)) * 100 + "%";
             block.style.height = (course.duration[2] / (13 * 60)) * 100 + "%";
             block.classList.add("dayCourse");
@@ -65,6 +83,12 @@ async function loadSchedule() {
             courseTitle.textContent = course.courseName;
             courseTitle.classList.add("dayCourseTitle");
             block.appendChild(courseTitle);
+
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.classList.add("removeButton");
+            removeButton.onclick = () => removeCourse(course);
+            block.appendChild(removeButton);
 
             block.style.top = ((course.startTimes[3] - 8 * 60) / (13 * 60)) * 100 + "%";
             block.style.height = (course.duration[3] / (13 * 60)) * 100 + "%";
@@ -81,6 +105,12 @@ async function loadSchedule() {
             courseTitle.classList.add("dayCourseTitle");
             block.appendChild(courseTitle);
 
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.classList.add("removeButton");
+            removeButton.onclick = () => removeCourse(course);
+            block.appendChild(removeButton);
+
             block.style.top = ((course.startTimes[4] - 8 * 60) / (13 * 60)) * 100 + "%";
             block.style.height = (course.duration[4] / (13 * 60)) * 100 + "%";
             block.classList.add("dayCourse");
@@ -88,4 +118,19 @@ async function loadSchedule() {
             calendarDays[4].children[1].appendChild(block);
         }
     }
+}
+function removeCourse(course) {
+    fetch("/removeCourse", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(course)
+    })
+    .then(res => res.json())
+    .then(result => {
+        alert(result.message);
+
+        if (result.success) {
+            window.location.reload();
+        }
+    });
 }
