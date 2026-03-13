@@ -52,12 +52,14 @@ public class Schedule {
         }
 
     }
-    public void replaceCourse(Course oldCourse, Course newCourse) {
-        if(!checkCourseConflict(newCourse)) {
-            addCourse(newCourse);
+    public void replaceCourse(Course newCourse) {
+        for (Course oldCourse : courses) {
+            if (!checkCourseConflict(newCourse)) {
+                removeCourse(oldCourse);
+            }
         }
 
-        removeCourse(oldCourse);
+        addCourse(newCourse);
     }
     public static Iterable<Course> getCourses() throws IOException, ParseException { return courses; }
 
