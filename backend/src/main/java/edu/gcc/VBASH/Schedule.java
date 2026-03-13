@@ -11,6 +11,10 @@ public class Schedule {
 
     public Schedule(String name, Iterable<Course> courses) { }
 
+    public static Iterable<Course> getCourseList(){
+        return courses;
+    }
+
     public boolean checkCourseConflict(Course potentialCourse) {
         //goes through each course on courses, checking if there are any conflicts
         Iterator<Course> iterator = courses.iterator();
