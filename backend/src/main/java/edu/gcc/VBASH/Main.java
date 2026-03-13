@@ -2,6 +2,7 @@ package edu.gcc.VBASH;
 
 import io.javalin.Javalin;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Main {
@@ -25,16 +26,41 @@ public class Main {
             Course c = ctx.bodyAsClass(Course.class);
 
             Schedule schedule = new Schedule("default", Schedule.getCourses());
-
-            if (schedule.checkCourseConflict(c)) {
+            //Detect "no meeting times"
+            if (c.getDays() == 1) {
                 ctx.json(new AddResult(false,
-                        "Course cannot be added (conflict or no meeting times)."));
+                        "This course has no scheduled meeting times."));
                 return;
             }
-
+            //Detect time conflict
+            if (schedule.checkCourseConflict(c)) {
+                ctx.json(new AddResult(false,
+                        "This course conflicts with an existing course in your schedule."));
+                return;
+            }
+            //If no conflict add the course
             schedule.addCourse(c);
             ctx.json(new AddResult(true, "Course added successfully."));
         });
+
+        app.post("/removeCourse", ctx -> {
+            Course c = ctx.bodyAsClass(Course.class);
+
+            Schedule schedule = new Schedule("default", Schedule.getCourses());
+
+            int before = ((ArrayList<Course>) Schedule.getCourses()).size();
+            schedule.removeCourse(c);
+            int after = ((ArrayList<Course>) Schedule.getCourses()).size();
+
+            if (before == after) {
+                ctx.json(new AddResult(false, "Course was not found in your schedule."));
+            } else {
+                ctx.json(new AddResult(true, "Course removed from schedule."));
+            }
+        });
+
+
+
 
     }
     public boolean filterTime(int[] startTimesInt){

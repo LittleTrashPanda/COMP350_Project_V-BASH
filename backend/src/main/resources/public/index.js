@@ -2,7 +2,12 @@
 document.addEventListener("DOMContentLoaded", async () => {
     /* Event Listeners */
 	document.getElementById("searchButton").addEventListener("click", searchCourses);
+
+    const scheduleRes = await fetch("/calendar");
+    scheduledCourses = await scheduleRes.json();
 });
+
+let scheduledCourses = [];
 
 /* Display Courses */
 async function searchCourses() {
@@ -30,6 +35,19 @@ async function searchCourses() {
             addButton.onclick = () => addCourse(course);
             courseContent.appendChild(addButton);
 
+            const isInSchedule = scheduledCourses.some(sc =>
+                        sc.courseCode === course.courseCode &&
+                        sc.courseName === course.courseName
+                    );
+
+            if (isInSchedule) {
+                   const removeButton = document.createElement("button");
+                   removeButton.textContent = "Remove from Schedule";
+                   removeButton.onclick = () => removeCourse(course);
+                   courseContent.appendChild(removeButton);
+            }
+
+
             courseContent.classList.add("courseListItemContent");
         li.appendChild(courseContent);
         li.classList.add("courseListItem");
@@ -51,3 +69,19 @@ function addCourse(course) {
         }
     });
 }
+function removeCourse(course) {
+    fetch("/removeCourse", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(course)
+    })
+    .then(res => res.json())
+    .then(result => {
+        alert(result.message);
+
+        if (result.success) {
+            window.location.reload();
+        }
+    });
+}
+

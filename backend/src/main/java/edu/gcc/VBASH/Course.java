@@ -69,4 +69,22 @@ public class Course {
     public void setSemester(String semester) { this.semester = semester; }
     // Testing Overlap
     public boolean willConflict(Course potentialCourse) { return true; }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Course other = (Course) obj;
+
+        return courseCode.equals(other.courseCode)
+                && courseName.equals(other.courseName);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(courseCode, courseName);
+    }
+
+
 }
