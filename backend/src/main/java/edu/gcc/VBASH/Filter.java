@@ -76,4 +76,36 @@ public class Filter {
 
         return daysMatches >= 1;
     }
+
+
+    public boolean filterDept(Course checkCourse){
+        // Example Dept: COMP
+
+        // if not using dept as a filter, course passes the check.
+        if(department == null){return true;}
+
+        // if the checked course's dept is the same as the dept in the filter, returns
+        return (checkCourse.getDepartment()).equals(department);
+
+    }
+
+    public boolean filterCreditNum(Course checkCourse){
+        // Example Credit Num: 3
+
+        // if not using number of credits as a filter, course passes the check.
+        if(credits == -1){return true;}
+
+        // if the checked course's number of credits is the same as the number of credits in the filter, returns
+        return (credits == checkCourse.getCredits());
+    }
+
+    public boolean filterCourseCode(Course checkCourse){
+        // Example Course Code: ABRD300 A
+
+        // if not using course code as a filter, course passes the check.
+        if (courseCode == null){return true;}
+
+        // if the checked course's course code is the same as the course code in the filter, returns
+        return (checkCourse.getCourseCode().equals(courseCode));
+    }
 }
