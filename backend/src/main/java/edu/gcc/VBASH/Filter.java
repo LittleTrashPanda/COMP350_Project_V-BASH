@@ -21,6 +21,110 @@ public class Filter {
             String semester
     ) { }
 
+    public boolean filterKeyWordTD(Course checkCourse, String keyWord){
+        if (checkCourse == null)
+            return false;
+        if (checkCourse.getDescription().contains(keyWord) || checkCourse.getCourseName().contains(keyWord))
+            return true;
+
+        return false;
+    }
+
+    public boolean filterProf(Course checkCourse, String keyWord){
+        if (checkCourse == null)
+            return false;
+        for (int i = 0; i<checkCourse.getProfessors().length; i++){
+            if (checkCourse.getProfessors()[i].contains(keyWord))
+                return true;
+        }
+        return false;
+    }
+
     public boolean filterCourse(Course checkCourse) { return true;}
 
+    public boolean filterTime(Course checkCourse){
+        //run through the filter's startTimes and see if at least
+        //one start time matches the startTimes of checkCourse
+
+
+        //if there are no startTimes in the filter, then display the class
+        if(startTimes == null){return true;}
+
+        int timeMatches = 0;
+        for(int i = 0; i < checkCourse.getStartTimes().length; i++){
+
+            for(int time : startTimes){
+                //if both the course startTime and the filter startTime match,
+                //then up the number of matches
+                //also checks if the filter's startTime is within the duration of course's time
+                int curCourseTime = checkCourse.getStartTimes()[i];
+                if(curCourseTime == time || (time <= curCourseTime + checkCourse.getDuration()[i] && time >= curCourseTime)){
+                    timeMatches++;
+                }
+
+            }
+        }
+
+        //as long as the start time matched at least once, then the course is displayed, else not displayed
+        return timeMatches >= 1;
+    }
+
+    public boolean filterDay(Course checkCourse){
+        //check if checkCourse days match the filters days based of if it contains the days that you want,
+        //so if you select Monday, it will show you all the classes that are on Mondays,
+        //but if you select MWF, it shows you all classes that take place on each of those days,
+        //even if a class doesn't take place on all of those days
+
+        //if there are no days in the filter, then display the class
+        if(days == null){return true;}
+
+        //checks how many matches there are by days
+        int daysMatches = 0;
+        int[] primesArr = {2, 3, 5, 7, 11};
+
+        //going through each of the days in filter, check that we are using that day,
+        //if day is being used, use the corresponding prime factor to see if checkCourse
+        //also has that day, if so then increase the days matched
+        for(int i = 0; i<days.length; i++){
+            if(days[i] != 0){
+                if(checkCourse.getDays() % primesArr[i] == 0){
+                    daysMatches++;
+                }
+            }
+        }
+
+        return daysMatches >= 1;
+    }
+
+
+    public boolean filterDept(Course checkCourse){
+        // Example Dept: COMP
+
+        // if not using dept as a filter, course passes the check.
+        if(department == null){return true;}
+
+        // if the checked course's dept is the same as the dept in the filter, returns
+        return (checkCourse.getDepartment()).equals(department);
+
+    }
+
+    public boolean filterCreditNum(Course checkCourse){
+        // Example Credit Num: 3
+
+        // if not using number of credits as a filter, course passes the check.
+        if(credits == -1){return true;}
+
+        // if the checked course's number of credits is the same as the number of credits in the filter, returns
+        return (credits == checkCourse.getCredits());
+    }
+
+    public boolean filterCourseCode(Course checkCourse){
+        // Example Course Code: ABRD300 A
+
+        // if not using course code as a filter, course passes the check.
+        if (courseCode == null){return true;}
+
+        // if the checked course's course code is the same as the course code in the filter, returns
+        return (checkCourse.getCourseCode().equals(courseCode));
+    }
 }
