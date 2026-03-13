@@ -21,6 +21,25 @@ public class Filter {
             String semester
     ) { }
 
+    public boolean filterKeyWordTD(Course checkCourse, String keyWord){
+        if (checkCourse == null)
+            return false;
+        if (checkCourse.getDescription().contains(keyWord) || checkCourse.getCourseName().contains(keyWord))
+            return true;
+
+        return false;
+    }
+
+    public boolean filterProf(Course checkCourse, String keyWord){
+        if (checkCourse == null)
+            return false;
+        for (int i = 0; i<checkCourse.getProfessors().length; i++){
+            if (checkCourse.getProfessors()[i].contains(keyWord))
+                return true;
+        }
+        return false;
+    }
+
     public boolean filterCourse(Course checkCourse) { return true;}
 
     public boolean filterTime(Course checkCourse){
