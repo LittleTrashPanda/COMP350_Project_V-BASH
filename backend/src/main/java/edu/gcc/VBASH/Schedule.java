@@ -17,9 +17,8 @@ public class Schedule {
 
     public boolean checkCourseConflict(Course potentialCourse) {
         //goes through each course on courses, checking if there are any conflicts
-        Iterator<Course> iterator = courses.iterator();
-        while(iterator.hasNext()){
-            if(iterator.next().willConflict(potentialCourse)){
+        for (Course cours : courses) {
+            if (cours.willConflict(potentialCourse)) {
                 return true;
             }
         }

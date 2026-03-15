@@ -12,6 +12,10 @@ class FilterTest {
 
     @Test
     void filterTime() {
+        Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
+                "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
+                new int[]{13,-1,13,-1,13}, new int[]{50,-1,50,-1,50}, "2023_Fall");
+
     }
 
     @Test
