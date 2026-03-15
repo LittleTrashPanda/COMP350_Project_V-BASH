@@ -120,6 +120,11 @@ async function loadSchedule() {
     }
 }
 function removeCourse(course) {
+    if (!confirm("Do you want to remove this course?")) {
+        console.log("Deletion cancelled");
+        return;
+    }
+
     fetch("/removeCourse", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

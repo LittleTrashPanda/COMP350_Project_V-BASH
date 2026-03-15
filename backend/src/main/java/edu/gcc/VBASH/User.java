@@ -2,8 +2,7 @@ package edu.gcc.VBASH;
 
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -16,7 +15,23 @@ public class User {
 
     // Format for the data file should ensure that a data set always starts with Name: ----- to
     // separate the data points
-    public void saveSchedule(String scheduleName) { return; }
+    public void saveSchedule(String scheduleName) throws FileNotFoundException {
+        //TODO: Work on replacement function
+        try{
+            FileWriter fw = new FileWriter("backend/src/main/java/edu/gcc/VBASH/scheduleStore", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw);
+            Iterable<Course> courses = candidateSchedule.getCourseList();
+            out.println("Name: " + candidateSchedule.getName() + " ");
+            while(courses.iterator().hasNext()){
+                out.println(courses.iterator().next().getCourseCode() + " ");
+            }
+            out.close();
+    }
+    catch (IOException e) {
+        System.out.println("failed to save");
+        }}
+
     public void loadSchedule(String scheduleName) throws IOException, ParseException {
         //Goes to the file in question and initializes a scanner
         File file = new File("backend/src/main/java/edu/gcc/VBASH/scheduleStore");
