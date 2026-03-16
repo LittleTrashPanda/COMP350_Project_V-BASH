@@ -14,8 +14,8 @@ public class Schedule {
 
     public boolean checkCourseConflict(Course potentialCourse) {
         //goes through each course on courses, checking if there are any conflicts
-        for (Course cours : courses) {
-            if (cours.willConflict(potentialCourse)) {
+        for (Course course : courses) {
+            if (course.willConflict(potentialCourse)) {
                 return true;
             }
         }
