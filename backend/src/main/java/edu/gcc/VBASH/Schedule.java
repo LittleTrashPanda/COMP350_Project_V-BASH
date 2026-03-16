@@ -29,7 +29,7 @@ public class Schedule {
     public void addCourse(Course potentialCourse) {
         //checks if there is a course conflict. If there is, the method does nothing yet.
         if (!checkCourseConflict(potentialCourse)){
-            //adds to the course arraylist 
+            //adds to the course arraylist
             courses.add(potentialCourse);
         }
          }
