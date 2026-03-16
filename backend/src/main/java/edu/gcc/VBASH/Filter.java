@@ -34,7 +34,7 @@ public class Filter {
         if (checkCourse == null)
             return false;
         if (checkCourse.getDescription().contains(keyWord) || checkCourse.getCourseName().contains(keyWord)
-        || checkCourse.getDescription().toLowerCase().contains(keyWord) ||
+                || checkCourse.getDescription().toLowerCase().contains(keyWord) ||
                 checkCourse.getCourseName().toLowerCase().contains(keyWord))
             return true;
         if (keyWord == null || keyWord == ""){
@@ -47,7 +47,8 @@ public class Filter {
         if (checkCourse == null)
             return false;
         for (int i = 0; i<checkCourse.getProfessors().length; i++){
-            if (checkCourse.getProfessors()[i].contains(keyWord))
+            if (checkCourse.getProfessors()[i].contains(keyWord) ||
+                    checkCourse.getProfessors()[i].toLowerCase().contains(keyWord))
                 return true;
         }
         if (keyWord == null || keyWord == ""){
@@ -55,6 +56,9 @@ public class Filter {
         }
         return false;
     }
+
+
+
 
     public boolean filterCourse(Course checkCourse) { return true;}
 
