@@ -11,7 +11,7 @@ public class Schedule {
 
     public Schedule(String name, Iterable<Course> courses) { }
 
-    public static Iterable<Course> getCourseList(){
+    public static ArrayList<Course> getCourseList(){
         return courses;
     }
 

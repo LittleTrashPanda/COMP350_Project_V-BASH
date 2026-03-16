@@ -18,17 +18,40 @@ public class User {
     public void saveSchedule(String scheduleName) throws FileNotFoundException {
         //TODO: Work on replacement function
         try{
-            FileWriter fw = new FileWriter("backend/src/main/java/edu/gcc/VBASH/scheduleStore", true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw);
-            Iterable<Course> courses = candidateSchedule.getCourseList();
+//            FileWriter fw = new FileWriter("backend/src/main/java/edu/gcc/VBASH/scheduleStore", true);
+//            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter("backend/src/main/java/edu/gcc/VBASH/scheduleStore");
+            Scanner scan = new Scanner("backend/src/main/java/edu/gcc/VBASH/scheduleStore");
+            ArrayList<String> store = new ArrayList<>();
+            //in case there is nothing in the file
+            if (scan.hasNext()){
+                //uploads the file data to an arraylist
+                while (scan.hasNext()){
+                    store.add(scan.next());
+                }
+                boolean wethereyet = false;
+                //looks to see if the name is in the file already somewhere, and if it is, it removes it
+                for (int i = 0; i< store.size(); i++){
+                    if (store.get(i) == scheduleName){
+                        wethereyet = true;
+                        store.remove(i);
+                    }
+                    if (wethereyet && (!store.get(i).contains("Name:") || !store.iterator().hasNext())){
+                        store.remove(i);
+                    }
+                }
+                //reuploads the old data so nothing gets overwritten
+                for (int i = 0; i< store.size(); i++) {
+                    out.println(store.get(i));
+                }
+            }//prints out new data to the file in correct format
             out.println("Name: " + candidateSchedule.getName() + " ");
-            while(courses.iterator().hasNext()){
-                out.println(courses.iterator().next().getCourseCode() + " ");
+            while(candidateSchedule.getCourses().iterator().hasNext()){
+                out.println(candidateSchedule.getCourses().iterator().next().getCourseCode() + " ");
             }
             out.close();
     }
-    catch (IOException e) {
+    catch (IOException | ParseException e) {
         System.out.println("failed to save");
         }}
 
