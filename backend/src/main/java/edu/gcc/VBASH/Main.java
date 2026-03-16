@@ -21,6 +21,20 @@ public class Main {
             Search.SetKeySearchTerms(keySearchTerms);
             ctx.status(201);
         });
+        //TODO: fix constructor terms
+        app.post("/setFilters", ctx -> {
+            String[] response = new String[]{ctx.body()};
+            String dept = response[0];
+            String prof = response[1];
+            //time = response[2]
+            String day = response[3];
+            int credits = Integer.parseInt(response[4]);
+            String courseCode = response[5];
+            Filter filter = new Filter(dept, courseCode, prof, credits, new int[0], new int[0], new int[0], "");
+            Search.setFilter(filter);
+            ctx.status(201);
+        });
+
         app.post("/addCourse", ctx -> {
             Course c = ctx.bodyAsClass(Course.class);
 

@@ -48,7 +48,7 @@ public class Filter {
         }
         return false;
     }
-
+//TODO: add filters here
     public boolean filterCourse(Course checkCourse) { return true;}
 
     public boolean filterTime(Course checkCourse){
