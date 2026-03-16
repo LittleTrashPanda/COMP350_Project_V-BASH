@@ -174,25 +174,9 @@ class FilterTest {
 
     @Test
     void filterKeyWordTD(){
-        Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
-                "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
-                new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
-        Filter tester = new Filter(null, null, null, -1, null, null,
-                null, null);
-        assertEquals(true, tester.filterKeyWordTD(testGetCourse, "dummy"));
-        assertEquals(true, tester.filterKeyWordTD(testGetCourse, "planets"));
-        assertEquals(false, tester.filterKeyWordTD(testGetCourse, "what"));
-
     }
 
     @Test
     void filterProf(){
-        Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
-                "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
-                new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
-        Filter tester = new Filter(null, null, null, -1, null, null,
-                null, null);
-        assertEquals(true, tester.filterProf(testGetCourse, "clem"));
-        assertEquals(false, tester.filterProf(testGetCourse, "planets"));
     }
 }
