@@ -42,7 +42,7 @@ public class Schedule {
             courses = tempSchedule;
 
         }
-    }
+         }
     public void removeCourse(Course enrolledCourse) {
         Iterator<Course> iterator = courses.iterator();
         while (iterator.hasNext()) {
@@ -52,15 +52,25 @@ public class Schedule {
         }
 
     }
-    public void replaceCourse(Course oldCourse, Course newCourse) {
-        if(!checkCourseConflict(newCourse)) {
-            addCourse(newCourse);
+    public void replaceCourse(Course newCourse) {
+        for (Course oldCourse : courses) {
+            if (!checkCourseConflict(newCourse)) {
+                removeCourse(oldCourse);
+            }
         }
 
-        removeCourse(oldCourse);
+        addCourse(newCourse);
     }
     public static Iterable<Course> getCourses() throws IOException, ParseException { return courses; }
 
-    public String getName() { return null; }
+    public String getName() { return name; }
     public void setName(String newName) { name = newName; }
+
+    public static Course getCourse(String[] cCode) throws IOException, ParseException {
+        Search search = new Search();
+        search.SetKeySearchTerms(cCode);
+        Iterable<Course> temp = search.search();
+        //unless smth goes wrong, the code above should only return one class
+        return temp.iterator().next();
+    }
 }
