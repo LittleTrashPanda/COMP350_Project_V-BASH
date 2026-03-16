@@ -60,7 +60,6 @@ public class Main {
 
 
 
-
     }
     public boolean filterTime(int[] startTimesInt){
         //run through each course in the list of courses, check if that course's time match the given time
