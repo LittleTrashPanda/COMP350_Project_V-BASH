@@ -7,7 +7,7 @@ import java.util.ArrayList;import java.util.Iterator;
 
 public class Schedule {
     private String name;
-    private static Iterable<Course> courses = new ArrayList<Course>();
+    private static ArrayList<Course> courses = new ArrayList<Course>();
 
     public Schedule(String name, Iterable<Course> courses) { }
 
@@ -29,21 +29,8 @@ public class Schedule {
     public void addCourse(Course potentialCourse) {
         //checks if there is a course conflict. If there is, the method does nothing yet.
         if (!checkCourseConflict(potentialCourse)){
-
-            //Maybe not needed, but creates a copy of courses and a mutable schedule list since we can't
-            //add directly to courses
-            ArrayList<Course> tempSchedule = new ArrayList<Course>();
-            //Iterable<Course> courseCopy = new ArrayList<Course>();
-            //courseCopy = courses;
-
-            //goes through the copied list of courses we now have, and fills out the temporary schedule
-            while(courses.iterator().hasNext()) {
-                tempSchedule.add(courses.iterator().next());
-            }
-            //Adds the potential course, and sets the values of courses equal to the tempSchedule
-            tempSchedule.add(potentialCourse);
-            courses = tempSchedule;
-
+            //adds to the course arraylist
+            courses.add(potentialCourse);
         }
          }
     public void removeCourse(Course enrolledCourse) {
