@@ -19,7 +19,16 @@ public class Filter {
             int[] startTimes,
             int[] duration,
             String semester
-    ) { }
+    ) {
+        this.department = department;
+        this.courseCode = courseCode;
+        this.professor = professor;
+        this.credits = credits;
+        this.days = days;
+        this.startTimes = startTimes;
+        this.duration = duration;
+        this.semester = semester;
+    }
 
     public boolean filterKeyWordTD(Course checkCourse, String keyWord){
         if (checkCourse == null)
@@ -104,7 +113,7 @@ public class Filter {
         if(department == null){return true;}
 
         // if the checked course's dept is the same as the dept in the filter, returns
-        return (checkCourse.getDepartment()).equals(department);
+        return (checkCourse.getDepartment()).equals(department.toUpperCase().strip());
 
     }
 
@@ -119,12 +128,12 @@ public class Filter {
     }
 
     public boolean filterCourseCode(Course checkCourse){
-        // Example Course Code: ABRD300 A
+        // Example Course Code: 300
 
         // if not using course code as a filter, course passes the check.
         if (courseCode == null){return true;}
 
         // if the checked course's course code is the same as the course code in the filter, returns
-        return (checkCourse.getCourseCode().equals(courseCode));
+        return (checkCourse.getCourseCode().equals(courseCode.strip()));
     }
 }

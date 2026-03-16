@@ -91,17 +91,18 @@ public class Course {
         //for the potential course seeing if they have the same startTime
         //or if our course takes place over the duration of potentialCourse
         //also checks if the potentialCourse falls within duration of our course
-        for(int time : startTimes){
-            for(int i = 0; i < potentialCourse.getStartTimes().length; i++){
+        //for(int time : startTimes){
+            for(int i = 0; i < 5; i++){
                 int curCourseTime = potentialCourse.getStartTimes()[i];
-                if(curCourseTime == time
-                        || (time <= curCourseTime + potentialCourse.getDuration()[i] && time >= curCourseTime)
-                        || (curCourseTime <= time + duration[i] && curCourseTime >= time)
-                ){
+                int time = startTimes[i];
+
+                if(curCourseTime == 0 || time == 0) continue;
+
+                if(time < curCourseTime + potentialCourse.getDuration()[i] && curCourseTime < time + duration[i]){
                     return true;
                 }
             }
-        }
+        //}
 
         //if none of the times overlap, return false
         return false;
