@@ -33,12 +33,12 @@ public class Schedule {
             //Maybe not needed, but creates a copy of courses and a mutable schedule list since we can't
             //add directly to courses
             ArrayList<Course> tempSchedule = new ArrayList<Course>();
-            //Iterable<Course> courseCopy = new ArrayList<Course>();
-            //courseCopy = courses;
+            Iterable<Course> courseCopy = new ArrayList<Course>();
+            courseCopy = courses;
 
             //goes through the copied list of courses we now have, and fills out the temporary schedule
-            while(courses.iterator().hasNext()) {
-                tempSchedule.add(courses.iterator().next());
+            while(courseCopy.iterator().hasNext()) {
+                tempSchedule.add(courseCopy.iterator().next());
             }
             //Adds the potential course, and sets the values of courses equal to the tempSchedule
             tempSchedule.add(potentialCourse);
