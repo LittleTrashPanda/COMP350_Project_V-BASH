@@ -49,7 +49,7 @@ public class Filter {
         for (int i = 0; i<checkCourse.getProfessors().length; i++){
             if (checkCourse.getProfessors()[i].contains(keyWord) ||
                     checkCourse.getProfessors()[i].toLowerCase().contains(keyWord))
-                return true;
+                return true; 
         }
         if (keyWord == null || keyWord == ""){
             return true;
