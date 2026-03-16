@@ -33,9 +33,13 @@ public class Filter {
     public boolean filterKeyWordTD(Course checkCourse, String keyWord){
         if (checkCourse == null)
             return false;
-        if (checkCourse.getDescription().contains(keyWord) || checkCourse.getCourseName().contains(keyWord))
+        if (checkCourse.getDescription().contains(keyWord) || checkCourse.getCourseName().contains(keyWord)
+        || checkCourse.getDescription().toLowerCase().contains(keyWord) ||
+                checkCourse.getCourseName().toLowerCase().contains(keyWord))
             return true;
-
+        if (keyWord == null || keyWord == ""){
+            return true;
+        }
         return false;
     }
 
@@ -43,8 +47,12 @@ public class Filter {
         if (checkCourse == null)
             return false;
         for (int i = 0; i<checkCourse.getProfessors().length; i++){
-            if (checkCourse.getProfessors()[i].contains(keyWord))
+            if (checkCourse.getProfessors()[i].contains(keyWord) ||
+                    checkCourse.getProfessors()[i].toLowerCase().contains(keyWord))
                 return true;
+        }
+        if (keyWord == null || keyWord == ""){
+            return true;
         }
         return false;
     }
