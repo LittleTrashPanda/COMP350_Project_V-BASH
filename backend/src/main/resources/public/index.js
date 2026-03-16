@@ -62,7 +62,16 @@ function addCourse(course) {
     })
     .then(res => res.json())
     .then(result => {
-        alert(result.message);
+
+        if(result.msg === "This course conflicts with an existing course in your schedule."){
+
+            let msg = "This course conflicts with these courses: \n" + result.conflicts.join("\n")+
+                            "Would you like to replace them? This will replace ALL conflicts."
+
+            if(confirm(msg)){
+                replaceCourse(course)
+            }
+        }
 
         if (result.success) {
             window.location.href = "calendar.html";
@@ -89,4 +98,24 @@ function removeCourse(course) {
         }
     });
 }
+
+function replaceCourse(course){
+    fetch("/replaceCourse", {
+        method: "POST",
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify(course: course)
+    })
+    .then(res => res.json())
+    .then(result => {
+        alert(result.message);
+
+        if(result.success){
+            window.location.href = "calendar.html";
+        }
+    });
+}
+
+
+
+
 
