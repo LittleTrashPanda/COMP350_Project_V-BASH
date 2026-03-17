@@ -1,6 +1,7 @@
 package edu.gcc.VBASH;
 
-import java.util.ArrayList;public class AddResult {
+import java.util.ArrayList;
+public class AddResult {
     private boolean success;
     private String message;
     private ArrayList<Course> conflicts;
@@ -18,7 +19,7 @@ import java.util.ArrayList;public class AddResult {
 
     public boolean isSuccess() { return success; }
     public String getMessage() { return message; }
-    public ArrayList<Course> getCourses() { return conflicts; }
+    public ArrayList<Course> getConflicts() { return conflicts; }
 }
 
 

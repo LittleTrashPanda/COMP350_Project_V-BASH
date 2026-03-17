@@ -36,10 +36,11 @@ public class Main {
                 ArrayList<Course> conflicts = new  ArrayList<Course>();
 
                 for(Course course : schedule.getCourses()){
-                    if(schedule.checkCourseConflict(course)){
+                    if(course.willConflict(c)){
                         conflicts.add(course);
                     }
                 }
+
 
                 ctx.json(new AddResult(false,
                         "This course conflicts with an existing course in your schedule.", conflicts));
@@ -68,24 +69,18 @@ public class Main {
 
         app.post("/replaceCourse", ctx -> {
             Schedule schedule = new Schedule("default", Schedule.getCourses());
+            //Schedule courses = Schedule.getCourses();
             Course toAdd = ctx.bodyAsClass(Course.class);
             ArrayList<Course> conflicts = new ArrayList<Course>();
 
-            for(Course course : schedule.getCourses()){
-                if(schedule.checkCourseConflict(course)){
+            for(Course course : Schedule.getCourses()){
+                if(course.willConflict(toAdd)){
                     conflicts.add(course);
                 }
             }
 
-            int before =  ((ArrayList<Course>) Schedule.getCourses()).size();
             schedule.replaceCourse(toAdd, conflicts);
-            int after =  ((ArrayList<Course>) Schedule.getCourses()).size();
-
-            if (before == after) {
-                ctx.json(new AddResult(false, "Course was not found in your schedule."));
-            } else {
-                ctx.json(new AddResult(true, "Course removed from schedule."));
-            }
+            ctx.json(new AddResult(true, "Course replaced successfully."));
         });
 
 
