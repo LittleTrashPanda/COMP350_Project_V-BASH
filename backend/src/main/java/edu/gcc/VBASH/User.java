@@ -23,12 +23,12 @@ public class User {
             PrintWriter out = new PrintWriter(bw);
             Iterable<Course> courses = candidateSchedule.getCourses();
             out.println("Name: " + candidateSchedule.getName() + " ");
-            while(courses.iterator().hasNext()){
-                out.println(courses.iterator().next().getCourseCode() + " ");
+            while(candidateSchedule.getCourses().iterator().hasNext()){
+                out.println(candidateSchedule.getCourses().iterator().next().getCourseCode() + " ");
             }
             out.close();
     }
-    catch (IOException e) {
+    catch (IOException | ParseException e) {
         System.out.println("failed to save");
         }}
 
