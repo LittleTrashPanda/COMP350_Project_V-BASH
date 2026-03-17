@@ -48,8 +48,18 @@ public class Filter {
         }
         return false;
     }
-//TODO: add filters here
-    public boolean filterCourse(Course checkCourse) { return true;}
+    // TODO: Finish this
+    public boolean filterCourse(Course checkCourse) {
+        if(filterTime(checkCourse) &
+           /*filterProf(checkCourse) &*/
+
+        filterDay(checkCourse) &
+        filterDept(checkCourse) &
+        filterCreditNum(checkCourse) &
+        filterCourseCode(checkCourse)){
+        return true;}
+        return false;
+    }
 
     public boolean filterTime(Course checkCourse){
         //run through the filter's startTimes and see if at least
