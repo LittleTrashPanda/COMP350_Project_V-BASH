@@ -68,15 +68,34 @@ function addCourse(course) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(course)
     })
-    .then(res => res.json())
+    .then(res => {
+            if (!res.ok) {
+                 throw new Error("Failed to replace course: " + res.status);
+            }
+                 return res.json();
+    })
     .then(result => {
-        alert(result.message);
+
+        if(result.conflicts && result.conflicts.length > 0){
+
+            let msg = "This course conflicts with these courses: \n" +
+                       result.conflicts.map(c => c.courseName).join("\n")+
+                            "\nWould you like to replace them? This will replace ALL conflicts."
+
+            if(confirm(msg)){
+                replaceCourse(course)
+            }
+
+        }else{
+            alert(result.message);
+        }
 
         if (result.success) {
             window.location.href = "calendar.html";
         }
     });
 }
+
 function removeCourse(course) {
     if (!confirm("Do you want to remove this course?")) {
         console.log("Deletion cancelled");
@@ -97,4 +116,29 @@ function removeCourse(course) {
         }
     });
 }
+
+function replaceCourse(course){
+    fetch("/replaceCourse", {
+        method: "POST",
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify(course)
+    })
+    .then(res => {
+        if (!res.ok) {
+             throw new Error("Failed to replace course: " + res.status);
+        }
+             return res.json();
+    })
+    .then(result => {
+        alert(result.message);
+
+        if(result.success){
+            window.location.href = "calendar.html";
+        }
+    });
+}
+
+
+
+
 

@@ -3,7 +3,7 @@ package edu.gcc.VBASH;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.util.ArrayList;import java.util.Iterator;
+import java.util.ArrayList;import java.util.Iterator;import java.util.List;
 
 public class Schedule {
     private String name;
@@ -11,14 +11,11 @@ public class Schedule {
 
     public Schedule(String name, Iterable<Course> courses) { }
 
-    public static Iterable<Course> getCourseList(){
-        return courses;
-    }
 
     public boolean checkCourseConflict(Course potentialCourse) {
         //goes through each course on courses, checking if there are any conflicts
-        for (Course cours : courses) {
-            if (cours.willConflict(potentialCourse)) {
+        for (Course course : courses) {
+            if (course.willConflict(potentialCourse)) {
                 return true;
             }
         }
@@ -42,16 +39,14 @@ public class Schedule {
         }
 
     }
-    public void replaceCourse(Course newCourse) {
-        for (Course oldCourse : courses) {
-            if (!checkCourseConflict(newCourse)) {
-                removeCourse(oldCourse);
-            }
+    public void replaceCourse(Course newCourse, List<Course> conflicts) {
+        for (Course oldCourse : conflicts) {
+            removeCourse(oldCourse);
         }
 
         addCourse(newCourse);
     }
-    public static Iterable<Course> getCourses() throws IOException, ParseException { return courses; }
+    public static Iterable<Course> getCourses() throws IOException { return courses; }
 
     public String getName() { return name; }
     public void setName(String newName) { name = newName; }
