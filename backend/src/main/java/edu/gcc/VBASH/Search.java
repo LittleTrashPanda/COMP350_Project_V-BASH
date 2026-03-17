@@ -15,7 +15,7 @@ public class Search {
     private static Iterable<Course> resultingCourses;
 
     private Iterable<Course> filteredCourses;
-    private Filter currentFilter;
+    private static Filter currentFilter;
 
     public Iterable<Course> filterCourses (Filter providedFilter) { return null; }
 
@@ -33,9 +33,12 @@ public class Search {
         ArrayList<Course> toReturn = new ArrayList<Course>();
         for (Object course : courseList) {
             Course toAdd = courseCreator((JSONObject) course);
+            if (!currentFilter.filterCourse(toAdd)) { continue; }
             if (keySearchTerms == null || keySearchTerms.length == 0) { toReturn.add(toAdd); continue; }
             if (keySearchTermsFilter(toAdd)) { toReturn.add(toAdd); }
         }
+
+
 
         return toReturn;
     }
@@ -54,6 +57,10 @@ public class Search {
                 durationParsing((JSONArray) course.get("times")), // Duration
                 course.get("semester").toString() // Semester
         );
+    }
+
+    public static void setFilter(Filter newFilter){
+        currentFilter = newFilter;
     }
 
     // Transforming Data

@@ -21,6 +21,20 @@ public class Main {
             Search.SetKeySearchTerms(keySearchTerms);
             ctx.status(201);
         });
+        //TODO: fix constructor terms
+        app.post("/setFilters", ctx -> {
+            String[] response = new String[]{ctx.body()};
+            String dept = response[0];
+            String prof = response[1];
+            //time = response[2]
+            String day = response[3];
+            int credits = Integer.parseInt(response[4]);
+            String courseCode = response[5];
+            Filter filter = new Filter(dept, courseCode, prof, credits, new int[0], new int[0], new int[0], "");
+            Search.setFilter(filter);
+            ctx.status(201);
+        });
+
         app.post("/addCourse", ctx -> {
             Course c = ctx.bodyAsClass(Course.class);
 
@@ -33,8 +47,17 @@ public class Main {
             }
             //Detect time conflict
             if (schedule.checkCourseConflict(c)) {
+                ArrayList<Course> conflicts = new  ArrayList<Course>();
+
+                for(Course course : schedule.getCourses()){
+                    if(course.willConflict(c)){
+                        conflicts.add(course);
+                    }
+                }
+
+
                 ctx.json(new AddResult(false,
-                        "This course conflicts with an existing course in your schedule."));
+                        "This course conflicts with an existing course in your schedule.", conflicts));
                 return;
             }
             //If no conflict add the course
@@ -58,23 +81,23 @@ public class Main {
             }
         });
 
+        app.post("/replaceCourse", ctx -> {
+            Schedule schedule = new Schedule("default", Schedule.getCourses());
+            //Schedule courses = Schedule.getCourses();
+            Course toAdd = ctx.bodyAsClass(Course.class);
+            ArrayList<Course> conflicts = new ArrayList<Course>();
 
+            for(Course course : Schedule.getCourses()){
+                if(course.willConflict(toAdd)){
+                    conflicts.add(course);
+                }
+            }
+
+            schedule.replaceCourse(toAdd, conflicts);
+            ctx.json(new AddResult(true, "Course replaced successfully."));
+        });
 
     }
-    public boolean filterTime(int[] startTimesInt){
-        //run through each course in the list of courses, check if that course's time match the given time
-        //display the courses that meet this
-        //for each loop? if course.getStartTimes()
 
-        return true;
-    }
-
-    public boolean filterDay(int daysInt){
-        //run through each couse in the list of coursed, check if each course's days match with given day
-        //display the courses that meet this
-
-
-        return true;
-    }
     public void run(){ return; }
 }

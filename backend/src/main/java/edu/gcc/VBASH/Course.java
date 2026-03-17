@@ -91,7 +91,6 @@ public class Course {
         //for the potential course seeing if they have the same startTime
         //or if our course takes place over the duration of potentialCourse
         //also checks if the potentialCourse falls within duration of our course
-        //for(int time : startTimes){
             for(int i = 0; i < 5; i++){
                 int curCourseTime = potentialCourse.getStartTimes()[i];
                 int time = startTimes[i];
@@ -102,7 +101,6 @@ public class Course {
                     return true;
                 }
             }
-        //}
 
         //if none of the times overlap, return false
         return false;
