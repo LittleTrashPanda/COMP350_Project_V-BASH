@@ -11,6 +11,14 @@ let scheduledCourses = [];
 
 /* Display Courses */
 async function searchCourses() {
+    // TODO: Get the Filter Values and Send
+    const dept = document.getElementById("dept").value;
+    const professors = document.getElementById("prof").value.split(", ");
+    //const time =
+    const day = document.getElementById("day").value;
+    const credits = document.getElementById("creditNum").value;
+    const courseCode = document.getElementById("courseCode").value;
+
     const keySearchTerms = document.getElementById("keySearchTerms").value.split();
     await fetch("/keySearchTerms", { method: "POST", body: keySearchTerms});
 
