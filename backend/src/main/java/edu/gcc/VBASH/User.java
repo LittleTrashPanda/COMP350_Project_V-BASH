@@ -21,7 +21,7 @@ public class User {
             FileWriter fw = new FileWriter("backend/src/main/java/edu/gcc/VBASH/scheduleStore", true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw);
-            Iterable<Course> courses = candidateSchedule.getCourseList();
+            Iterable<Course> courses = candidateSchedule.getCourses();
             out.println("Name: " + candidateSchedule.getName() + " ");
             while(courses.iterator().hasNext()){
                 out.println(courses.iterator().next().getCourseCode() + " ");
