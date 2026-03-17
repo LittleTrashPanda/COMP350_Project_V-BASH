@@ -56,11 +56,18 @@ public class Filter {
         }
         return false;
     }
+    // TODO: Finish this
+    public boolean filterCourse(Course checkCourse) {
+        if(filterTime(checkCourse) &
+           /*filterProf(checkCourse) &*/
 
-
-
-
-    public boolean filterCourse(Course checkCourse) { return true;}
+        filterDay(checkCourse) &
+        filterDept(checkCourse) &
+        filterCreditNum(checkCourse) &
+        filterCourseCode(checkCourse)){
+        return true;}
+        return false;
+    }
 
     public boolean filterTime(Course checkCourse){
         //run through the filter's startTimes and see if at least
@@ -71,17 +78,17 @@ public class Filter {
         if(startTimes == null){return true;}
 
         int timeMatches = 0;
-        for(int i = 0; i < checkCourse.getStartTimes().length; i++){
+        for(int i = 0; i < 5; i++){
+            //if both the course startTime and the filter startTime match,
+            //then up the number of matches
+            //also checks if the filter's startTime is within the duration of course's time
+            int curCourseTime = checkCourse.getStartTimes()[i];
+            int time = startTimes[i];
 
-            for(int time : startTimes){
-                //if both the course startTime and the filter startTime match,
-                //then up the number of matches
-                //also checks if the filter's startTime is within the duration of course's time
-                int curCourseTime = checkCourse.getStartTimes()[i];
-                if(curCourseTime == time || (time <= curCourseTime + checkCourse.getDuration()[i] && time >= curCourseTime)){
-                    timeMatches++;
-                }
+            if(curCourseTime == 0 || time == 0) continue;
 
+            if(time < curCourseTime + checkCourse.getDuration()[i] && curCourseTime < time + duration[i]){
+                timeMatches++;
             }
         }
 
