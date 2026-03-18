@@ -17,20 +17,23 @@ public class Main {
         app.get("/calendar", ctx -> ctx.json(Schedule.getCourses()));
 
         app.post("/keySearchTerms", ctx -> {
-            String[] keySearchTerms = ctx.body().split("\s+");
+            ArrayList<String> keySearchTerms = new ArrayList<>();
+            for (String keySearchTerm : ctx.body().split("\s+")) { keySearchTerms.add(keySearchTerm); }
+
             Search.SetKeySearchTerms(keySearchTerms);
             ctx.status(201);
         });
+
         //TODO: fix constructor terms
         app.post("/setFilters", ctx -> {
-            String[] response = new String[]{ctx.body()};
+            String[] response = ctx.body().split("\s+");
             String dept = response[0];
             String prof = response[1];
             //time = response[2]
-            String day = response[3];
+            int day = Integer.parseInt(response[3]);
             int credits = Integer.parseInt(response[4]);
             String courseCode = response[5];
-            Filter filter = new Filter(dept, courseCode, prof, credits, new int[0], new int[0], new int[0], "");
+            Filter filter = new Filter(dept, courseCode, prof, credits, 1, null, null, "");
             Search.setFilter(filter);
             ctx.status(201);
         });
