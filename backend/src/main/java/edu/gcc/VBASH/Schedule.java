@@ -3,6 +3,7 @@ package edu.gcc.VBASH;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;import java.util.Iterator;import java.util.List;
 
 public class Schedule {
@@ -54,9 +55,11 @@ public class Schedule {
     public String getName() { return name; }
     public void setName(String newName) { name = newName; }
 
-    public static Course getCourse(String[] cCode) throws IOException, ParseException {
+    public static Course getCourse(String cCode) throws IOException, ParseException {
         Search search = new Search();
-        search.SetKeySearchTerms(cCode);
+        ArrayList<String> tempList = new ArrayList<>();
+        tempList.add(cCode);
+        search.SetKeySearchTerms(tempList);
         Iterable<Course> temp = search.search();
         //unless smth goes wrong, the code above should only return one class
         return temp.iterator().next();

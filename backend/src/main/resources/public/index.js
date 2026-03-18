@@ -20,7 +20,7 @@ async function searchCourses() {
     const courseCode = document.getElementById("courseCode").value;
 
     const keySearchTerms = document.getElementById("keySearchTerms").value.split();
-    await fetch("/keySearchTerms", { method: "POST", body: keySearchTerms});
+    const resKST = await fetch("/keySearchTerms", { method: "POST", body: keySearchTerms});
 
     const res = await fetch("/search")
     const courses = await res.json();
