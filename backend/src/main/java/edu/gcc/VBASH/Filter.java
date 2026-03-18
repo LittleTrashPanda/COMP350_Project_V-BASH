@@ -51,7 +51,7 @@ public class Filter {
     // TODO: Finish this
     public boolean filterCourse(Course checkCourse) {
         if(filterTime(checkCourse) &
-           /*filterProf(checkCourse) &*/
+           filterProf(checkCourse, professor) &
 
         filterDay(checkCourse) &
         filterDept(checkCourse) &
@@ -141,9 +141,19 @@ public class Filter {
         // Example Course Code: 300
 
         // if not using course code as a filter, course passes the check.
-        if (courseCode == null){return true;}
+        if (courseCode == null || courseCode.isBlank()) return true;
 
-        // if the checked course's course code is the same as the course code in the filter, returns
-        return (checkCourse.getCourseCode().equals(courseCode.strip()));
+        // Normalize both: lowercase + remove spaces
+        String course = checkCourse.getCourseCode()
+                .toLowerCase()
+                .replaceAll("\\s+", "");   // "COMP340 A" -> "comp340a"
+
+        String filter = courseCode
+                .toLowerCase()
+                .strip()
+                .replaceAll("\\s+", "");   // "comp 340" -> "comp340"
+
+        return course.contains(filter);
+
     }
 }

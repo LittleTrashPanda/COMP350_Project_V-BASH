@@ -21,17 +21,10 @@ public class Main {
             Search.SetKeySearchTerms(keySearchTerms);
             ctx.status(201);
         });
-        //TODO: fix constructor terms
+
         app.post("/setFilters", ctx -> {
-            String[] response = new String[]{ctx.body()};
-            String dept = response[0];
-            String prof = response[1];
-            //time = response[2]
-            String day = response[3];
-            int credits = Integer.parseInt(response[4]);
-            String courseCode = response[5];
-            Filter filter = new Filter(dept, courseCode, prof, credits, new int[0], new int[0], new int[0], "");
-            Search.setFilter(filter);
+            SearchFilters sf = ctx.bodyAsClass(SearchFilters.class);
+            Search.setFilters(sf);
             ctx.status(201);
         });
 
@@ -55,11 +48,11 @@ public class Main {
                     }
                 }
 
-
                 ctx.json(new AddResult(false,
                         "This course conflicts with an existing course in your schedule.", conflicts));
                 return;
             }
+
             //If no conflict add the course
             schedule.addCourse(c);
             ctx.json(new AddResult(true, "Course added successfully."));
