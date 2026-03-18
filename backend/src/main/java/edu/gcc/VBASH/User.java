@@ -28,7 +28,7 @@ public class User {
             }
             out.close();
     }
-    catch (IOException | ParseException e) {
+    catch (IOException e) {
         System.out.println("failed to save");
         }}
 
