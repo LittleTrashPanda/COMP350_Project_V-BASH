@@ -23,8 +23,8 @@ public class User {
             PrintWriter out = new PrintWriter(bw);
             Iterable<Course> courses = candidateSchedule.getCourses();
             out.println("Name: " + candidateSchedule.getName() + " ");
-            while(courses.iterator().hasNext()){
-                out.println(courses.iterator().next().getCourseCode() + " ");
+            while(candidateSchedule.getCourses().iterator().hasNext()){
+                out.println(candidateSchedule.getCourses().iterator().next().getCourseCode() + " ");
             }
             out.close();
     }
@@ -65,8 +65,7 @@ public class User {
             //TODO: Impliment the String to String[] IN .getCourse() and simplify
             //overrights any previously existing schedule to replace it with the saved information
             if (wethereyet && track == 1){
-                String [] code = new String[1];
-                code[0] = slate.next();
+                String code = slate.next();
                 Iterable<Course> temp;
                 ArrayList<Course> moreTempThanTemp = new ArrayList<>();
                 moreTempThanTemp.add(candidateSchedule.getCourse(code));
@@ -76,8 +75,7 @@ public class User {
             }
             //if it's not the first time through, it reads the data and adds the classes to candidateSchedule
             else if (wethereyet){
-                String [] code = new String[1];
-                code[0] = slate.next();
+                String code = slate.next();
                 candidateSchedule.addCourse(candidateSchedule.getCourse(code));
             }
         }

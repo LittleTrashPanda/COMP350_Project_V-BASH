@@ -17,7 +17,9 @@ public class Main {
         app.get("/calendar", ctx -> ctx.json(Schedule.getCourses()));
 
         app.post("/keySearchTerms", ctx -> {
-            String[] keySearchTerms = ctx.body().split("\s+");
+            ArrayList<String> keySearchTerms = new ArrayList<>();
+            for (String keySearchTerm : ctx.body().split("\s+")) { keySearchTerms.add(keySearchTerm); }
+
             Search.SetKeySearchTerms(keySearchTerms);
             ctx.status(201);
         });
