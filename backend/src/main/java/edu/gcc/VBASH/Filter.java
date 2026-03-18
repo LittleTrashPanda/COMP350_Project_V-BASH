@@ -39,11 +39,14 @@ public class Filter {
         return false;
     }
 
-    public boolean filterProf(Course checkCourse, String keyWord){
+    public boolean filterProf(Course checkCourse){
+        if(professor == null || professor.isEmpty()){
+            return true;
+        }
         if (checkCourse == null)
             return false;
         for (int i = 0; i<checkCourse.getProfessors().length; i++){
-            if (checkCourse.getProfessors()[i].contains(keyWord))
+            if (checkCourse.getProfessors()[i].contains(professor))
                 return true;
         }
         return false;
@@ -51,7 +54,7 @@ public class Filter {
     // TODO: Finish this
     public boolean filterCourse(Course checkCourse) {
         if(filterTime(checkCourse) &
-           filterProf(checkCourse, professor) &
+           filterProf(checkCourse) &
 
         filterDay(checkCourse) &
         filterDept(checkCourse) &

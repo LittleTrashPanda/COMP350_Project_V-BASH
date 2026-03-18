@@ -35,3 +35,14 @@ html {
 
 	border-radius: 10px;
 }
+.calendarLink{
+    color: rgb(139,0,0);
+}
+.searchButton{
+    background-color: rgb(139,0,0);
+    color: white;
+    padding: 6px 6px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
