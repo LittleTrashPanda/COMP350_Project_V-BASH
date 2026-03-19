@@ -23,9 +23,6 @@ public class Main {
         });
 
         app.post("/setFilters", ctx -> {
-            System.out.println(ctx.body());
-            System.out.println(ctx.bodyAsClass(Filter.class));
-
             Filter providedFilter = ctx.bodyAsClass(Filter.class);
             Search.setFilter(providedFilter);
             ctx.status(201);

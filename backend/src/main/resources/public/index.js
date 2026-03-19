@@ -20,9 +20,9 @@ async function searchCourses() {
     const professor = document.getElementById("professor").value;
     const credits = document.getElementById("credits").value;
 
-    const days = 1;
+    var days = 1;
     const dayCheckboxes = document.querySelectorAll("#day input[type='checkbox']");
-    dayCheckboxes.forEach(cb => { if (cb.checked) { days = days * parseInt(cb.value); } });
+    dayCheckboxes.forEach(cb => { if (cb.checked) { days *= parseInt(cb.value); } });
 
     const startTime = document.getElementById("startTimes").value;
     const startTimes = [startTime, startTime, startTime, startTime, startTime]

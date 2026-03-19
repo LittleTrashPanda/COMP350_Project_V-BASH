@@ -26,14 +26,6 @@ public class Filter {
 
     // Primary Filter Call
     public boolean filterCourse(Course checkCourse) {
-        System.out.print(filterTime(checkCourse));
-        System.out.print(filterDay(checkCourse));
-        System.out.print(filterDept(checkCourse));
-        System.out.print(filterProf(checkCourse));
-        System.out.print(filterCreditNum(checkCourse));
-        System.out.print(filterCourseCode(checkCourse));
-        System.out.println(filterSemester(checkCourse));
-
         return (
                 filterTime(checkCourse) &&
                 filterDay(checkCourse) &&
