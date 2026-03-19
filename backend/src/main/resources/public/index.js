@@ -36,6 +36,12 @@ async function searchCourses() {
         time
     };
 
+    await fetch("/keySearchTerms", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+        body: keySearchTerms
+    });
+
     //Send filters to backend
     await fetch("/setFilters", {
         method: "POST",
