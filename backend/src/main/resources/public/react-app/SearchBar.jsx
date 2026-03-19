@@ -94,6 +94,7 @@ function SearchBar({ filters, setFilters, keySearchTerms, setKeySearchTerms, onS
         <option value="3">3</option>
       </select>
 
+
       <select value={filters.time} onChange={e => update("time", e.target.value)}>
         <option value = "">CLASS TIME</option>
             <option value = "08:00-08:50">8:00-8:50 AM</option>
