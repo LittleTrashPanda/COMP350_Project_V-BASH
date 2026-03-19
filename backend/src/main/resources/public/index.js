@@ -11,88 +11,101 @@ let scheduledCourses = [];
 
 /* Display Courses */
 async function searchCourses() {
-    //Collect filters
-    const dept = document.getElementById("dept").value;
-    const professor = document.getElementById("prof").value;
-    const time = document.getElementById("time").value;
-    const credits = document.getElementById("creditNum").value;
-    const courseCode = document.getElementById("courseCode").value;
-
-    const dayCheckboxes = document.querySelectorAll("#day input[type='checkbox']");
-    const selectedDays = [];
-    dayCheckboxes.forEach(cb => {
-        if (cb.checked) selectedDays.push(parseInt(cb.value));
-    });
-
+    // Key Search Terms
     const keySearchTerms = document.getElementById("keySearchTerms").value;
 
-    const filters = {
-        keySearchTerms,
-        dept,
+    // Filter Values
+    const department = document.getElementById("department").value;
+    const courseCode = document.getElementById("courseCode").value;
+    const professor = document.getElementById("professor").value;
+    const credits = document.getElementById("credits").value;
+
+    const days = 1;
+    const dayCheckboxes = document.querySelectorAll("#day input[type='checkbox']");
+    dayCheckboxes.forEach(cb => { if (cb.checked) { days = days * parseInt(cb.value); } });
+
+    const startTime = document.getElementById("startTimes").value;
+    const startTimes = [startTime, startTime, startTime, startTime, startTime]
+    const endTime = document.getElementById("endTimes").value
+    const duration = [endTime - startTime, endTime - startTime, endTime - startTime, endTime - startTime, endTime - startTime];
+    const semester = document.getElementById("semester").value;
+
+    const filter = {
+        department,
+        courseCode,
         professor,
         credits,
-        courseCode,
-        selectedDays,
-        time
+        days,
+        startTimes,
+        duration,
+        semester
     };
 
+    // Send Key Search Terms
     await fetch("/keySearchTerms", {
         method: "POST",
         headers: { "Content-Type": "text/plain" },
         body: keySearchTerms
     });
 
-    //Send filters to backend
+    // Send Filter
     await fetch("/setFilters", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(filters)
+        body: JSON.stringify(filter)
     });
 
-    //Fetch filtered results
+    // Fetch Results
     const res = await fetch("/search");
     const courses = await res.json();
 
-    //Render results
+    // Render Results
     const list = document.getElementById("resultingCourses");
     list.innerHTML = "";
 
     for (const course of courses) {
         const li = document.createElement("li");
-        const courseContent = document.createElement("div");
+            const courseContent = document.createElement("div");
+                const courseID = document.createElement("p");
+                courseID.textContent = course.courseName + " - " + course.courseCode;
+                courseContent.appendChild(courseID);
 
-        const courseID = document.createElement("p");
-        courseID.textContent = course.courseName + " - " + course.courseCode;
-        courseContent.appendChild(courseID);
+                const courseSpecifics = document.createElement("p");
 
-        const courseSpecifics = document.createElement("p");
-        courseSpecifics.textContent =
-            course.department.toString() + " " + course.professors + " Credits: " + course.credits;
-        courseContent.appendChild(courseSpecifics);
+                courseSpecifics.textContent = course.department.toString() + " " + course.professors + " Credits: " + course.credits + " Time: ";
+                var tempStartTime = 0; var tempEndTime = 0;
+                if (course.days %  2 == 0) { tempStartTime = course.startTimes[0]; tempEndTime = course.duration[0] + tempStartTime; courseSpecifics.textContent += "M"; }
+                if (course.days %  3 == 0) { tempStartTime = course.startTimes[1]; tempEndTime = course.duration[1] + tempStartTime; courseSpecifics.textContent += "T"; }
+                if (course.days %  5 == 0) { tempStartTime = course.startTimes[2]; tempEndTime = course.duration[2] + tempStartTime; courseSpecifics.textContent += "W"; }
+                if (course.days %  7 == 0) { tempStartTime = course.startTimes[3]; tempEndTime = course.duration[3] + tempStartTime; courseSpecifics.textContent += "R"; }
+                if (course.days % 11 == 0) { tempStartTime = course.startTimes[4]; tempEndTime = course.duration[4] + tempStartTime; courseSpecifics.textContent += "F"; }
+                courseSpecifics.textContent += " " + Math.trunc(tempStartTime / 60) + ":" + (tempStartTime % 60).toLocaleString("en-US", { minimumIntegerDigits: 2 });
+                courseSpecifics.textContent += " - " + Math.trunc(tempEndTime / 60) + ":" + (tempEndTime % 60).toLocaleString("en-US", { minimumIntegerDigits: 2 });
 
-        const addButton = document.createElement("button");
-        addButton.textContent = "Add to Schedule";
-        addButton.onclick = () => addCourse(course);
-        courseContent.appendChild(addButton);
+                courseContent.appendChild(courseSpecifics);
 
-        const isInSchedule = scheduledCourses.some(sc =>
-            sc.courseCode === course.courseCode &&
-            sc.courseName === course.courseName
-        );
+                const addButton = document.createElement("button");
+                addButton.textContent = "Add to Schedule";
+                addButton.onclick = () => addCourse(course);
+                courseContent.appendChild(addButton);
 
-        if (isInSchedule) {
-            const removeButton = document.createElement("button");
-            removeButton.textContent = "Remove from Schedule";
-            removeButton.onclick = () => removeCourse(course);
-            courseContent.appendChild(removeButton);
-        }
+                const isInSchedule = scheduledCourses.some(sc => sc.courseCode === course.courseCode && sc.courseName === course.courseName);
 
-        courseContent.classList.add("courseListItemContent");
-        li.appendChild(courseContent);
+            if (isInSchedule) {
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "Remove from Schedule";
+                removeButton.onclick = () => removeCourse(course);
+                courseContent.appendChild(removeButton);
+            }
+
+            courseContent.classList.add("courseListItemContent");
+            li.appendChild(courseContent);
+
         li.classList.add("courseListItem");
         list.appendChild(li);
     }
 }
+
 function addCourse(course) {
     fetch("/addCourse", {
         method: "POST",

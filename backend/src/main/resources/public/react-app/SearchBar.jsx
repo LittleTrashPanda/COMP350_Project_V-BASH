@@ -110,11 +110,11 @@ function SearchBar({ filters, setFilters, keySearchTerms, setKeySearchTerms, onS
       </select>
 
       <div>
-        <label><input type="checkbox" onChange={() => toggleDay(1)} /> M</label>
-        <label><input type="checkbox" onChange={() => toggleDay(2)} /> T</label>
-        <label><input type="checkbox" onChange={() => toggleDay(3)} /> W</label>
-        <label><input type="checkbox" onChange={() => toggleDay(5)} /> R</label>
-        <label><input type="checkbox" onChange={() => toggleDay(7)} /> F</label>
+        <label><input type="checkbox" onChange={() => toggleDay( 2)} /> M</label>
+        <label><input type="checkbox" onChange={() => toggleDay( 3)} /> T</label>
+        <label><input type="checkbox" onChange={() => toggleDay( 5)} /> W</label>
+        <label><input type="checkbox" onChange={() => toggleDay( 7)} /> R</label>
+        <label><input type="checkbox" onChange={() => toggleDay(11)} /> F</label>
       </div>
 
       <button onClick={onSearch}>Search</button>

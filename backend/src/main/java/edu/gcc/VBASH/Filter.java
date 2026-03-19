@@ -1,25 +1,19 @@
 package edu.gcc.VBASH;
 
 public class Filter {
-    private String department;
-    private String courseCode;
-    private String professor;
-    private int credits;
-    private int days;
-    private int[] startTimes;
-    private int[] duration;
-    private String semester;
+    public String department;
+    public String courseCode;
+    public String professor;
+    public int credits;
+    public int days;
+    public int[] startTimes;
+    public int[] duration;
+    public String semester;
 
-    public Filter(
-            String department,
-            String courseCode,
-            String professor,
-            int credits,
-            int days,
-            int[] startTimes,
-            int[] duration,
-            String semester
-    ) {
+    public Filter() { }
+
+    // Constructor
+    public Filter(String department, String courseCode, String professor, int credits, int days, int[] startTimes, int[] duration, String semester) {
         this.department = department;
         this.courseCode = courseCode;
         this.professor = professor;
@@ -30,6 +24,31 @@ public class Filter {
         this.semester = semester;
     }
 
+    // Primary Filter Call
+    public boolean filterCourse(Course checkCourse) {
+        System.out.print(filterTime(checkCourse));
+        System.out.print(filterDay(checkCourse));
+        System.out.print(filterDept(checkCourse));
+        System.out.print(filterProf(checkCourse));
+        System.out.print(filterCreditNum(checkCourse));
+        System.out.print(filterCourseCode(checkCourse));
+        System.out.println(filterSemester(checkCourse));
+
+        return (
+                filterTime(checkCourse) &&
+                filterDay(checkCourse) &&
+                filterDept(checkCourse) &&
+                filterProf(checkCourse) &&
+                filterCreditNum(checkCourse) &&
+                filterCourseCode(checkCourse) &&
+                filterSemester(checkCourse)
+        );
+    }
+
+    // ----------------------------------------------------------------------------------------------------
+    // Helper Filter Calls
+
+    // Legacy
     /* public boolean filterKeyWordTD(Course checkCourse, String keyWord){
         if (checkCourse == null)
             return false;
@@ -43,6 +62,14 @@ public class Filter {
         return false;
     } */
 
+    // Semester
+    public boolean filterSemester(Course checkCourse) {
+        if (checkCourse == null) { return false; }
+        if (semester == null || semester.isEmpty()) { return true; }
+        return semester.equals(checkCourse.getSemester());
+    }
+
+    // Professors
     public boolean filterProf(Course checkCourse){
         if (checkCourse == null)
             return false;
@@ -55,17 +82,7 @@ public class Filter {
         return false;
     }
 
-    public boolean filterCourse(Course checkCourse) {
-        return (
-                filterTime(checkCourse) &&
-                filterDay(checkCourse) &&
-                filterDept(checkCourse) &&
-                filterProf(checkCourse) &&
-                filterCreditNum(checkCourse) &&
-                filterCourseCode(checkCourse)
-        );
-    }
-
+    // Time Slot
     public boolean filterTime(Course checkCourse){
         //run through the filter's startTimes and see if at least
         //one start time matches the startTimes of checkCourse
@@ -73,12 +90,20 @@ public class Filter {
 
         //if there are no startTimes in the filter, then display the class
         if(startTimes == null){return true;}
+        boolean isEmpty = true;
+        for (int i = 0; i<checkCourse.getStartTimes().length; i++){
+            if (duration[i] == 0) {continue;}
+            isEmpty= false;
+        }
+        if (isEmpty){return true;}
 
         int timeMatches = 0;
         for(int i = 0; i < 5; i++){
             //if both the course startTime and the filter startTime match,
             //then up the number of matches
             //also checks if the filter's startTime is within the duration of course's time
+            if (duration[i] < 0) {return false;}
+
             int curCourseTime = checkCourse.getStartTimes()[i];
             int time = startTimes[i];
 
@@ -93,6 +118,7 @@ public class Filter {
         return timeMatches >= 1;
     }
 
+    // Day
     public boolean filterDay(Course checkCourse){
         //check if checkCourse days match the filters days based of if it contains the days that you want,
         //so if you select Monday, it will show you all the classes that are on Mondays,
@@ -117,6 +143,7 @@ public class Filter {
     }
 
 
+    // Department
     public boolean filterDept(Course checkCourse){
         // Example Dept: COMP
 
@@ -124,10 +151,11 @@ public class Filter {
         if(department == null || department.isEmpty()){return true;}
 
         // if the checked course's dept is the same as the dept in the filter, returns
-        return (checkCourse.getDepartment()).equals(department.toUpperCase().strip());
+        return (checkCourse.getCourseCode().substring(0, 4).equalsIgnoreCase(department.strip()));
 
     }
 
+    // Credits
     public boolean filterCreditNum(Course checkCourse){
         // Example Credit Num: 3
 
@@ -138,6 +166,7 @@ public class Filter {
         return (credits == checkCourse.getCredits());
     }
 
+    // Course Code
     public boolean filterCourseCode(Course checkCourse){
         // Example Course Code: 300
 

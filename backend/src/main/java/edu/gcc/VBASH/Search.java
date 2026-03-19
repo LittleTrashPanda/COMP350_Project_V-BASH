@@ -16,17 +16,6 @@ public class Search {
 
     // ----------------------------------------------------------------------------------------------------
     // Search Terms
-    private static String[] keySearchTerms;
-    private static SearchFilters incomingFilters;
-
-    public static void setFilters(SearchFilters filters) {
-        incomingFilters = filters;
-    }
-
-    public static SearchFilters getFilters() {
-        return incomingFilters;
-    }
-
     private static ArrayList<String> keySearchTerms = new ArrayList<>();
 
     public static void SetKeySearchTerms(ArrayList<String> newKeySearchTerms) { keySearchTerms = newKeySearchTerms; }
@@ -39,15 +28,12 @@ public class Search {
     }
 
     // Retrieving Courses
-    public static Iterable<Course> search() throws IOException, ParseException {
-        FileReader sourceFile = new FileReader("backend/src/main/resources/private/data_wolfe.json");
-        JSONArray courseList = (JSONArray) ((JSONObject) new JSONParser().parse(sourceFile)).get("classes");
-
-        SearchFilters sf = getFilters();
+    public static ArrayList<Course> search() throws IOException, ParseException {
+        /* SearchFilters sf = getFilters();
 
         if (sf == null) {
             // No filters sent yet → allow everything
-            currentFilter = new Filter(null, null, null, -1, null, null, null, null);
+            currentFilter = new Filter(null, null, null, -1, 1, null, null, null);
         } else {
 
             // Safe parse credits
@@ -64,15 +50,14 @@ public class Search {
             String courseCode = (sf.courseCode == null || sf.courseCode.isBlank()) ? null : sf.courseCode;
 
             // Safe parse days
-            int[] days = null;
+            int days = 1;
             if (sf.selectedDays != null && !sf.selectedDays.isEmpty()) {
-                days = new int[5];
                 for (int d : sf.selectedDays) {
-                    if (d == 1) days[0] = 2;
-                    if (d == 2) days[1] = 3;
-                    if (d == 3) days[2] = 5;
-                    if (d == 5) days[3] = 7;
-                    if (d == 7) days[4] = 11;
+                    if (d == 1) days *= 2;
+                    if (d == 2) days *= 3;
+                    if (d == 3) days *= 5;
+                    if (d == 5) days *= 7;
+                    if (d == 7) days *= 11;
                 }
             }
             // Safe parse time (start time only)
@@ -107,23 +92,8 @@ public class Search {
                     null
             );
 
-        }
+        } */
 
-        ArrayList<Course> toReturn = new ArrayList<Course>();
-        for (Object course : courseList) {
-            Course toAdd = courseCreator((JSONObject) course);
-
-            if (!currentFilter.filterCourse(toAdd)) continue;
-
-            if (keySearchTerms == null || keySearchTerms.length == 0) {
-                toReturn.add(toAdd);
-                continue;
-            }
-
-            if (keySearchTermsFilter(toAdd)) {
-                toReturn.add(toAdd);
-            }
-        }
         ArrayList<Course> queryResults = new ArrayList<Course>();
 
         // Use Previous Search as Basis
