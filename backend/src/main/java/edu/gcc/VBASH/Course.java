@@ -15,21 +15,10 @@ public class Course {
 
     // ----------------------------------------------------------------------------------------------------
 
-    public Course() {}
+    public Course() { }
 
     // Constructor
-    public Course(
-            String courseName,
-            String department,
-            String courseCode,
-            String description,
-            String[] professors,
-            int credits,
-            int days,
-            int[] startTimes,
-            int[] duration,
-            String semester
-    ) {
+    public Course(String courseName, String department, String courseCode, String description, String[] professors, int credits, int days, int[] startTimes, int[] duration, String semester) {
         this.courseName = courseName;
         this.department = department;
         this.courseCode = courseCode;

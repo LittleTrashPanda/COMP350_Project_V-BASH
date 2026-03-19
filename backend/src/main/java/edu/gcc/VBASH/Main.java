@@ -12,9 +12,7 @@ public class Main {
     }
 
     public static void registerSearch(Javalin app) {
-        app.get("/health", ctx -> ctx.json(Map.of("status", "ok")));
         app.get("/search", ctx -> ctx.json(Search.search()));
-        app.get("/calendar", ctx -> ctx.json(Schedule.getCourses()));
 
         app.post("/keySearchTerms", ctx -> {
             ArrayList<String> keySearchTerms = new ArrayList<>();
@@ -25,10 +23,12 @@ public class Main {
         });
 
         app.post("/setFilters", ctx -> {
-            SearchFilters sf = ctx.bodyAsClass(SearchFilters.class);
-            Search.setFilters(sf);
+            Filter providedFilter = ctx.bodyAsClass(Filter.class);
+            Search.setFilter(providedFilter);
             ctx.status(201);
         });
+
+        app.get("/calendar", ctx -> ctx.json(Schedule.getCourses()));
 
         app.post("/addCourse", ctx -> {
             Course c = ctx.bodyAsClass(Course.class);

@@ -10,17 +10,141 @@
 </head>
 
 <body>
-    <div id="root"></div>
+<div id="root"></div>
 
-    <!-- React core -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<h1>Search Page (Index for Now)</h1>
 
-    <!-- Babel compiler -->
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<a href = "calendar.html" class ="calendarLink">Calendar</a>
 
-    <!-- React app -->
-    <script type="text/babel" src="react-app/App.jsx"></script>
+<input id = "keySearchTerms" placeholder = "Search for your class">
+
+<button id = "searchButton" class="searchButton">Search</button>
+
+<!-- Make sure these all work as intended -->
+<h3>Filters</h3>
+<h4>Department</h4>
+<select name="department" id="department">
+    <option value = "">DEPT</option>
+    <option value = "abrd">ABRD</option>
+    <option value = "acct">ACCT</option>
+    <option value = "art">ART</option>
+    <option value = "astr">ASTR</option>
+    <option value = "bibl">BIBL</option>
+    <option value = "biol">BIOL</option>
+    <option value = "chem">CHEM</option>
+    <option value = "comm">COMM</option>
+    <option value = "comp">COMP</option>
+    <option value = "desi">DESI</option>
+    <option value = "econ">ECON</option>
+    <option value = "educ">EDUC</option>
+    <option value = "elee">ELEE</option>
+    <option value = "engl">ENGL</option>
+    <option value = "engr">ENGR</option>
+    <option value = "entr">ENTR</option>
+    <option value = "exer">EXER</option>
+    <option value = "fnce">FNCE</option>
+    <option value = "fren">FREN</option>
+    <option value = "gobl">GOBL</option>
+    <option value = "grek">GREK</option>
+    <option value = "hebr">HEBR</option>
+    <option value = "hist">HIST</option>
+    <option value = "huma">HUMA</option>
+    <option value = "inbs">INBS</option>
+    <option value = "mark">MARK</option>
+    <option value = "math">MATH</option>
+    <option value = "mece">MECE</option>
+    <option value = "mngt">MNGT</option>
+    <option value = "muse">MUSE</option>
+    <option value = "musi">MUSI</option>
+    <option value = "nurs">NURS</option>
+    <option value = "phil">PHIL</option>
+    <option value = "phye">PHYE</option>
+    <option value = "phys">PHYS</option>
+    <option value = "pols">POLS</option>
+    <option value = "psyc">PSYC</option>
+    <option value = "robo">ROBO</option>
+    <option value = "scic">SCIC</option>
+    <option value = "sedu">SEDU</option>
+    <option value = "soci">SOCI</option>
+    <option value = "socw">SOCW</option>
+    <option value = "span">SPAN</option>
+    <option value = "ssft">SSFT</option>
+    <option value = "stat">STAT</option>
+    <option value = "thea">THEA</option>
+    <option value = "writ">WRIT</option>
+</select>
+
+<h4>Professor</h4>
+<input id = "professor" placeholder = "">
+
+<h4>Time</h4>
+<select name="startTimes" id="startTimes">
+    <option value = "0">START TIME</option>
+    <option value = " 480" >8:00 AM</option>
+    <option value = " 540" >9:00 AM</option>
+    <option value = " 600">10:00 AM</option>
+    <option value = " 660">11:00 AM</option>
+    <option value = " 720">12:00 PM</option>
+    <option value = " 780" >1:00 PM</option>
+    <option value = " 840" >2:00 PM</option>
+    <option value = " 900" >3:00 PM</option>
+    <option value = " 960" >4:00 PM</option>
+    <option value = "1020" >5:00 PM</option>
+    <option value = "1080" >6:00 PM</option>
+    <option value = "1140" >7:00 PM</option>
+    <option value = "1200" >8:00 PM</option>
+    <option value = "1260" >9:00 PM</option>
+</select>
+
+<select name="endTimes" id="endTimes">
+    <option value = "0">END TIME</option>
+    <option value = " 480" >8:00 AM</option>
+    <option value = " 540" >9:00 AM</option>
+    <option value = " 600">10:00 AM</option>
+    <option value = " 660">11:00 AM</option>
+    <option value = " 720">12:00 PM</option>
+    <option value = " 780" >1:00 PM</option>
+    <option value = " 840" >2:00 PM</option>
+    <option value = " 900" >3:00 PM</option>
+    <option value = " 960" >4:00 PM</option>
+    <option value = "1020" >5:00 PM</option>
+    <option value = "1080" >6:00 PM</option>
+    <option value = "1140" >7:00 PM</option>
+    <option value = "1200" >8:00 PM</option>
+    <option value = "1260" >9:00 PM</option>
+</select>
+
+<h4>Day</h4>
+<form id = "day">
+    <input type="checkbox" value = "2" />
+    Monday
+    <input type="checkbox" value = "3" />
+    Tuesday
+    <input type="checkbox" value = "5" />
+    Wednesday
+    <input type="checkbox" value = "7" />
+    Thursday
+    <input type="checkbox" value = "11" />
+    Friday
+</form>
+
+<h4>Credits</h4>
+<select name = "credits" id="credits">
+    <option value = "-1">CREDITS</option>
+    <option value = "0">0</option>
+    <option value = "1">1</option>
+    <option value = "2">2</option>
+    <option value = "3">3</option>
+    <option value = "4">4</option>
+</select>
+
+<h4>Course Code</h4>
+<input id = "courseCode" placeholder = "">
+
+<h4>Semester</h4>
+<input id = "semester" placeholder = "">
+
+<ul id = "resultingCourses" class = "courseList"></ul>
+
 </body>
-
 </html>
