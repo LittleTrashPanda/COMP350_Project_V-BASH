@@ -24,17 +24,9 @@ public class Main {
             ctx.status(201);
         });
 
-        //TODO: fix constructor terms
         app.post("/setFilters", ctx -> {
-            String[] response = ctx.body().split("\s+");
-            String dept = response[0];
-            String prof = response[1];
-            //time = response[2]
-            int day = Integer.parseInt(response[3]);
-            int credits = Integer.parseInt(response[4]);
-            String courseCode = response[5];
-            Filter filter = new Filter(dept, courseCode, prof, credits, 1, null, null, "");
-            Search.setFilter(filter);
+            SearchFilters sf = ctx.bodyAsClass(SearchFilters.class);
+            Search.setFilters(sf);
             ctx.status(201);
         });
 
@@ -58,11 +50,11 @@ public class Main {
                     }
                 }
 
-
                 ctx.json(new AddResult(false,
                         "This course conflicts with an existing course in your schedule.", conflicts));
                 return;
             }
+
             //If no conflict add the course
             schedule.addCourse(c);
             ctx.json(new AddResult(true, "Course added successfully."));
@@ -99,7 +91,6 @@ public class Main {
             schedule.replaceCourse(toAdd, conflicts);
             ctx.json(new AddResult(true, "Course replaced successfully."));
         });
-
 
     }
 

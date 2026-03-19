@@ -16,6 +16,17 @@ public class Search {
 
     // ----------------------------------------------------------------------------------------------------
     // Search Terms
+    private static String[] keySearchTerms;
+    private static SearchFilters incomingFilters;
+
+    public static void setFilters(SearchFilters filters) {
+        incomingFilters = filters;
+    }
+
+    public static SearchFilters getFilters() {
+        return incomingFilters;
+    }
+
     private static ArrayList<String> keySearchTerms = new ArrayList<>();
 
     public static void SetKeySearchTerms(ArrayList<String> newKeySearchTerms) { keySearchTerms = newKeySearchTerms; }
@@ -29,6 +40,90 @@ public class Search {
 
     // Retrieving Courses
     public static Iterable<Course> search() throws IOException, ParseException {
+        FileReader sourceFile = new FileReader("backend/src/main/resources/private/data_wolfe.json");
+        JSONArray courseList = (JSONArray) ((JSONObject) new JSONParser().parse(sourceFile)).get("classes");
+
+        SearchFilters sf = getFilters();
+
+        if (sf == null) {
+            // No filters sent yet → allow everything
+            currentFilter = new Filter(null, null, null, -1, null, null, null, null);
+        } else {
+
+            // Safe parse credits
+            int creditValue = -1;
+            if (sf.credits != null && !sf.credits.isBlank()) {
+                int parsed = Integer.parseInt(sf.credits);
+                creditValue = (parsed == 0) ? -1 : parsed;
+
+            }
+
+            // Safe parse dept/prof/courseCode
+            String dept = (sf.dept == null || sf.dept.isBlank()) ? null : sf.dept;
+            String professor = (sf.professor == null || sf.professor.isBlank()) ? null : sf.professor;
+            String courseCode = (sf.courseCode == null || sf.courseCode.isBlank()) ? null : sf.courseCode;
+
+            // Safe parse days
+            int[] days = null;
+            if (sf.selectedDays != null && !sf.selectedDays.isEmpty()) {
+                days = new int[5];
+                for (int d : sf.selectedDays) {
+                    if (d == 1) days[0] = 2;
+                    if (d == 2) days[1] = 3;
+                    if (d == 3) days[2] = 5;
+                    if (d == 5) days[3] = 7;
+                    if (d == 7) days[4] = 11;
+                }
+            }
+            // Safe parse time (start time only)
+            int[] filterStartTimes = null;
+            int[] filterDurations = null;
+
+            if (sf.time != null && !sf.time.isBlank()) {
+
+                // Convert "08:00" into minutes
+                int parsedStart = timeParsing(sf.time);
+
+                // Build the 5-element arrays
+                filterStartTimes = new int[5];
+                filterDurations = new int[5];
+
+                // Put the selected time into ALL days
+                // (or only specific days if you want)
+                for (int i = 0; i < 5; i++) {
+                    filterStartTimes[i] = parsedStart;
+                    filterDurations[i] = 60;   // default 1 hour window
+                }
+            }
+
+            currentFilter = new Filter(
+                    dept,
+                    courseCode,
+                    professor,
+                    creditValue,
+                    days,
+                    filterStartTimes,
+                    filterDurations,
+                    null
+            );
+
+        }
+
+        ArrayList<Course> toReturn = new ArrayList<Course>();
+        for (Object course : courseList) {
+            Course toAdd = courseCreator((JSONObject) course);
+
+            if (!currentFilter.filterCourse(toAdd)) continue;
+
+            if (keySearchTerms == null || keySearchTerms.length == 0) {
+                toReturn.add(toAdd);
+                continue;
+            }
+
+            if (keySearchTermsFilter(toAdd)) {
+                toReturn.add(toAdd);
+            }
+        }
         ArrayList<Course> queryResults = new ArrayList<Course>();
 
         // Use Previous Search as Basis
@@ -81,9 +176,10 @@ public class Search {
         );
     }
 
-    public static void setFilter(Filter newFilter){
+    public static void setFilter(Filter newFilter) {
         currentFilter = newFilter;
     }
+
 
     // Transforming Data
     private static String[] professorParsing(JSONArray professors) {

@@ -11,52 +11,83 @@ let scheduledCourses = [];
 
 /* Display Courses */
 async function searchCourses() {
-    // TODO: Get the Filter Values and Send
+    //Collect filters
     const dept = document.getElementById("dept").value;
-    const professors = document.getElementById("prof").value.split(", ");
-    //const time =
-    const day = document.getElementById("day").value;
+    const professor = document.getElementById("prof").value;
+    const time = document.getElementById("time").value;
     const credits = document.getElementById("creditNum").value;
     const courseCode = document.getElementById("courseCode").value;
 
-    const keySearchTerms = document.getElementById("keySearchTerms").value.split();
-    const resKST = await fetch("/keySearchTerms", { method: "POST", body: keySearchTerms});
+    const dayCheckboxes = document.querySelectorAll("#day input[type='checkbox']");
+    const selectedDays = [];
+    dayCheckboxes.forEach(cb => {
+        if (cb.checked) selectedDays.push(parseInt(cb.value));
+    });
 
-    const res = await fetch("/search")
+    const keySearchTerms = document.getElementById("keySearchTerms").value;
+
+    const filters = {
+        keySearchTerms,
+        dept,
+        professor,
+        credits,
+        courseCode,
+        selectedDays,
+        time
+    };
+
+    await fetch("/keySearchTerms", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+        body: keySearchTerms
+    });
+
+    //Send filters to backend
+    await fetch("/setFilters", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(filters)
+    });
+
+    //Fetch filtered results
+    const res = await fetch("/search");
     const courses = await res.json();
 
+    //Render results
     const list = document.getElementById("resultingCourses");
     list.innerHTML = "";
 
     for (const course of courses) {
         const li = document.createElement("li");
         const courseContent = document.createElement("div");
-            const courseID = document.createElement("p");
-                courseID.textContent = course.courseName + " - " + course.courseCode;
-                courseContent.appendChild(courseID);
-            const courseSpecifics = document.createElement("p");
-                courseSpecifics.textContent = course.department.toString() + " " + course.professors + " Credits: " + course.credits;
-                courseContent.appendChild(courseSpecifics);
 
-            const addButton = document.createElement("button");
-            addButton.textContent = "Add to Schedule";
-            addButton.onclick = () => addCourse(course);
-            courseContent.appendChild(addButton);
+        const courseID = document.createElement("p");
+        courseID.textContent = course.courseName + " - " + course.courseCode;
+        courseContent.appendChild(courseID);
 
-            const isInSchedule = scheduledCourses.some(sc =>
-                        sc.courseCode === course.courseCode &&
-                        sc.courseName === course.courseName
-                    );
+        const courseSpecifics = document.createElement("p");
+        courseSpecifics.textContent =
+            course.department.toString() + " " + course.professors + " Credits: " + course.credits;
+        courseContent.appendChild(courseSpecifics);
 
-            if (isInSchedule) {
-                   const removeButton = document.createElement("button");
-                   removeButton.textContent = "Remove from Schedule";
-                   removeButton.onclick = () => removeCourse(course);
-                   courseContent.appendChild(removeButton);
-            }
+        const addButton = document.createElement("button");
+        addButton.textContent = "Add to Schedule";
+        addButton.onclick = () => addCourse(course);
+        courseContent.appendChild(addButton);
 
+        const isInSchedule = scheduledCourses.some(sc =>
+            sc.courseCode === course.courseCode &&
+            sc.courseName === course.courseName
+        );
 
-            courseContent.classList.add("courseListItemContent");
+        if (isInSchedule) {
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove from Schedule";
+            removeButton.onclick = () => removeCourse(course);
+            courseContent.appendChild(removeButton);
+        }
+
+        courseContent.classList.add("courseListItemContent");
         li.appendChild(courseContent);
         li.classList.add("courseListItem");
         list.appendChild(li);
@@ -88,10 +119,6 @@ function addCourse(course) {
 
         }else{
             alert(result.message);
-        }
-
-        if (result.success) {
-            window.location.href = "calendar.html";
         }
     });
 }
@@ -131,10 +158,6 @@ function replaceCourse(course){
     })
     .then(result => {
         alert(result.message);
-
-        if(result.success){
-            window.location.href = "calendar.html";
-        }
     });
 }
 
