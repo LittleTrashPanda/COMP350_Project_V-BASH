@@ -9,15 +9,10 @@ import java.io.*;
 import java.util.*;
 
 public class Search {
-    private Map<String, String[]> professorByDepartment;
-    private Map<String, String[]> courseCodeByDepartment;
+    private static ArrayList<Course> resultingCourses = null;
+    private static ArrayList<String> previousKeySearchTerms = null;
 
-    private static Iterable<Course> resultingCourses;
-
-    private Iterable<Course> filteredCourses;
-    private static Filter currentFilter;
-
-    public Iterable<Course> filterCourses (Filter providedFilter) { return null; }
+    private static Filter currentFilter = new Filter("", "", "", -1, 1, null, null, "");
 
     // ----------------------------------------------------------------------------------------------------
     // Search Terms
@@ -32,10 +27,18 @@ public class Search {
         return incomingFilters;
     }
 
+    private static ArrayList<String> keySearchTerms = new ArrayList<>();
 
-    public static void SetKeySearchTerms(String[] newKeySearchTerms) { keySearchTerms = newKeySearchTerms; }
+    public static void SetKeySearchTerms(ArrayList<String> newKeySearchTerms) { keySearchTerms = newKeySearchTerms; }
 
-    // Accessing Database
+    private static boolean CheckInheritedKeySearchTerms() {
+        if (previousKeySearchTerms == null) { return false; }
+
+        for (String keySearchTerm: previousKeySearchTerms) { if (!keySearchTerms.contains(keySearchTerm)) { return false; } }
+        return true;
+    }
+
+    // Retrieving Courses
     public static Iterable<Course> search() throws IOException, ParseException {
         FileReader sourceFile = new FileReader("backend/src/main/resources/private/data_wolfe.json");
         JSONArray courseList = (JSONArray) ((JSONObject) new JSONParser().parse(sourceFile)).get("classes");
@@ -121,23 +124,55 @@ public class Search {
                 toReturn.add(toAdd);
             }
         }
+        ArrayList<Course> queryResults = new ArrayList<Course>();
 
+        // Use Previous Search as Basis
+        if (CheckInheritedKeySearchTerms()) {
+            for (Course course : resultingCourses) {
+                if (keySearchTerms == null || keySearchTerms.isEmpty()) { queryResults.add(course); continue; }
+                if (keySearchTermsFilter(course)) { queryResults.add(course); }
+            }
+        }
+
+        // ReQuery Database
+        else {
+            // Read In
+            FileReader sourceFile = new FileReader("backend/src/main/resources/private/data_wolfe.json");
+            JSONArray courseList = (JSONArray) ((JSONObject) new JSONParser().parse(sourceFile)).get("classes");
+
+            for (Object course : courseList) {
+                // Create Course Object
+                Course toAdd = courseCreator((JSONObject) course);
+
+                // Filter by Key Search Terms
+                if (keySearchTerms == null || keySearchTerms.isEmpty()) { queryResults.add(toAdd); continue; }
+                if (keySearchTermsFilter(toAdd)) { queryResults.add(toAdd); }
+            }
+        }
+
+        // Save Query Results
+        resultingCourses = queryResults;
+        previousKeySearchTerms = keySearchTerms;
+
+        // Filter Results
+        ArrayList<Course> toReturn = new ArrayList<>();
+        for (Course course : resultingCourses) { if (currentFilter.filterCourse(course)) { toReturn.add(course); } }
         return toReturn;
     }
 
     // Helper Methods
     private static Course courseCreator(JSONObject course) {
         return new Course(
-                course.get("name").toString(), // Course Name
-                course.get("subject").toString(), // Department
-                (course.get("subject") + course.get("number").toString() + " " + course.get("section")), // Course Number
-                "No Description Provided", // Description
-                professorParsing((JSONArray) course.get("faculty")), // Professors
-                Math.toIntExact((long) course.get("credits")), // Credits
-                dayParsing((JSONArray) course.get("times")), // Days
-                startTimeParsing((JSONArray) course.get("times")), // Start Times
-                durationParsing((JSONArray) course.get("times")), // Duration
-                course.get("semester").toString() // Semester
+                /* Course Name */   course.get("name").toString(),
+                /* Department */    course.get("subject").toString(),
+                /* Course Number */ (course.get("subject") + course.get("number").toString() + " " + course.get("section")),
+                /* Description */   "No Description Provided",
+                /* Professors */    professorParsing((JSONArray) course.get("faculty")),
+                /* Credits */       Math.toIntExact((long) course.get("credits")),
+                /* Days */          dayParsing((JSONArray) course.get("times")),
+                /* Start Times */   startTimeParsing((JSONArray) course.get("times")),
+                /* Duration */      durationParsing((JSONArray) course.get("times")),
+                /* Semester */      course.get("semester").toString()
         );
     }
 
@@ -156,29 +191,32 @@ public class Search {
     }
 
     private static int dayParsing(JSONArray dates) {
+        // Prime Indexing
         int toReturn = 1;
         Map<String, Integer> dayMap = Map.of("M", 2, "T", 3, "W", 5, "R", 7, "F", 11);
 
-        // Multiplying by the 'nth' Prime Number; [toReturn] % [Day's Prime] == 0 Means a Class Occurs on that Day
+        // Multiplying by the 'nth' Prime Number ([toReturn] % [Day's Prime] == 0 Means a Class Occurs on that Day)
         for (Object date : dates) { toReturn *= dayMap.get(((JSONObject) date).get("day").toString()); }
 
         return toReturn;
     }
 
     private static int[] startTimeParsing(JSONArray dates) {
+        // Array Indexing
         int[] toReturn = new int[5];
         Map<String, Integer> dayMap = Map.of("M", 0, "T", 1, "W", 2, "R", 3, "F", 4);
 
-        // Calculating Start Time and Placing it in a 'Day'
+        // Calculating Start Time (Minutes) and Placing it in a 'Day'
         for (Object date : dates) { toReturn[dayMap.get(((JSONObject) date).get("day").toString())] = timeParsing(((JSONObject) date).get("start_time").toString()); }
         return toReturn;
     }
 
     private static int[] durationParsing(JSONArray dates) {
+        // Array Indexing
         int[] toReturn = new int[5];
         Map<String, Integer> dayMap = Map.of("M", 0, "T", 1, "W", 2, "R", 3, "F", 4);
 
-        // Calculating Time Difference and Placing it in a 'Day'
+        // Calculating Difference in Time (Minutes) and Placing it in a 'Day'
         for (Object date : dates) { toReturn[dayMap.get(((JSONObject) date).get("day").toString())] = timeParsing((String) ((JSONObject) date).get("end_time")) - timeParsing((String) ((JSONObject) date).get("start_time")); }
         return toReturn;
     }
@@ -186,10 +224,11 @@ public class Search {
     public static int timeParsing(String time) {
         String text = new Scanner(time).nextLine();
 
-        // Manual Calculation of Minutes
+        // Manual Calculation of Minutes (Hour * 60 + Minute)
         return (((int) text.charAt(0) - (int) '0') * 10 + ((int) text.charAt(1) - (int) '0')) * 60 + (((int) text.charAt(3) - (int) '0') * 10 + ((int) text.charAt(4)) - (int) '0');
     }
 
+    // Filtering by Key Search Terms
     private static boolean keySearchTermsFilter(Course course) {
         // Finding Key Search Terms in Course Attributes
         for (String term : keySearchTerms) {
@@ -207,11 +246,5 @@ public class Search {
 
         // All Key Search Terms Found
         return true;
-    }
-
-    // ----------------------------------------------------------------------------------------------------
-
-    public void resetFilter(){
-
     }
 }

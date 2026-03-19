@@ -5,7 +5,7 @@ public class Filter {
     private String courseCode;
     private String professor;
     private int credits;
-    private int[] days;
+    private int days;
     private int[] startTimes;
     private int[] duration;
     private String semester;
@@ -15,7 +15,7 @@ public class Filter {
             String courseCode,
             String professor,
             int credits,
-            int[] days,
+            int days,
             int[] startTimes,
             int[] duration,
             String semester
@@ -30,38 +30,40 @@ public class Filter {
         this.semester = semester;
     }
 
-    public boolean filterKeyWordTD(Course checkCourse, String keyWord){
+    /* public boolean filterKeyWordTD(Course checkCourse, String keyWord){
         if (checkCourse == null)
             return false;
-        if (checkCourse.getDescription().contains(keyWord) || checkCourse.getCourseName().contains(keyWord))
+        if (checkCourse.getDescription().contains(keyWord) || checkCourse.getCourseName().contains(keyWord)
+                || checkCourse.getDescription().toLowerCase().contains(keyWord) ||
+                checkCourse.getCourseName().toLowerCase().contains(keyWord))
             return true;
-
-        return false;
-    }
-
-    public boolean filterProf(Course checkCourse){
-        if(professor == null || professor.isEmpty()){
+        if (keyWord == null || keyWord == ""){
             return true;
         }
+        return false;
+    } */
+
+    public boolean filterProf(Course checkCourse){
         if (checkCourse == null)
             return false;
+        if (professor == null || professor.isEmpty())
+            return true;
         for (int i = 0; i<checkCourse.getProfessors().length; i++){
-            if (checkCourse.getProfessors()[i].contains(professor))
+            if (checkCourse.getProfessors()[i].toLowerCase().contains(professor.toLowerCase()))
                 return true;
         }
         return false;
     }
-    // TODO: Finish this
-    public boolean filterCourse(Course checkCourse) {
-        if(filterTime(checkCourse) &
-           filterProf(checkCourse) &
 
-        filterDay(checkCourse) &
-        filterDept(checkCourse) &
-        filterCreditNum(checkCourse) &
-        filterCourseCode(checkCourse)){
-        return true;}
-        return false;
+    public boolean filterCourse(Course checkCourse) {
+        return (
+                filterTime(checkCourse) &&
+                filterDay(checkCourse) &&
+                filterDept(checkCourse) &&
+                filterProf(checkCourse) &&
+                filterCreditNum(checkCourse) &&
+                filterCourseCode(checkCourse)
+        );
     }
 
     public boolean filterTime(Course checkCourse){
@@ -98,24 +100,20 @@ public class Filter {
         //even if a class doesn't take place on all of those days
 
         //if there are no days in the filter, then display the class
-        if(days == null){return true;}
+        if(days == 1){return true;}
 
-        //checks how many matches there are by days
-        int daysMatches = 0;
+        //prime to day
         int[] primesArr = {2, 3, 5, 7, 11};
 
         //going through each of the days in filter, check that we are using that day,
         //if day is being used, use the corresponding prime factor to see if checkCourse
-        //also has that day, if so then increase the days matched
-        for(int i = 0; i<days.length; i++){
-            if(days[i] != 0){
-                if(checkCourse.getDays() % primesArr[i] == 0){
-                    daysMatches++;
-                }
-            }
+        //also has that day
+        for (int i = 0; i < primesArr.length; i++) {
+            if (days % primesArr[i] != 0) { continue; }
+            if(checkCourse.getDays() % primesArr[i] == 0) { return true; }
         }
 
-        return daysMatches >= 1;
+        return false;
     }
 
 
@@ -123,7 +121,7 @@ public class Filter {
         // Example Dept: COMP
 
         // if not using dept as a filter, course passes the check.
-        if(department == null){return true;}
+        if(department == null || department.isEmpty()){return true;}
 
         // if the checked course's dept is the same as the dept in the filter, returns
         return (checkCourse.getDepartment()).equals(department.toUpperCase().strip());

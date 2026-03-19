@@ -29,7 +29,7 @@ class FilterTest {
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
         Filter testFilter = new Filter(dept, null, null,
-                -1, null, null, null, null);
+                -1, 1, null, null, null);
         assertEquals(true, testFilter.filterDept(testGetCourse));
     }
 
@@ -39,7 +39,7 @@ class FilterTest {
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
         Filter testFilter = new Filter("ASTR", null, null,
-                -1, null, null, null, null);
+                -1, 1, null, null, null);
         assertEquals(true, testFilter.filterDept(testGetCourse));
     }
 
@@ -49,7 +49,7 @@ class FilterTest {
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
         Filter testFilter = new Filter("COMP", null, null,
-                -1, null, null, null, null);
+                -1, 1, null, null, null);
 
         assertEquals(false, testFilter.filterDept(testGetCourse));
     }
@@ -60,7 +60,7 @@ class FilterTest {
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
         Filter testFilter = new Filter("astr", null, null,
-                -1, null, null, null, null);
+                -1, 1, null, null, null);
 
         assertEquals(true, testFilter.filterDept(testGetCourse));
     }
@@ -71,7 +71,7 @@ class FilterTest {
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
         Filter testFilter = new Filter(" ASTR ", null, null,
-                -1, null, null, null, null);
+                -1, 1, null, null, null);
         assertEquals(true, testFilter.filterDept(testGetCourse));
     }
 
@@ -81,7 +81,7 @@ class FilterTest {
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
         Filter testFilter = new Filter(null, null, null,
-                -1, null, null, null, null);
+                -1, 1, null, null, null);
 
         assertEquals(true, testFilter.filterCreditNum(testGetCourse));
 
@@ -93,7 +93,7 @@ class FilterTest {
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
         Filter testFilter = new Filter(null, null, null,
-                3, null, null, null, null);
+                3, 1, null, null, null);
 
         assertEquals(true, testFilter.filterCreditNum(testGetCourse));
 
@@ -105,7 +105,7 @@ class FilterTest {
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
         Filter testFilter = new Filter(null, null, null,
-                1, null, null, null, null);
+                1, 1, null, null, null);
 
         assertEquals(false, testFilter.filterCreditNum(testGetCourse));
 
@@ -130,7 +130,7 @@ class FilterTest {
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
         Filter testFilter = new Filter(null, courseCode, null,
-                -1, null, null, null, null);
+                -1, 1, null, null, null);
         assertEquals(true, testFilter.filterCourseCode(testGetCourse));
 
 
@@ -142,7 +142,7 @@ class FilterTest {
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
         Filter testFilter = new Filter(null, "206", null,
-                -1, null, null, null, null);
+                -1, 1, null, null, null);
         assertEquals(true, testFilter.filterCourseCode(testGetCourse));
 
 
@@ -154,7 +154,7 @@ class FilterTest {
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
         Filter testFilter = new Filter(null, " 206 ", null,
-                -1, null, null, null, null);
+                -1, 1, null, null, null);
         assertEquals(true, testFilter.filterCourseCode(testGetCourse));
 
 
@@ -166,19 +166,35 @@ class FilterTest {
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
         Filter testFilter = new Filter(null, "141", null,
-                -1, null, null, null, null);
+                -1, 1, null, null, null);
         assertEquals(false, testFilter.filterCourseCode(testGetCourse));
 
 
     }
 
-    @Test
+    /* @Test
     void filterKeyWordTD(){
+        Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
+                "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
+                new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        Filter tester = new Filter(null, null, null, -1, null, null,
+                null, null);
+        assertEquals(true, tester.filterKeyWordTD(testGetCourse, "dummy"));
+        assertEquals(true, tester.filterKeyWordTD(testGetCourse, "planets"));
+        assertEquals(false, tester.filterKeyWordTD(testGetCourse, "what"));
 
-    }
+    } */
 
     @Test
     void filterProf(){
-
+        Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
+                "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
+                new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        Filter testerA = new Filter(null, null, "clem", -1, 1, null,
+                null, null);
+        Filter testerB = new Filter(null, null, "planets", -1, 1, null,
+                null, null);
+        assertEquals(true, testerA.filterProf(testGetCourse));
+        assertEquals(false, testerB.filterProf(testGetCourse));
     }
 }
