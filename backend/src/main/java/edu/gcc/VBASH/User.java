@@ -42,7 +42,18 @@ public class User {
 
         System.out.println("Saved Schedule"); */
 
-        JSONObject shell = new JSONObject();
+        JSONObject shell;
+        JSONParser parser = new JSONParser();
+        //Reads in the data from the old file so that you can have multiple schedules saved
+        try{
+            FileReader reader = new FileReader("backend/src/main/resources/private/userSchedules.json");
+            shell = (JSONObject) parser.parse(reader);
+            reader.close();
+        }
+        catch(Exception e){
+            shell = new JSONObject();
+        }
+
         JSONObject schedule = new JSONObject();
         schedule.put("name", candidateSchedule.getName());
 
