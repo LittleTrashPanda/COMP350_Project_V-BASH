@@ -1,0 +1,42 @@
+.sidebar {
+  width: 60px;
+  height: 5vh;
+  background-color: #222;
+  color: white;
+  padding-top: 10px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: width 0.3s;
+  overflow: hidden;
+}
+
+.sidebar.open {
+  width: 150px;
+  height: 100vh;
+}
+
+.toggle-btn {
+  width: 100%;
+  background: #444;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.sidebar-buttons {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-link {
+  text-decoration: none;
+  color: white;
+  padding: 10px;
+  background: #333;
+  border-radius: 4px;
+  text-align: center;
+}

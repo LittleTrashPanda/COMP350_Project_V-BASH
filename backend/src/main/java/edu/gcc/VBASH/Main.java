@@ -7,7 +7,9 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        Javalin app = Javalin.create(config -> { config.staticFiles.add("public"); }).start(7000);
+        Javalin app = Javalin.create(config -> {
+            //config.staticFiles.add("public");
+        }).start(7000);
         registerSearch(app);
     }
 
@@ -34,31 +36,37 @@ public class Main {
             Course c = ctx.bodyAsClass(Course.class);
 
             Schedule schedule = new Schedule("default", Schedule.getCourses());
-            //Detect "no meeting times"
+
+            // Detect "no meeting times"
             if (c.getDays() == 1) {
                 ctx.json(new AddResult(false,
                         "This course has no scheduled meeting times."));
                 return;
             }
-            //Detect time conflict
-            if (schedule.checkCourseConflict(c)) {
-                ArrayList<Course> conflicts = new  ArrayList<Course>();
 
-                for(Course course : schedule.getCourses()){
-                    if(course.willConflict(c)){
+            // Detect time conflict
+            if (schedule.checkCourseConflict(c)) {
+                ArrayList<Course> conflicts = new ArrayList<>();
+
+                for (Course course : schedule.getCourses()) {
+                    if (course.willConflict(c)) {
                         conflicts.add(course);
                     }
                 }
 
                 ctx.json(new AddResult(false,
-                        "This course conflicts with an existing course in your schedule.", conflicts));
+                        "This course conflicts with an existing course in your schedule.",
+                        conflicts));
                 return;
             }
 
-            //If no conflict add the course
+            //If we reach here, the course is valid → add it
             schedule.addCourse(c);
-            ctx.json(new AddResult(true, "Course added successfully."));
+
+            //Send success message back to frontend
+            ctx.json(new AddResult(true, "Course added successfully!"));
         });
+
 
         app.post("/removeCourse", ctx -> {
             Course c = ctx.bodyAsClass(Course.class);

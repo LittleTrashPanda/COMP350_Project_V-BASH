@@ -1,0 +1,75 @@
+.search-container {
+  padding: 20px;
+  margin-left: 60px; /* sidebar collapsed width */
+}
+
+.search-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.search-button {
+  padding: 12px 20px;
+  border: none;
+  background-color: rgb(168,0,0);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.filters-card {
+  background: rgb(168,0,0);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.filter-label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.filter-input,
+.filter-select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.day-checkboxes {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.course-card{
+    background-color: rgb(168,0,0);
+    padding: 20px;
+    border-radius: 12px;
+    border: white;
+    margin-top: 10px;
+
+
+}

@@ -1,0 +1,142 @@
+/* Overall container */
+.calendar-container {
+  display: flex;
+  background-color: #ffffff;
+  padding: 20px;
+  gap: 10px;
+  font-family: sans-serif;
+}
+
+/* Time column */
+.time-column {
+  width: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 10px;
+  color: #555;
+  font-size: 0.85rem;
+}
+
+/* Time slot lines */
+.time-slot {
+  height: 60px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Calendar grid */
+.calendar-grid {
+  display: flex;
+  flex: 1;
+  gap: 10px;
+}
+
+/* Each day column */
+.calendar-day-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Day header */
+.day-header {
+  text-align: center;
+  font-weight: bold;
+  padding: 8px 0;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Day body (grid background) */
+.day-body {
+  position: relative;
+  flex: 1;
+  background-color: #fafafa;
+  border-left: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+}
+
+/* Class block — RED THEME */
+.course-block {
+  position: absolute;
+  left: 8%;
+  width: 84%;
+  background-color: #8E1600;     /* deep red */
+  color: white;
+  border-radius: 6px;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  font-size: 0.85rem;
+}
+
+/* Course title */
+.course-title {
+  margin: 0;
+  font-weight: bold;
+}
+
+/* Time text */
+.course-time {
+  margin: 4px 0 10px 0;
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+/* Remove button — red theme */
+.remove-btn {
+  background-color: white;
+  color: #8E1600;
+  border: 1px solid #8E1600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+.remove-btn:hover {
+  background-color: #fbeaea;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  width: 400px;
+  max-width: 90%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.modal h2 {
+  margin-top: 0;
+}
+
+.modal button {
+  margin-top: 20px;
+  padding: 8px 12px;
+  background: #8E1600;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  background: #a51a00;
+}
