@@ -2,6 +2,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("saveSchedule").addEventListener("click", saveSchedule);
     document.getElementById("loadSchedule").addEventListener("click", loadSchedule);
+    document.getElementById("clearSchedule").addEventListener("click", resetSchedule)
     loadCalendar();
 });
 
@@ -152,5 +153,10 @@ async function saveSchedule() {
 async function loadSchedule() {
     const loadName = document.getElementById("loadScheduleName").value;
     const resLoad = await fetch("/loadSchedule", { method: "POST", body: JSON.stringify(loadName) })
+    window.location.reload();
+}
+async function resetSchedule(){
+    const resetname = document.getElementById("clearSchedule").value;
+    const resReset = await fetch("/resetSchedule", {method:"POST"})
     window.location.reload();
 }

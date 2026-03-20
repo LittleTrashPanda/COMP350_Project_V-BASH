@@ -92,5 +92,7 @@ public class Main {
 
         // Load Schedule
         app.post("/loadSchedule", ctx -> { User.loadSchedule(ctx.body()); });
+
+        app.post("/resetSchedule", ctx -> { User.resetSchedule();});
     }
 }
