@@ -141,12 +141,12 @@ public class User {
         } */
 
         FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
-        JSONObject readIn = (JSONObject) ((JSONObject) ((JSONObject) new JSONParser().parse(sourceFile)).get(scheduleName)).get(scheduleName);
+        JSONObject readIn = (JSONObject) ((JSONObject) new JSONParser().parse(sourceFile)).get(scheduleName);
+        if (readIn == null) { return; }
 
-        System.out.print(readIn.toJSONString());
-
-        candidateSchedule.setName(readIn.get("name").toString());
-        for (Object course : (JSONArray) readIn.get("classes")) { candidateSchedule.addCourse(JSONToCourse((JSONObject) course)); }
+        JSONObject foundSchedule = (JSONObject) readIn.get(scheduleName);
+        candidateSchedule.setName(foundSchedule.get("name").toString());
+        for (Object course : (JSONArray) foundSchedule.get("classes")) { candidateSchedule.addCourse(JSONToCourse((JSONObject) course)); }
     }
 
     // Load Helper
