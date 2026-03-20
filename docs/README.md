@@ -1,6 +1,7 @@
 # Installation notes
 COMP350 - V.BASH
-Sheldon Deal, Alyssa Hoover
+
+Sheldon Deal, Alissa Hoover, Brehm Moritz, Veronica Rine, and Henry Tan
 
 ## Startup
 To initialize this project, navigate to the Main class in backend/src/main/java/edu.gcc.VBASH/Main.java and click the run button.

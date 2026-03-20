@@ -25,7 +25,8 @@ public class User {
     public static void resetSchedule() throws IOException, ParseException {loadSchedule("");}
 
     // Format for the data file should ensure that a data set always starts with Name: ----- to separate the data points
-    public static void saveSchedule() throws IOException {
+    public static void saveSchedule() throws IOException, ParseException {
+        // Legacy
         /* System.out.println("Starting to Save");
         //TODO: Work on replacement function
         try{
