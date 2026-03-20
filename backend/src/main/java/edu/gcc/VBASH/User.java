@@ -23,7 +23,7 @@ public class User {
     public static void newSchedule() { candidateSchedule = new Schedule("default", new ArrayList<Course>()); }
 
     // Format for the data file should ensure that a data set always starts with Name: ----- to separate the data points
-    public static void saveSchedule() throws IOException {
+    public static void saveSchedule() throws IOException, ParseException {
         /* System.out.println("Starting to Save");
         //TODO: Work on replacement function
         try{
@@ -52,9 +52,14 @@ public class User {
 
         shell.put(candidateSchedule.getName(), schedule);
 
-        FileWriter file = new FileWriter("backend/src/main/resources/private/userSchedules.json");
-        file.write(shell.toJSONString());
-        file.close();
+        FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
+        JSONObject preExisting = (JSONObject) new JSONParser().parse(sourceFile);
+        try { preExisting.remove(candidateSchedule.getName()); } catch (Exception e) { }
+        preExisting.put(candidateSchedule.getName(), shell);
+
+        FileWriter newFile = new FileWriter("backend/src/main/resources/private/userSchedules.json");
+        newFile.write(preExisting.toJSONString());
+        newFile.close();
     }
 
     // Save Helper
@@ -136,7 +141,9 @@ public class User {
         } */
 
         FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
-        JSONObject readIn = (JSONObject) ((JSONObject) new JSONParser().parse(sourceFile)).get(scheduleName);
+        JSONObject readIn = (JSONObject) ((JSONObject) ((JSONObject) new JSONParser().parse(sourceFile)).get(scheduleName)).get(scheduleName);
+
+        System.out.print(readIn.toJSONString());
 
         candidateSchedule.setName(readIn.get("name").toString());
         for (Object course : (JSONArray) readIn.get("classes")) { candidateSchedule.addCourse(JSONToCourse((JSONObject) course)); }
