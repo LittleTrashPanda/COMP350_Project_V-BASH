@@ -13,7 +13,7 @@ function App() {
   const [schedule, setSchedule] = React.useState([]);
 
   React.useEffect(() => {
-    fetch("/calendar")
+    fetch("/loadCalendar")
       .then(res => res.json())
       .then(setSchedule);
   }, []);
