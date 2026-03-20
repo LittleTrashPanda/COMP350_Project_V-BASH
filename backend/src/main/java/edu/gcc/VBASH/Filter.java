@@ -143,6 +143,7 @@ public class Filter {
         if(department == null || department.isEmpty()){return true;}
 
         // if the checked course's dept is the same as the dept in the filter, returns
+        // strip() is helpful depending on how frontend is set-up
         return (checkCourse.getCourseCode().substring(0, 4).equalsIgnoreCase(department.strip()));
 
     }
