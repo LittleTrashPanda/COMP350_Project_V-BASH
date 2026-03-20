@@ -27,6 +27,7 @@ public class Filter {
     // Primary Filter Call
     public boolean filterCourse(Course checkCourse) {
         return (
+                checkCourse != null &&
                 filterTime(checkCourse) &&
                 filterDay(checkCourse) &&
                 filterDept(checkCourse) &&
@@ -56,7 +57,6 @@ public class Filter {
 
     // Semester
     public boolean filterSemester(Course checkCourse) {
-        if (checkCourse == null) { return false; }
         if (semester == null || semester.isEmpty()) { return true; }
         return semester.equals(checkCourse.getSemester());
     }
