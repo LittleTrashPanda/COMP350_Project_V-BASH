@@ -25,9 +25,11 @@ class FilterTest {
     @Test
     void filterDeptNullDept(){
         String dept = null;
+        // dummy course
         Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        // null dept filter - if no dept specified, course should pass the filter because the dept doesn't matter
         Filter testFilter = new Filter(dept, null, null,
                 -1, 1, null, null, null);
         assertEquals(true, testFilter.filterDept(testGetCourse));
@@ -35,9 +37,11 @@ class FilterTest {
 
     @Test
     void filterDept_MatchDept(){
+        // dummy course
         Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        // filter with matching department - should pass through the filter and be true
         Filter testFilter = new Filter("ASTR", null, null,
                 -1, 1, null, null, null);
         assertEquals(true, testFilter.filterDept(testGetCourse));
@@ -45,9 +49,11 @@ class FilterTest {
 
     @Test
     void filterDept_NotMatchDept(){
+        // dummy course
         Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        // filter with a dept that doesn't match - should not pass through the filter and be false
         Filter testFilter = new Filter("COMP", null, null,
                 -1, 1, null, null, null);
 
@@ -56,9 +62,11 @@ class FilterTest {
 
     @Test
     void filterDept_CasingTest(){
+        // dummy course
         Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        // filter with the matching dept but lowercase - should still pass through filter
         Filter testFilter = new Filter("astr", null, null,
                 -1, 1, null, null, null);
 
@@ -67,9 +75,11 @@ class FilterTest {
 
     @Test
     void filterDept_WhitespaceDept(){
+        //dummy course
         Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        // filter with matching dept but with whitespace - might be an issue depending on frontend - should still pass through filter
         Filter testFilter = new Filter(" ASTR ", null, null,
                 -1, 1, null, null, null);
         assertEquals(true, testFilter.filterDept(testGetCourse));
@@ -77,9 +87,11 @@ class FilterTest {
 
     @Test
     void filterCreditNum_NegativeOne(){
+        //dummy course
         Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        // -1 for credits is what we're calling null - course should pass through filter
         Filter testFilter = new Filter(null, null, null,
                 -1, 1, null, null, null);
 
@@ -89,9 +101,11 @@ class FilterTest {
 
     @Test
     void filterCreditNum_MatchCreditNum(){
+        //dummy course
         Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        // the credits match so the course should pass through the filter
         Filter testFilter = new Filter(null, null, null,
                 3, 1, null, null, null);
 
@@ -101,34 +115,26 @@ class FilterTest {
 
     @Test
     void filterCreditNum_NotMatchCreditNum(){
+        // dummy course
         Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        // the credits don't match so the course should not pass through the filter
         Filter testFilter = new Filter(null, null, null,
                 1, 1, null, null, null);
 
         assertEquals(false, testFilter.filterCreditNum(testGetCourse));
 
     }
-// I'm unsure if this should be a test in Filter or Course, but I'm leaning towards Course
-//    @Test
-//    void filterCreditNum_InvalidCreditNum(){
-//        Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
-//                "206", "Dummy description", new String[]{"Clem, James L."}, 7, 110,
-//                new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
-//        Filter testFilter = new Filter(null, null, null,
-//                7, null, null, null, null);
-//
-//        assertEquals(false, testFilter.filterCreditNum(testGetCourse));
-//
-//    }
 
     @Test
     void filterCourseCode_NullCourseCode(){
         String courseCode = null;
+        // dummy course
         Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        // the course code is null so the course should pass through the filter
         Filter testFilter = new Filter(null, courseCode, null,
                 -1, 1, null, null, null);
         assertEquals(true, testFilter.filterCourseCode(testGetCourse));
@@ -138,9 +144,11 @@ class FilterTest {
 
     @Test
     void filterCourseCode_MatchCourseCode(){
+        // dummy course
         Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        // the course code matches so it should pass through the filter
         Filter testFilter = new Filter(null, "206", null,
                 -1, 1, null, null, null);
         assertEquals(true, testFilter.filterCourseCode(testGetCourse));
@@ -150,9 +158,11 @@ class FilterTest {
 
     @Test
     void filterCourseCode_WhitespaceCourseCode(){
+        // dummy course
         Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        // filter with matching course code but with whitespace - might be an issue depending on frontend - should still pass through filter
         Filter testFilter = new Filter(null, " 206 ", null,
                 -1, 1, null, null, null);
         assertEquals(true, testFilter.filterCourseCode(testGetCourse));
@@ -162,9 +172,11 @@ class FilterTest {
 
     @Test
     void filterCourseCode_NoMatchCourseCode(){
+        // dummy course
         Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
+        // the coursecode does not match, so the course should not pass through the filter
         Filter testFilter = new Filter(null, "141", null,
                 -1, 1, null, null, null);
         assertEquals(false, testFilter.filterCourseCode(testGetCourse));
