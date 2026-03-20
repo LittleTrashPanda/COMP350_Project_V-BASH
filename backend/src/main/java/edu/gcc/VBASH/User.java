@@ -1,39 +1,94 @@
 package edu.gcc.VBASH;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class User {
-    private Iterable<Schedule> savedSchedules;
-    private Schedule candidateSchedule;
+    // Identifiers
+    private static String username;
+    private static int passwordHash;
 
-    private String username;
-    private int passwordHash;
+    // User Schedules
+    private static ArrayList<Schedule> savedSchedules = new ArrayList<Schedule>();
+    private static Schedule candidateSchedule = new Schedule("default", new ArrayList<Course>());
 
-    // Format for the data file should ensure that a data set always starts with Name: ----- to
-    // separate the data points
-    public void saveSchedule(String scheduleName) throws FileNotFoundException {
+    // Retrieving and Resetting Schedules
+    public static Schedule getSchedule() { return candidateSchedule; }
+
+    public static void newSchedule() { candidateSchedule = new Schedule("default", new ArrayList<Course>()); }
+
+    // Format for the data file should ensure that a data set always starts with Name: ----- to separate the data points
+    public static void saveSchedule() throws IOException {
+        /* System.out.println("Starting to Save");
         //TODO: Work on replacement function
         try{
             FileWriter fw = new FileWriter("backend/src/main/java/edu/gcc/VBASH/scheduleStore", true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw);
-            Iterable<Course> courses = candidateSchedule.getCourses();
             out.println("Name: " + candidateSchedule.getName() + " ");
             while(candidateSchedule.getCourses().iterator().hasNext()){
                 out.println(candidateSchedule.getCourses().iterator().next().getCourseCode() + " ");
             }
             out.close();
-    }
-    catch (IOException e) {
-        System.out.println("failed to save");
-        }}
+        }
+        catch (IOException e) {
+            System.out.println("failed to save");
+        }
 
-    public void loadSchedule(String scheduleName) throws IOException, ParseException {
-        //Goes to the file in question and initializes a scanner
+        System.out.println("Saved Schedule"); */
+
+        JSONObject shell = new JSONObject();
+        JSONObject schedule = new JSONObject();
+        schedule.put("name", candidateSchedule.getName());
+
+        JSONArray courseList = new JSONArray();
+        for (Course course : candidateSchedule.getCourses()) { courseList.add(CourseToJSON(course)); }
+        schedule.put("classes", courseList);
+
+        shell.put(candidateSchedule.getName(), schedule);
+
+        FileWriter file = new FileWriter("backend/src/main/resources/private/userSchedules.json");
+        file.write(shell.toJSONString());
+        file.close();
+    }
+
+    // Save Helper
+    private static JSONObject CourseToJSON(Course course) {
+        JSONObject toReturn = new JSONObject();
+        toReturn.put("courseName",  course.getCourseName());
+        toReturn.put("department",  course.getDepartment());
+        toReturn.put("courseCode",  course.getCourseCode());
+        toReturn.put("description", course.getDescription());
+
+        JSONArray professors = new JSONArray();
+        for (String professor : course.getProfessors()) { professors.add(professor); }
+        toReturn.put("professors", professors);
+
+        toReturn.put("credits",     course.getCredits());
+        toReturn.put("days",        course.getDays());
+
+        JSONArray startTimes = new JSONArray();
+        for (int time : course.getStartTimes()) { startTimes.add(time); }
+        toReturn.put("startTimes", startTimes);
+
+        JSONArray duration = new JSONArray();
+        for (int time : course.getDuration()) { duration.add(time); }
+        toReturn.put("duration", duration);
+
+        toReturn.put("semester",    course.getSemester());
+
+        return toReturn;
+    }
+
+    public static void loadSchedule(String scheduleName) throws IOException, ParseException {
+        newSchedule();
+
+        /* //Goes to the file in question and initializes a scanner
         File file = new File("backend/src/main/java/edu/gcc/VBASH/scheduleStore");
         Scanner slate = new Scanner(file);
         //boolean to track when you're at the right spot in the file (I had fun with the name)
@@ -78,11 +133,40 @@ public class User {
                 String code = slate.next();
                 candidateSchedule.addCourse(candidateSchedule.getCourse(code));
             }
-        }
+        } */
+
+        FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
+        JSONObject readIn = (JSONObject) ((JSONObject) new JSONParser().parse(sourceFile)).get(scheduleName);
+
+        candidateSchedule.setName(readIn.get("name").toString());
+        for (Object course : (JSONArray) readIn.get("classes")) { candidateSchedule.addCourse(JSONToCourse((JSONObject) course)); }
     }
 
-    public void loadSchedule(Schedule generatedSchedule) { return; }
+    // Load Helper
+    private static Course JSONToCourse(JSONObject course) {
+        // Pre-Handling
+        String[] professors = new String[((JSONArray) course.get("professors")).size()];
+        int index = 0;
+        for (Object professor : (JSONArray) course.get("professors")) { professors[index] = professor.toString(); index++; }
 
-    public void newSchedule() { return; }
-    public Iterable<Schedule> getSchedules() { return null; }
+        int[] startTimes = new int[5];
+        for (int i = 0; i < 5; i++) { startTimes[i] = Math.toIntExact((long) ((JSONArray) course.get("startTimes")).get(i)); }
+
+        int[] duration = new int[5];
+        for (int i = 0; i < 5; i++) { duration[i] = Math.toIntExact((long) ((JSONArray) course.get("duration")).get(i)); }
+
+        // Constructor
+        return new Course(
+                course.get("courseName").toString(),
+                course.get("department").toString(),
+                course.get("courseCode").toString(),
+                course.get("description").toString(),
+                professors,
+                Math.toIntExact((long) course.get("credits")),
+                Math.toIntExact((long) course.get("days")),
+                startTimes,
+                duration,
+                course.get("semester").toString()
+        );
+    }
 }

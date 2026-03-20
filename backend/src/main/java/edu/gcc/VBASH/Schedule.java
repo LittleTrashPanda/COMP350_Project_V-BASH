@@ -8,11 +8,11 @@ import java.util.ArrayList;import java.util.Iterator;import java.util.List;
 
 public class Schedule {
     private String name;
-    private static ArrayList<Course> courses = new ArrayList<Course>();
+    private ArrayList<Course> courses = new ArrayList<Course>();
 
     public Schedule(String name, Iterable<Course> courses) { }
 
-    public static ArrayList<Course> getCourseList(){
+    public ArrayList<Course> getCourseList(){
         return courses;
     }
 
@@ -50,10 +50,11 @@ public class Schedule {
 
         addCourse(newCourse);
     }
-    public static Iterable<Course> getCourses() throws IOException { return courses; }
+    public Iterable<Course> getCourses() throws IOException { return courses; }
 
+    // Naming Convention
     public String getName() { return name; }
-    public void setName(String newName) { name = newName; }
+    public void setName(String newName) { if (!newName.isEmpty()) { name = newName; } }
 
     public static Course getCourse(String cCode) throws IOException, ParseException {
         Search search = new Search();
