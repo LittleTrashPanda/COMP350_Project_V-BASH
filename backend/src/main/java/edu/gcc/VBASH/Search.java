@@ -29,6 +29,7 @@ public class Search {
 
     // Retrieving Courses
     public static ArrayList<Course> search() throws IOException, ParseException {
+        // Legacy
         /* SearchFilters sf = getFilters();
 
         if (sf == null) {

@@ -1,11 +1,13 @@
 /* Document Creation */
 document.addEventListener("DOMContentLoaded", async () => {
-    loadSchedule();
+    document.getElementById("saveSchedule").addEventListener("click", saveSchedule);
+    document.getElementById("loadSchedule").addEventListener("click", loadSchedule);
+    loadCalendar();
 });
 
 /* Display Courses */
-async function loadSchedule() {
-    const res = await fetch("/calendar");
+async function loadCalendar() {
+    const res = await fetch("/loadCalendar");
     const scheduledCourses = await res.json();
 
     const calendarDays = document.getElementById("calendar").children;
@@ -119,7 +121,8 @@ async function loadSchedule() {
         }
     }
 }
-function removeCourse(course) {
+
+async function removeCourse(course) {
     if (!confirm("Do you want to remove this course?")) {
         console.log("Deletion cancelled");
         return;
@@ -138,4 +141,16 @@ function removeCourse(course) {
             window.location.reload();
         }
     });
+}
+
+async function saveSchedule() {
+    const saveName = document.getElementById("saveScheduleName").value;
+    const resName = await fetch("/nameCurrentSchedule", { method: "POST", body: JSON.stringify(saveName) })
+    const resSave = await fetch("/saveSchedule", { method: "POST" })
+}
+
+async function loadSchedule() {
+    const loadName = document.getElementById("loadScheduleName").value;
+    const resLoad = await fetch("/loadSchedule", { method: "POST", body: JSON.stringify(loadName) })
+    window.location.reload();
 }

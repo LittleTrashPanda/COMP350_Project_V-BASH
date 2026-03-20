@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     /* Event Listeners */
 	document.getElementById("searchButton").addEventListener("click", searchCourses);
 
-    const scheduleRes = await fetch("/calendar");
+    const scheduleRes = await fetch("/loadCalendar");
     scheduledCourses = await scheduleRes.json();
 });
 
@@ -20,7 +20,7 @@ async function searchCourses() {
     const professor = document.getElementById("professor").value;
     const credits = document.getElementById("credits").value;
 
-    var days = 1;
+    let days = 1;
     const dayCheckboxes = document.querySelectorAll("#day input[type='checkbox']");
     dayCheckboxes.forEach(cb => { if (cb.checked) { days *= parseInt(cb.value); } });
 
@@ -28,32 +28,17 @@ async function searchCourses() {
     const startTimes = [startTime, startTime, startTime, startTime, startTime]
     const endTime = document.getElementById("endTimes").value
     const duration = [endTime - startTime, endTime - startTime, endTime - startTime, endTime - startTime, endTime - startTime];
+
     const semester = document.getElementById("semester").value;
 
-    const filter = {
-        department,
-        courseCode,
-        professor,
-        credits,
-        days,
-        startTimes,
-        duration,
-        semester
-    };
+    // Create Filter
+    const filter = { department, courseCode, professor, credits, days, startTimes, duration, semester };
 
     // Send Key Search Terms
-    await fetch("/keySearchTerms", {
-        method: "POST",
-        headers: { "Content-Type": "text/plain" },
-        body: keySearchTerms
-    });
+    await fetch("/keySearchTerms", { method: "POST", headers: { "Content-Type": "text/plain" }, body: keySearchTerms });
 
     // Send Filter
-    await fetch("/setFilters", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(filter)
-    });
+    await fetch("/setFilters", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(filter) });
 
     // Fetch Results
     const res = await fetch("/search");
@@ -64,15 +49,19 @@ async function searchCourses() {
     list.innerHTML = "";
 
     for (const course of courses) {
+        // Create List Entry
         const li = document.createElement("li");
             const courseContent = document.createElement("div");
+                // Course Name
                 const courseID = document.createElement("p");
                 courseID.textContent = course.courseName + " - " + course.courseCode;
                 courseContent.appendChild(courseID);
 
+                // Course Specifics
                 const courseSpecifics = document.createElement("p");
-
                 courseSpecifics.textContent = course.department.toString() + " " + course.professors + " Credits: " + course.credits + " Time: ";
+
+                // Determining What Time Range to Show
                 var tempStartTime = 0; var tempEndTime = 0;
                 if (course.days %  2 == 0) { tempStartTime = course.startTimes[0]; tempEndTime = course.duration[0] + tempStartTime; courseSpecifics.textContent += "M"; }
                 if (course.days %  3 == 0) { tempStartTime = course.startTimes[1]; tempEndTime = course.duration[1] + tempStartTime; courseSpecifics.textContent += "T"; }
@@ -84,6 +73,7 @@ async function searchCourses() {
 
                 courseContent.appendChild(courseSpecifics);
 
+                // Add Course Button
                 const addButton = document.createElement("button");
                 addButton.textContent = "Add to Schedule";
                 addButton.onclick = () => addCourse(course);
@@ -91,6 +81,7 @@ async function searchCourses() {
 
                 const isInSchedule = scheduledCourses.some(sc => sc.courseCode === course.courseCode && sc.courseName === course.courseName);
 
+                // Remove Course Button
             if (isInSchedule) {
                 const removeButton = document.createElement("button");
                 removeButton.textContent = "Remove from Schedule";
