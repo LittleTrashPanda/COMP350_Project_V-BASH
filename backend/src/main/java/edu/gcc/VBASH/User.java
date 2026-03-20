@@ -22,8 +22,9 @@ public class User {
 
     public static void newSchedule() { candidateSchedule = new Schedule("default", new ArrayList<Course>()); }
 
-    // Format for the data file should ensure that a data set always starts with Name: ----- to separate the data points
-    public static void saveSchedule() throws IOException {
+    // Saving Schedule to JSON
+    public static void saveSchedule() throws IOException, ParseException {
+        // Legacy
         /* System.out.println("Starting to Save");
         //TODO: Work on replacement function
         try{
@@ -40,10 +41,11 @@ public class User {
             System.out.println("failed to save");
         }
 
-        System.out.println("Saved Schedule"); */
+        System.out.println("Saved Schedule");
 
         JSONObject shell;
         JSONParser parser = new JSONParser();
+
         //Reads in the data from the old file so that you can have multiple schedules saved
         try{
             FileReader reader = new FileReader("backend/src/main/resources/private/userSchedules.json");
@@ -52,8 +54,9 @@ public class User {
         }
         catch(Exception e){
             shell = new JSONObject();
-        }
+        } */
 
+        // Adding Schedule Values
         JSONObject schedule = new JSONObject();
         schedule.put("name", candidateSchedule.getName());
 
@@ -61,11 +64,21 @@ public class User {
         for (Course course : candidateSchedule.getCourses()) { courseList.add(CourseToJSON(course)); }
         schedule.put("classes", courseList);
 
+        // Formatting
+        JSONObject shell = new JSONObject();
         shell.put(candidateSchedule.getName(), schedule);
 
-        FileWriter file = new FileWriter("backend/src/main/resources/private/userSchedules.json");
-        file.write(shell.toJSONString());
-        file.close();
+        // Reading Existing Files
+        FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
+        JSONObject preExisting = new JSONObject();
+        try { preExisting = (JSONObject) new JSONParser().parse(sourceFile); } catch (Exception e) { }
+        try { preExisting.remove(candidateSchedule.getName()); } catch (Exception e) { }
+        preExisting.put(candidateSchedule.getName(), shell);
+
+        // Write to the File
+        FileWriter newFile = new FileWriter("backend/src/main/resources/private/userSchedules.json");
+        newFile.write(preExisting.toJSONString());
+        newFile.close();
     }
 
     // Save Helper
@@ -96,9 +109,11 @@ public class User {
         return toReturn;
     }
 
+    // Loading Schedule from JSON
     public static void loadSchedule(String scheduleName) throws IOException, ParseException {
         newSchedule();
 
+        // Legacy
         /* //Goes to the file in question and initializes a scanner
         File file = new File("backend/src/main/java/edu/gcc/VBASH/scheduleStore");
         Scanner slate = new Scanner(file);
@@ -146,11 +161,15 @@ public class User {
             }
         } */
 
+        // Finding Schedule
         FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
         JSONObject readIn = (JSONObject) ((JSONObject) new JSONParser().parse(sourceFile)).get(scheduleName);
+        if (readIn == null) { return; }
 
-        candidateSchedule.setName(readIn.get("name").toString());
-        for (Object course : (JSONArray) readIn.get("classes")) { candidateSchedule.addCourse(JSONToCourse((JSONObject) course)); }
+        // Reading from Schedule
+        JSONObject foundSchedule = (JSONObject) readIn.get(scheduleName);
+        candidateSchedule.setName(foundSchedule.get("name").toString());
+        for (Object course : (JSONArray) foundSchedule.get("classes")) { candidateSchedule.addCourse(JSONToCourse((JSONObject) course)); }
     }
 
     // Load Helper
