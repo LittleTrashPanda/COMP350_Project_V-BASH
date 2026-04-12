@@ -1,10 +1,20 @@
 /* Document Creation */
 document.addEventListener("DOMContentLoaded", async () => {
+	document.getElementById("semesterButton").addEventListener("click", setSemester);
+
     document.getElementById("saveSchedule").addEventListener("click", saveSchedule);
     document.getElementById("loadSchedule").addEventListener("click", loadSchedule);
-    document.getElementById("clearSchedule").addEventListener("click", resetSchedule)
+    document.getElementById("clearSchedule").addEventListener("click", resetSchedule);
+
     loadCalendar();
 });
+
+/* Set Semester */
+async function setSemester() {
+    const semester = document.getElementById("semester").value;
+    await fetch("/keySearchTerms", { method: "POST", headers: { "Content-Type": "text/plain" }, body: semester });
+    reload();
+}
 
 /* Display Courses */
 async function loadCalendar() {

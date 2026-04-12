@@ -15,12 +15,12 @@ public class User {
 
     // User Schedules
     private static ArrayList<Schedule> savedSchedules = new ArrayList<Schedule>();
-    private static Schedule candidateSchedule = new Schedule("default", new ArrayList<Course>());
+    private static Schedule candidateSchedule = new Schedule("default", new ArrayList<Course>(), "2025_Fall");
 
     // Retrieving and Resetting Schedules
     public static Schedule getSchedule() { return candidateSchedule; }
 
-    public static void newSchedule() { candidateSchedule = new Schedule("default", new ArrayList<Course>()); }
+    public static void newSchedule() { candidateSchedule = new Schedule("default", new ArrayList<Course>(), "2025_Fall"); }
 
     public static void resetSchedule() throws IOException, ParseException {loadSchedule("");}
 

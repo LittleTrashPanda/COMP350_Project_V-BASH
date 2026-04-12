@@ -16,9 +16,21 @@
 
 <a href = "calendar.html" class ="calendarLink">Calendar</a>
 
+<h4>Semester</h4>
+<select name = "semester" id="semester">
+    <option value = "2025_Spring">Spring 2025</option>
+    <option value = "2025_Fall"  >Fall   2025</option>
+    <option value = "2024_Spring">Spring 2024</option>
+    <option value = "2024_Fall"  >Fall   2024</option>
+    <option value = "2023_Spring">Spring 2023</option>
+    <option value = "2023_Fall"  >Fall   2023</option>
+</select>
+<button id = "semesterButton" class = "searchButton">Change Semester</button>
+
+
 <input id = "keySearchTerms" placeholder = "Search for your class">
 
-<button id = "searchButton" class="searchButton">Search</button>
+<button id = "searchButton" class = "searchButton">Search</button>
 
 <!-- Make sure these all work as intended -->
 <h3>Filters</h3>
@@ -140,9 +152,6 @@
 
 <h4>Course Code</h4>
 <input id = "courseCode" placeholder = "">
-
-<h4>Semester</h4>
-<input id = "semester" placeholder = "">
 
 <ul id = "resultingCourses" class = "courseList"></ul>
 

@@ -9,8 +9,13 @@ import java.util.ArrayList;import java.util.Iterator;import java.util.List;
 public class Schedule {
     private String name;
     private ArrayList<Course> courses = new ArrayList<Course>();
+    private String currentSemester;
 
-    public Schedule(String name, Iterable<Course> courses) { }
+    public Schedule(String name, ArrayList<Course> courses, String currentSemester) {
+        this.name = name;
+        this.courses = courses;
+        this.currentSemester = currentSemester;
+    }
 
     public ArrayList<Course> getCourseList(){
         return courses;
@@ -41,7 +46,6 @@ public class Schedule {
                 iterator.remove();
             }
         }
-
     }
     public void replaceCourse(Course newCourse, List<Course> conflicts) {
         for (Course oldCourse : conflicts) {
@@ -50,7 +54,14 @@ public class Schedule {
 
         addCourse(newCourse);
     }
-    public Iterable<Course> getCourses() throws IOException { return courses; }
+
+    public ArrayList<Course> getCourses() { return courses; }
+
+    public ArrayList<Course> getCurrentCourses() {
+        ArrayList<Course> toReturn = new ArrayList<Course>();
+        for (Course course : courses) { if (currentSemester.equals(course.getSemester())) { toReturn.add(course); } }
+        return toReturn;
+    }
 
     // Naming Convention
     public String getName() { return name; }
@@ -65,4 +76,7 @@ public class Schedule {
         //unless smth goes wrong, the code above should only return one class
         return temp.iterator().next();
     }
+
+    public String getSemester() { return currentSemester; }
+    public void setSemester(String currentSemester) { this.currentSemester = currentSemester; }
 }

@@ -2,12 +2,20 @@
 document.addEventListener("DOMContentLoaded", async () => {
     /* Event Listeners */
 	document.getElementById("searchButton").addEventListener("click", searchCourses);
+	document.getElementById("semesterButton").addEventListener("click", setSemester);
 
     const scheduleRes = await fetch("/loadCalendar");
     scheduledCourses = await scheduleRes.json();
 });
 
 let scheduledCourses = [];
+
+/* Set Semester */
+async function setSemester() {
+    const semester = document.getElementById("semester").value;
+    await fetch("/keySearchTerms", { method: "POST", headers: { "Content-Type": "text/plain" }, body: semester });
+    reload();
+}
 
 /* Display Courses */
 async function searchCourses() {

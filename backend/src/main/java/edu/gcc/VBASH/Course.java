@@ -75,6 +75,8 @@ public class Course {
 
 
     public boolean willConflict(Course potentialCourse) {
+        // If they are in different Semesters, they can't overlap
+        if (!(semester.equals(potentialCourse.getSemester()))) { return false; }
 
         //going through each startTime for our course, check each course time
         //for the potential course seeing if they have the same startTime

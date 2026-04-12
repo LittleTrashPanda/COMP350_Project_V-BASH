@@ -115,6 +115,9 @@ public class Search {
                 // Create Course Object
                 Course toAdd = courseCreator((JSONObject) course);
 
+                // Filter by Current Schedule's Semester
+                if (!currentScheduleSemesterFilter(toAdd)) { continue; }
+
                 // Filter by Key Search Terms
                 if (keySearchTerms == null || keySearchTerms.isEmpty()) { queryResults.add(toAdd); continue; }
                 if (keySearchTermsFilter(toAdd)) { queryResults.add(toAdd); }
@@ -150,7 +153,6 @@ public class Search {
     public static void setFilter(Filter newFilter) {
         currentFilter = newFilter;
     }
-
 
     // Transforming Data
     private static String[] professorParsing(JSONArray professors) {
@@ -218,4 +220,6 @@ public class Search {
         // All Key Search Terms Found
         return true;
     }
+
+    private static boolean currentScheduleSemesterFilter(Course course) { return User.getSchedule().getSemester().equals(course.getSemester()); }
 }

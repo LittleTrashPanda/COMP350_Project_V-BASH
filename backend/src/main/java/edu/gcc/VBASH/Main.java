@@ -26,7 +26,9 @@ public class Main {
             ctx.status(201);
         });
 
-        app.get("/loadCalendar", ctx -> ctx.json(User.getSchedule().getCourses()));
+        app.get("/loadCalendar", ctx -> ctx.json(User.getSchedule().getCurrentCourses()));
+
+        app.post("/setCurrentSemester", ctx -> User.getSchedule().setSemester(ctx.body()));
 
         app.post("/addCourse", ctx -> {
             Course toAdd = ctx.bodyAsClass(Course.class);
