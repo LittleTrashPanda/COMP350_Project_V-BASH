@@ -115,9 +115,6 @@ public class Search {
                 // Create Course Object
                 Course toAdd = courseCreator((JSONObject) course);
 
-                // Filter by Current Schedule's Semester
-                if (!currentScheduleSemesterFilter(toAdd)) { continue; }
-
                 // Filter by Key Search Terms
                 if (keySearchTerms == null || keySearchTerms.isEmpty()) { queryResults.add(toAdd); continue; }
                 if (keySearchTermsFilter(toAdd)) { queryResults.add(toAdd); }
@@ -130,7 +127,7 @@ public class Search {
 
         // Filter Results
         ArrayList<Course> toReturn = new ArrayList<>();
-        for (Course course : resultingCourses) { if (currentFilter.filterCourse(course)) { toReturn.add(course); } }
+        for (Course course : resultingCourses) { if (currentFilter.filterCourse(course) && currentScheduleSemesterFilter(course)) { toReturn.add(course); } }
         return toReturn;
     }
 
@@ -221,5 +218,11 @@ public class Search {
         return true;
     }
 
-    private static boolean currentScheduleSemesterFilter(Course course) { return User.getSchedule().getSemester().equals(course.getSemester()); }
+    private static boolean currentScheduleSemesterFilter(Course course) {
+        System.out.print(course.getCourseCode());
+        System.out.print(" " + course.getSemester());
+        System.out.print(" " + Arrays.toString(course.getProfessors()));
+        System.out.println(" " + User.getSchedule().getSemester().equals(course.getSemester()));
+        return User.getSchedule().getSemester().equals(course.getSemester());
+    }
 }

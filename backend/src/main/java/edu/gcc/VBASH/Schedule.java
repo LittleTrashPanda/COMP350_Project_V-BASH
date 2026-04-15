@@ -55,6 +55,8 @@ public class Schedule {
         addCourse(newCourse);
     }
 
+    public void removeAllCourses() { courses = new ArrayList<Course>(); }
+
     public ArrayList<Course> getCourses() { return courses; }
 
     public ArrayList<Course> getCurrentCourses() {
@@ -78,5 +80,8 @@ public class Schedule {
     }
 
     public String getSemester() { return currentSemester; }
-    public void setSemester(String currentSemester) { this.currentSemester = currentSemester; }
+    public void setSemester(String currentSemester) {
+        System.out.print(currentSemester);
+        this.currentSemester = currentSemester;
+    }
 }

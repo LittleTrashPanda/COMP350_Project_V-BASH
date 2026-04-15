@@ -8,7 +8,6 @@ public class Filter {
     public int days;
     public int[] startTimes;
     public int[] duration;
-    public String semester;
 
     public Filter() { }
 
@@ -21,7 +20,6 @@ public class Filter {
         this.days = days;
         this.startTimes = startTimes;
         this.duration = duration;
-        this.semester = semester;
     }
 
     // Primary Filter Call
@@ -33,8 +31,7 @@ public class Filter {
                 filterDept(checkCourse) &&
                 filterProf(checkCourse) &&
                 filterCreditNum(checkCourse) &&
-                filterCourseCode(checkCourse) &&
-                filterSemester(checkCourse)
+                filterCourseCode(checkCourse)
         );
     }
 
@@ -54,12 +51,6 @@ public class Filter {
         }
         return false;
     } */
-
-    // Semester
-    public boolean filterSemester(Course checkCourse) {
-        if (semester == null || semester.isEmpty()) { return true; }
-        return semester.equals(checkCourse.getSemester());
-    }
 
     // Professors
     public boolean filterProf(Course checkCourse){

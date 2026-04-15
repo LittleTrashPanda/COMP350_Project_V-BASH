@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 /* Set Semester */
 async function setSemester() {
     const semester = document.getElementById("semester").value;
-    await fetch("/keySearchTerms", { method: "POST", headers: { "Content-Type": "text/plain" }, body: semester });
-    reload();
+    await fetch("/setCurrentSemester", { method: "POST", headers: { "Content-Type": "text/plain" }, body: semester });
+    window.location.reload();
 }
 
 /* Display Courses */
