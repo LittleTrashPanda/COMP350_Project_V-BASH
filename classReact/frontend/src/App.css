@@ -1,0 +1,11 @@
+.main-content {
+  transition: margin-left 0.3s ease;
+}
+
+.main-content.closed {
+  margin-left: 60px;
+}
+
+.main-content.open {
+  margin-left: 200px;
+}
