@@ -82,15 +82,15 @@ async function searchCourses() {
                 const isInSchedule = scheduledCourses.some(sc => sc.courseCode === course.courseCode && sc.courseName === course.courseName);
 
                 // Remove Course Button
-                if (isInSchedule) {
-                    const removeButton = document.createElement("button");
-                    removeButton.textContent = "Remove from Schedule";
-                    removeButton.onclick = () => removeCourse(course);
-                    courseContent.appendChild(removeButton);
-                }
+            if (isInSchedule) {
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "Remove from Schedule";
+                removeButton.onclick = () => removeCourse(course);
+                courseContent.appendChild(removeButton);
+            }
 
-                courseContent.classList.add("courseListItemContent");
-                li.appendChild(courseContent);
+            courseContent.classList.add("courseListItemContent");
+            li.appendChild(courseContent);
 
         li.classList.add("courseListItem");
         list.appendChild(li);

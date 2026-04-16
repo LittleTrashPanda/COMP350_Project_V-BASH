@@ -1,0 +1,78 @@
+.sidebar {
+  width: 50px;
+  height: 100vh;
+  background-color: #2F4050;
+  color: white;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.sidebar.closed {
+  width: 60px;
+}
+
+.sidebar.open {
+  width: 200px;
+}
+
+.sidebar-image.open {
+    width: 60px;
+    height: 60px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.sidebar-image.closed {
+    width: 60px;
+    height: 60px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-link {
+  text-decoration: none;
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.sidebar-link:hover {
+  background-color: #444;
+}
+
+.calendar{
+    height:40px;
+    width: 40px;
+}
+
+.search{
+    height:40px;
+    width: 40px;
+}
+
+.account{
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    height:40px;
+    width: 40px;
+}
+
+.link-text{
+    font-size: 24px;
+    white-space: nowrap;
+    text-align: center;
+}
