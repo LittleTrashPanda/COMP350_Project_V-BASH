@@ -26,7 +26,7 @@ export default function Sidebar({ isOpen, toggle }) {
             <img className="calendar" src={calendar} alt="CALENDAR"  />
             {isOpen && <span className="link-text">Calendar</span>}
         </Link>
-       <Link className="sidebar-link">
+       <Link to="profile" className="sidebar-link">
             <img className="account" src={account} alt="ACCOUNT" />
             {isOpen && <span className="link-text">Account</span>}
        </Link>
