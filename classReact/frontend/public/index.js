@@ -2,25 +2,12 @@
 document.addEventListener("DOMContentLoaded", async () => {
     /* Event Listeners */
 	document.getElementById("searchButton").addEventListener("click", searchCourses);
-	document.getElementById("semesterButton").addEventListener("click", setSemester);
 
     const scheduleRes = await fetch("/loadCalendar");
     scheduledCourses = await scheduleRes.json();
 });
 
 let scheduledCourses = [];
-
-/* Set Semester */
-async function setSemester() {
-    const semester = document.getElementById("semester").value;
-    await fetch("/setCurrentSemester", { method: "POST", headers: { "Content-Type": "text/plain" }, body: semester });
-    resetResults();
-}
-
-async function resetResults() {
-    const list = document.getElementById("resultingCourses");
-    list.innerHTML = "";
-}
 
 /* Display Courses */
 async function searchCourses() {
@@ -42,8 +29,10 @@ async function searchCourses() {
     const endTime = document.getElementById("endTimes").value
     const duration = [endTime - startTime, endTime - startTime, endTime - startTime, endTime - startTime, endTime - startTime];
 
+    const semester = document.getElementById("semester").value;
+
     // Create Filter
-    const filter = { department, courseCode, professor, credits, days, startTimes, duration };
+    const filter = { department, courseCode, professor, credits, days, startTimes, duration, semester };
 
     // Send Key Search Terms
     await fetch("/keySearchTerms", { method: "POST", headers: { "Content-Type": "text/plain" }, body: keySearchTerms });
@@ -56,8 +45,8 @@ async function searchCourses() {
     const courses = await res.json();
 
     // Render Results
-    resetResults();
     const list = document.getElementById("resultingCourses");
+    list.innerHTML = "";
 
     for (const course of courses) {
         // Create List Entry
@@ -93,15 +82,15 @@ async function searchCourses() {
                 const isInSchedule = scheduledCourses.some(sc => sc.courseCode === course.courseCode && sc.courseName === course.courseName);
 
                 // Remove Course Button
-                if (isInSchedule) {
-                    const removeButton = document.createElement("button");
-                    removeButton.textContent = "Remove from Schedule";
-                    removeButton.onclick = () => removeCourse(course);
-                    courseContent.appendChild(removeButton);
-                }
+            if (isInSchedule) {
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "Remove from Schedule";
+                removeButton.onclick = () => removeCourse(course);
+                courseContent.appendChild(removeButton);
+            }
 
-                courseContent.classList.add("courseListItemContent");
-                li.appendChild(courseContent);
+            courseContent.classList.add("courseListItemContent");
+            li.appendChild(courseContent);
 
         li.classList.add("courseListItem");
         list.appendChild(li);

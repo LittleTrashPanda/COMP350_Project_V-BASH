@@ -41,13 +41,11 @@ public class Main {
             //Detect time conflict
             if (User.getSchedule().checkCourseConflict(toAdd)) {
                 ArrayList<Course> conflicts = new  ArrayList<Course>();
-
                 for(Course course : User.getSchedule().getCourses()){
                     if(course.willConflict(toAdd)){
                         conflicts.add(course);
                     }
                 }
-
                 ctx.json(new AddResult(false,
                         "This course conflicts with an existing course in your schedule.", conflicts));
                 return;
