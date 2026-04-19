@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import SearchPage from "./pages/SearchPage.jsx";
 // import CalendarPage from "./pages/CalendarPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx"
 import "./App.css";
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/" element={
               <SearchPage />
               }/>
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </div>
     </>
