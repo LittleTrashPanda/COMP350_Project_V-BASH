@@ -6,7 +6,32 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
+
+/* DATA STRUCTURE */
+
+/*
+* JSONObject allUsers {
+*   username : JSONObject User {
+*       "username" : String username
+*
+*       "passwordHash" : int passwordHash
+*
+*       "schedules" : JSONObject schedules {
+*           "name" : String (Schedule) name
+*
+*           "courses" : JSONArray courses {
+*               N/A : JSONObject course
+*           }
+*       }
+*
+*       "takenCourses" : JSONArray takenCourses {
+*           N/A : JSONObject takenCourse
+*       }
+*
+*       "major" : String major
+*   }
+* }
+*/
 
 public class User {
     // Identifiers
@@ -14,74 +39,221 @@ public class User {
     private static int passwordHash = 0;
 
     // User Data
-    private static ArrayList<Course> coursesTaken = new ArrayList<>();
+    private static ArrayList<Course> takenCourses = new ArrayList<>();
+    private static String major = "";
 
     // User Schedules
-    private static ArrayList<Schedule> savedSchedules = new ArrayList<Schedule>();
+    private static ArrayList<Schedule> schedules = new ArrayList<Schedule>();
     private static Schedule candidateSchedule = new Schedule("default", new ArrayList<Course>(), "2025_Spring");
 
     // Create User
-    public static void createUser() throws IOException {
-        // Adding Schedule Values
-        JSONObject user = new JSONObject();
-        user.put("username", username);
-        user.put("passwordHash", passwordHash);
-
+    public static boolean createUser(String username, int passwordHash) throws IOException {
         // Reading Existing Files
         FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
-        JSONObject preExistingUsers = new JSONObject();
+        JSONObject allUsers = new JSONObject();
+        try { allUsers = (JSONObject) new JSONParser().parse(sourceFile); } catch (Exception e) { }
 
-        // Remove User if They Exist
-        try { preExistingUsers = (JSONObject) new JSONParser().parse(sourceFile); } catch (Exception e) { }
-        try { preExistingUsers.remove(username); } catch (Exception e) { }
+        // Fail if User Already Exists
+        if (allUsers.containsKey(username)) { return false; }
 
-        // Write Data
-        preExistingUsers.replace(username, user);
+        // Add Basic User Values
+        JSONObject newUser = new JSONObject();
+        newUser.put("username", username);
+        newUser.put("passwordHash", passwordHash);
+        newUser.put("schedules", new JSONObject());
+        newUser.put("takenCourses", new JSONArray());
+        newUser.put("major", "");
+
+        // Add User to Data
+        allUsers.put(username, newUser);
 
         // Write to the File
         FileWriter newFile = new FileWriter("backend/src/main/resources/private/userSchedules.json");
-        newFile.write(preExistingUsers.toJSONString());
+        newFile.write(allUsers.toJSONString());
         newFile.close();
+
+        // Successful Creation
+        return true;
     }
 
-    // TODO: Load User Data
-    public static void loadUser() { }
+
+    // Load User Data
+    public static boolean loadUser(String tryUsername, int tryPasswordHash) throws IOException, ParseException {
+        // Reading Existing Files
+        FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
+        JSONObject allUsers = new JSONObject();
+        try { allUsers = (JSONObject) new JSONParser().parse(sourceFile); } catch (Exception e) { }
+
+        // No Such User
+        if (!allUsers.containsKey(tryUsername)) { return false; }
+
+        // Load User Data
+        JSONObject targetUser = (JSONObject) allUsers.get(tryUsername);
+
+        // Incorrect Password
+        if ((int) targetUser.get("passwordHash") != tryPasswordHash) { return false; }
+
+        // Load Username
+        username = tryUsername;
+
+        // Load Password Hash;
+        passwordHash = tryPasswordHash;
+
+        // Load Schedules
+        JSONObject JSONSchedules = (JSONObject) targetUser.get("schedules");
+        schedules = new ArrayList<Schedule>();
+        for (Object scheduleName : JSONSchedules.keySet()) { schedules.add(JSONToSchedule((JSONObject) JSONSchedules.get(scheduleName))); }
+
+        if (schedules.isEmpty()) { newCandidateSchedule(); }
+        else { candidateSchedule = schedules.getFirst(); }
+
+        // Load Taken Courses
+        takenCourses = new ArrayList<Course>();
+        for (Object takenCourse : (JSONArray) targetUser.get("takenCourses")) { takenCourses.add(JSONToCourse((JSONObject) takenCourse)); }
+
+        // Load Major
+        major = targetUser.get("major").toString();
+
+        // Successful Load
+        return true;
+    }
+
+    // JSON to Schedule
+    private static Schedule JSONToSchedule(JSONObject JSONSchedule) {
+        Schedule toReturn = new Schedule();
+
+        // Load Schedule Name
+        toReturn.setName(JSONSchedule.get("name").toString());
+
+        // Load Schedule Courses
+        for (Object course : (JSONArray) JSONSchedule.get("courses")) { toReturn.addCourse(JSONToCourse((JSONObject) course)); }
+
+        // Return Schedule
+        return toReturn;
+    }
+
+    // JSON to Course
+    private static Course JSONToCourse(JSONObject course) {
+        // Pre-Handling
+        String[] professors = new String[((JSONArray) course.get("professors")).size()];
+        int index = 0;
+        for (Object professor : (JSONArray) course.get("professors")) { professors[index] = professor.toString(); index++; }
+
+        int[] startTimes = new int[5];
+        for (int i = 0; i < 5; i++) { startTimes[i] = Math.toIntExact((long) ((JSONArray) course.get("startTimes")).get(i)); }
+
+        int[] duration = new int[5];
+        for (int i = 0; i < 5; i++) { duration[i] = Math.toIntExact((long) ((JSONArray) course.get("duration")).get(i)); }
+
+        // Constructor
+        return new Course(
+                course.get("courseName").toString(),
+                course.get("department").toString(),
+                course.get("courseCode").toString(),
+                course.get("description").toString(),
+                professors,
+                Math.toIntExact((long) course.get("credits")),
+                Math.toIntExact((long) course.get("days")),
+                startTimes,
+                duration,
+                course.get("semester").toString()
+        );
+    }
+
 
     // Saving User Data
     public static void saveUserData() throws IOException {
-        // Adding Schedule Values
-        JSONObject schedule = new JSONObject();
-        schedule.put("name", candidateSchedule.getName());
-
-        JSONArray courseList = new JSONArray();
-        for (Course course : candidateSchedule.getCourses()) { courseList.add(CourseToJSON(course)); }
-        schedule.put("classes", courseList);
-
-        // Formatting
-        JSONObject shell = new JSONObject();
-        shell.put(candidateSchedule.getName(), schedule);
-
         // Reading Existing Files
         FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
-        JSONObject preExisting = new JSONObject();
-        try { preExisting = (JSONObject) new JSONParser().parse(sourceFile); } catch (Exception e) { }
-        try { preExisting.remove(username); } catch (Exception e) { }
-        preExisting.put(candidateSchedule.getName(), shell);
+        JSONObject allUsers = new JSONObject();
+        try { allUsers = (JSONObject) new JSONParser().parse(sourceFile); } catch (Exception e) { }
+
+        // Create User if They Don't Exist
+        if (!allUsers.containsKey(username)) { createUser(username, passwordHash); }
+
+        // Load Existing User Values
+        JSONObject user = (JSONObject) allUsers.get(username);
+
+        // Add Schedules
+        JSONObject JSONSchedules = (JSONObject) user.get("schedules");
+        for (Schedule schedule : schedules) { JSONSchedules.replace(schedule.getName(), ScheduleToJSON(schedule)); }
+        user.put("schedules", JSONSchedules);
+
+        // Add Taken Courses
+        JSONArray JSONTakenCourses = new JSONArray();
+        for (Course takenCourse : takenCourses) { JSONTakenCourses.add(CourseToJSON(takenCourse)); }
+        user.put("takenCourses", JSONTakenCourses);
+
+        // Add Major
+        user.put("major", major);
+
+        // Add User
+        allUsers.replace(username, user);
 
         // Write to the File
         FileWriter newFile = new FileWriter("backend/src/main/resources/private/userSchedules.json");
-        newFile.write(preExisting.toJSONString());
+        newFile.write(allUsers.toJSONString());
         newFile.close();
     }
 
-    // Retrieving, Resetting, and Saving Schedules
-    public static Schedule getSchedule() { return candidateSchedule; }
+    // Schedule to JSON
+    private static JSONObject ScheduleToJSON(Schedule schedule) {
+        JSONObject toReturn = new JSONObject();
 
-    public static void newSchedule() { candidateSchedule = new Schedule("default", new ArrayList<Course>(), "2025_Fall"); }
+        // Add Name
+        toReturn.put("name", schedule.getName());
+
+        // Add Courses
+        JSONArray classes = new JSONArray();
+        for (Course course : schedule.getCourses()) { classes.add(CourseToJSON(course)); }
+
+        // Return Schedule
+        return toReturn;
+    }
+
+    // Course to JSON
+    private static JSONObject CourseToJSON(Course course) {
+        JSONObject toReturn = new JSONObject();
+
+        // Add Values
+        toReturn.put("courseName", course.getCourseName());
+        toReturn.put("department", course.getDepartment());
+        toReturn.put("courseCode", course.getCourseCode());
+        toReturn.put("description", course.getDescription());
+
+        JSONArray professors = new JSONArray();
+        for (String professor : course.getProfessors()) { professors.add(professor); }
+        toReturn.put("professors", professors);
+
+        toReturn.put("credits", course.getCredits());
+        toReturn.put("days", course.getDays());
+
+        JSONArray startTimes = new JSONArray();
+        for (int time : course.getStartTimes()) { startTimes.add(time); }
+        toReturn.put("startTimes", startTimes);
+
+        JSONArray duration = new JSONArray();
+        for (int time : course.getDuration()) { duration.add(time); }
+        toReturn.put("duration", duration);
+
+        toReturn.put("semester", course.getSemester());
+
+        return toReturn;
+    }
+
+
+    // Retrieving, Resetting, and Saving Schedules
+    public static Schedule getCurrentSchedule() { return candidateSchedule; }
+
+    public static void getSchedule(String scheduleName) { for (Schedule schedule : schedules) { if (schedule.getName().equals(scheduleName)) { candidateSchedule = schedule; } } }
+
+    public static void newCandidateSchedule() { candidateSchedule = new Schedule("default", new ArrayList<Course>(), "2025_Fall"); }
 
     public static void resetSchedule() { candidateSchedule.removeAllCourses(); }
 
-    // Format for the data file should ensure that a data set always starts with Name: ----- to separate the data points
+    // Legacy
+    /*
+    // Saving Schedule in JSON
     public static void saveSchedule() throws IOException {
         // Legacy
         /* System.out.println("Starting to Save");
@@ -113,7 +285,7 @@ public class User {
         }
         catch(Exception e){
             shell = new JSONObject();
-        } */
+        }
 
         // Adding Schedule Values
         JSONObject schedule = new JSONObject();
@@ -145,37 +317,9 @@ public class User {
         newFile.close();
     }
 
-    // Save Helper
-    private static JSONObject CourseToJSON(Course course) {
-        JSONObject toReturn = new JSONObject();
-        toReturn.put("courseName",  course.getCourseName());
-        toReturn.put("department",  course.getDepartment());
-        toReturn.put("courseCode",  course.getCourseCode());
-        toReturn.put("description", course.getDescription());
-
-        JSONArray professors = new JSONArray();
-        for (String professor : course.getProfessors()) { professors.add(professor); }
-        toReturn.put("professors", professors);
-
-        toReturn.put("credits",     course.getCredits());
-        toReturn.put("days",        course.getDays());
-
-        JSONArray startTimes = new JSONArray();
-        for (int time : course.getStartTimes()) { startTimes.add(time); }
-        toReturn.put("startTimes", startTimes);
-
-        JSONArray duration = new JSONArray();
-        for (int time : course.getDuration()) { duration.add(time); }
-        toReturn.put("duration", duration);
-
-        toReturn.put("semester",    course.getSemester());
-
-        return toReturn;
-    }
-
     // Loading Schedule from JSON
     public static void loadSchedule(String scheduleName) throws IOException, ParseException {
-        newSchedule();
+        newCandidateSchedule();
 
         // Legacy
         /* //Goes to the file in question and initializes a scanner
@@ -223,7 +367,7 @@ public class User {
                 String code = slate.next();
                 candidateSchedule.addCourse(candidateSchedule.getCourse(code));
             }
-        } */
+        }
 
         // Finding Specific Schedule
         FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
@@ -237,32 +381,5 @@ public class User {
         candidateSchedule.setName(preExistingUserSchedule.get("name").toString());
         for (Object course : (JSONArray) preExistingUserSchedule.get("classes")) { candidateSchedule.addCourse(JSONToCourse((JSONObject) course)); }
     }
-
-    // Load Helper
-    private static Course JSONToCourse(JSONObject course) {
-        // Pre-Handling
-        String[] professors = new String[((JSONArray) course.get("professors")).size()];
-        int index = 0;
-        for (Object professor : (JSONArray) course.get("professors")) { professors[index] = professor.toString(); index++; }
-
-        int[] startTimes = new int[5];
-        for (int i = 0; i < 5; i++) { startTimes[i] = Math.toIntExact((long) ((JSONArray) course.get("startTimes")).get(i)); }
-
-        int[] duration = new int[5];
-        for (int i = 0; i < 5; i++) { duration[i] = Math.toIntExact((long) ((JSONArray) course.get("duration")).get(i)); }
-
-        // Constructor
-        return new Course(
-                course.get("courseName").toString(),
-                course.get("department").toString(),
-                course.get("courseCode").toString(),
-                course.get("description").toString(),
-                professors,
-                Math.toIntExact((long) course.get("credits")),
-                Math.toIntExact((long) course.get("days")),
-                startTimes,
-                duration,
-                course.get("semester").toString()
-        );
-    }
+    */
 }

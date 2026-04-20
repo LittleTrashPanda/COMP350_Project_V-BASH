@@ -158,7 +158,7 @@ public class Search {
         System.out.print(course.getCourseCode());
         System.out.print(" " + course.getSemester());
         System.out.print(" " + Arrays.toString(course.getProfessors()));
-        System.out.println(" " + User.getSchedule().getSemester().equals(course.getSemester()));
-        return User.getSchedule().getSemester().equals(course.getSemester());
+        System.out.println(" " + User.getCurrentSchedule().getSemester().equals(course.getSemester()));
+        return User.getCurrentSchedule().getSemester().equals(course.getSemester());
     }
 }

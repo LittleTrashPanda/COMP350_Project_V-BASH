@@ -26,9 +26,9 @@ public class Main {
             ctx.status(201);
         });
 
-        app.get("/loadCalendar", ctx -> ctx.json(User.getSchedule().getCurrentCourses()));
+        app.get("/loadCalendar", ctx -> ctx.json(User.getCurrentSchedule().getCurrentCourses()));
 
-        app.post("/setCurrentSemester", ctx -> User.getSchedule().setSemester(ctx.body()));
+        app.post("/setCurrentSemester", ctx -> User.getCurrentSchedule().setSemester(ctx.body()));
 
         app.post("/addCourse", ctx -> {
             Course toAdd = ctx.bodyAsClass(Course.class);
@@ -39,9 +39,9 @@ public class Main {
                 return;
             }
             //Detect time conflict
-            if (User.getSchedule().checkCourseConflict(toAdd)) {
+            if (User.getCurrentSchedule().checkCourseConflict(toAdd)) {
                 ArrayList<Course> conflicts = new  ArrayList<Course>();
-                for(Course course : User.getSchedule().getCourses()){
+                for(Course course : User.getCurrentSchedule().getCourses()){
                     if(course.willConflict(toAdd)){
                         conflicts.add(course);
                     }
@@ -52,16 +52,16 @@ public class Main {
             }
 
             //If no conflict add the course
-            User.getSchedule().addCourse(toAdd);
+            User.getCurrentSchedule().addCourse(toAdd);
             ctx.json(new AddResult(true, "Course added successfully."));
         });
 
         app.post("/removeCourse", ctx -> {
             Course toRemove = ctx.bodyAsClass(Course.class);
 
-            int before = ((ArrayList<Course>) User.getSchedule().getCourses()).size();
-            User.getSchedule().removeCourse(toRemove);
-            int after = ((ArrayList<Course>) User.getSchedule().getCourses()).size();
+            int before = ((ArrayList<Course>) User.getCurrentSchedule().getCourses()).size();
+            User.getCurrentSchedule().removeCourse(toRemove);
+            int after = ((ArrayList<Course>) User.getCurrentSchedule().getCourses()).size();
 
             if (before == after) {
                 ctx.json(new AddResult(false, "Course was not found in your schedule."));
@@ -74,25 +74,26 @@ public class Main {
             Course toAdd = ctx.bodyAsClass(Course.class);
             ArrayList<Course> conflicts = new ArrayList<Course>();
 
-            for(Course course : User.getSchedule().getCourses()){
+            for(Course course : User.getCurrentSchedule().getCourses()){
                 if(course.willConflict(toAdd)){
                     conflicts.add(course);
                 }
             }
 
-            User.getSchedule().replaceCourse(toAdd, conflicts);
+            User.getCurrentSchedule().replaceCourse(toAdd, conflicts);
             ctx.json(new AddResult(true, "Course replaced successfully."));
         });
 
         // Naming the Open Schedule
-        app.post("/nameCurrentSchedule", ctx -> { User.getSchedule().setName(ctx.body()); });
+        app.post("/nameCurrentSchedule", ctx -> { User.getCurrentSchedule().setName(ctx.body()); });
 
         // Saving the Open Schedule
-        app.post("/saveSchedule", ctx -> { User.saveSchedule(); });
+        app.post("/saveSchedule", ctx -> { User.saveUserData(); });
 
         // Load Schedule
-        app.post("/loadSchedule", ctx -> { User.loadSchedule(ctx.body()); });
+        app.post("/loadSchedule", ctx -> { User.getSchedule(ctx.body()); });
 
+        // Reset Schedule
         app.post("/resetSchedule", ctx -> { User.resetSchedule();});
     }
 }

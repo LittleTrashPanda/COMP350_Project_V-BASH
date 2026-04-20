@@ -11,6 +11,8 @@ public class Schedule {
     private ArrayList<Course> courses = new ArrayList<Course>();
     private String currentSemester;
 
+    public Schedule() { }
+
     public Schedule(String name, ArrayList<Course> courses, String currentSemester) {
         this.name = name;
         this.courses = courses;
@@ -67,6 +69,7 @@ public class Schedule {
 
     // Naming Convention
     public String getName() { return name; }
+
     public void setName(String newName) { if (!newName.isEmpty()) { name = newName; } }
 
     public static Course getCourse(String cCode) throws IOException, ParseException {
