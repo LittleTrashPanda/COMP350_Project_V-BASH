@@ -2,22 +2,24 @@ package edu.gcc.VBASH;
 
 public class Course {
     // Course Attributes
-    private String courseName;
-    private String department;
-    private String courseCode;
-    private String description;
-    private String[] professors;
-    private int credits;
-    private int days;
-    private int[] startTimes;
-    private int[] duration;
-    private String semester;
+    private String courseName = "";
+    private String department = "";
+    private String courseCode = "";
+    private String description = "";
+    private String[] professors = new String[0];
+    private int credits = 0;
+    private int days = 1;
+    private int[] startTimes = new int[5];
+    private int[] duration = new int[5];
+    private String semester = "";
 
     // ----------------------------------------------------------------------------------------------------
 
+    // Constructors
     public Course() { }
 
-    // Constructor
+    public Course(String courseName) { this.courseName = courseName; }
+
     public Course(String courseName, String department, String courseCode, String description, String[] professors, int credits, int days, int[] startTimes, int[] duration, String semester) {
         this.courseName = courseName;
         this.department = department;

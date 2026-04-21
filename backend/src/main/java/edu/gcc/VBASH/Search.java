@@ -29,8 +29,6 @@ public class Search {
 
     // Retrieving Courses
     public static ArrayList<Course> search() throws IOException, ParseException {
-
-
         ArrayList<Course> queryResults = new ArrayList<Course>();
 
         // Use Previous Search as Basis

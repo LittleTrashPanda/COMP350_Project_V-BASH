@@ -128,3 +128,7 @@ html {
 .dayCourseTitle {
     padding: 5%;
 }
+
+.pageLink{
+    color: rgb(139,0,0);
+}

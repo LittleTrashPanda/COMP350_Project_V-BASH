@@ -6,6 +6,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /* DATA STRUCTURE */
 
@@ -41,12 +42,13 @@ public class User {
     // User Data
     private static ArrayList<Course> takenCourses = new ArrayList<>();
     private static String major = "";
+    private static ArrayList<Course> majorCourses = new ArrayList<>();
 
     // User Schedules
     private static ArrayList<Schedule> schedules = new ArrayList<Schedule>();
     private static Schedule candidateSchedule = new Schedule("default", new ArrayList<Course>(), "2025_Spring");
 
-    // Create User
+    // Create New User
     public static boolean createUser(String username, int passwordHash) throws IOException {
         // Reading Existing Files
         FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
@@ -63,6 +65,7 @@ public class User {
         newUser.put("schedules", new JSONObject());
         newUser.put("takenCourses", new JSONArray());
         newUser.put("major", "");
+        newUser.put("majorCourses", new JSONArray());
 
         // Add User to Data
         allUsers.put(username, newUser);
@@ -113,6 +116,11 @@ public class User {
 
         // Load Major
         major = targetUser.get("major").toString();
+
+        // Load Major Courses
+        majorCourses = new ArrayList<Course>();
+        for (Object majorCourse : (JSONArray) targetUser.get("majorCourses")) { majorCourses.add(JSONToCourse((JSONObject) majorCourse)); }
+
 
         // Successful Load
         return true;
@@ -175,8 +183,8 @@ public class User {
         JSONObject user = (JSONObject) allUsers.get(username);
 
         // Add Schedules
-        JSONObject JSONSchedules = (JSONObject) user.get("schedules");
-        for (Schedule schedule : schedules) { JSONSchedules.replace(schedule.getName(), ScheduleToJSON(schedule)); }
+        JSONObject JSONSchedules = new JSONObject();
+        for (Schedule schedule : schedules) { JSONSchedules.put(schedule.getName(), ScheduleToJSON(schedule)); }
         user.put("schedules", JSONSchedules);
 
         // Add Taken Courses
@@ -242,14 +250,57 @@ public class User {
     }
 
 
-    // Retrieving, Resetting, and Saving Schedules
+    // Retrieving User Data
+    public static JSONObject getUserData() {
+        JSONObject toReturn = new JSONObject();
+
+        toReturn.put("username", username);
+        toReturn.put("takenCourses", takenCourses);
+        toReturn.put("major", major);
+
+        return toReturn;
+    }
+
+
+    // Add Taken Course
+    public static void addTakenCourse(Course newCourse) { takenCourses.add(newCourse); }
+
+    public static void addTakenCourse(String newCourseName) { takenCourses.add(new Course(newCourseName)); }
+
+    // Remove Taken Course
+    public static void removeTakenCourse(Course courseToRemove) { takenCourses.removeIf(course -> Objects.equals(course.getCourseName(), courseToRemove.getCourseName())); }
+
+    public static void removeTakenCourse(String courseName) { takenCourses.removeIf(course -> Objects.equals(course.getCourseName(), courseName)); }
+
+
+    // Set Major
+    public static void setMajor(String newMajor) { major = newMajor; }
+
+
+    // Load Major Course
+    public static void loadMajor() throws IOException, ParseException {
+        // Read-In Courses
+        FileReader sourceFile = new FileReader("backend/src/main/resources/private/majorCourses.json");
+        JSONArray JSONMajorCourses = (JSONArray) ((JSONObject) new JSONParser().parse(sourceFile)).get(major);
+
+        majorCourses = new ArrayList<Course>();
+        for (Object majorCourse : JSONMajorCourses) { majorCourses.add(JSONToCourse((JSONObject) majorCourse)); }
+    }
+
+
+    // Retrieving, Deleting, and Saving Schedules
     public static Schedule getCurrentSchedule() { return candidateSchedule; }
 
-    public static void getSchedule(String scheduleName) { for (Schedule schedule : schedules) { if (schedule.getName().equals(scheduleName)) { candidateSchedule = schedule; } } }
+    public static ArrayList<Schedule> getSchedules() { return schedules; }
+
+    public static void loadSchedule(String scheduleName) { for (Schedule schedule : schedules) { if (schedule.getName().equals(scheduleName)) { candidateSchedule = schedule; } } }
 
     public static void newCandidateSchedule() { candidateSchedule = new Schedule("default", new ArrayList<Course>(), "2025_Fall"); }
 
-    public static void resetSchedule() { candidateSchedule.removeAllCourses(); }
+    public static void deleteSchedule() {
+        schedules.remove(candidateSchedule);
+        newCandidateSchedule();
+    }
 
     // Legacy
     /*
