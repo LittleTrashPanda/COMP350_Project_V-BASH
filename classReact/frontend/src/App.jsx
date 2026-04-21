@@ -4,6 +4,9 @@ import Sidebar from "./components/Sidebar";
 import SearchPage from "./pages/SearchPage.jsx";
 // import CalendarPage from "./pages/CalendarPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx"
+import LoginPage from "./pages/LoginPage.jsx";
+import SignupPage from "./pages/SignupPage.jsx"
+import ProtectedRoute from  "./firebase/ProtectedRoute.jsx"
 import "./App.css";
 
 export default function App() {
@@ -23,7 +26,17 @@ export default function App() {
           <Route path="/" element={
               <SearchPage />
               }/>
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route
+            path="/profile"
+            //Profile needs to be under a ProtectedRoute so that it can check if logged in or not
+            element={
+                <ProtectedRoute>
+                <ProfilePage />
+                </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
     </>
