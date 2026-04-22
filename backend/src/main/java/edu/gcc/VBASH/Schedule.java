@@ -50,7 +50,7 @@ public class Schedule {
 
         addCourse(newCourse);
     }
-    public Iterable<Course> getCourses() throws IOException { return courses; }
+    public ArrayList<Course> getCourses() throws IOException { return courses; }
 
     // Naming Convention
     public String getName() { return name; }
