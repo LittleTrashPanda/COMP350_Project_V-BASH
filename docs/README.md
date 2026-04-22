@@ -1,8 +1,11 @@
 # Installation notes
 COMP350 - V.BASH
-Sheldon Deal, Alyssa Hoover
+
+Sheldon Deal, Alissa Hoover, Brehm Moritz, Veronica Rine, and Henry Tan
 
 ## Startup
+If the process has not automatically begun, first load the Gradle project so as to properly recognize the project.
+
 To initialize this project, navigate to the Main class in backend/src/main/java/edu.gcc.VBASH/Main.java and click the run button.
 
 Once the Javalin header has appeared in the terminal, open a web browser of your choice and go to http://localhost:7000/, this is the 'Search' page.

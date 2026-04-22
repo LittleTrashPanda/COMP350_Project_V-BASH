@@ -1,0 +1,214 @@
+html {
+  background-color: #F9FEFC;
+}
+
+.divider {
+  height: 2px;
+  background-color: #ccc;
+  width: 100%;
+}
+
+/* COURSE LIST */
+.courseList {
+  background-color: #8E1600;
+  padding: 0;
+  margin: 0;
+  border-radius: 10px;
+}
+
+.courseListItem {
+  list-style-type: none;
+  padding: 5px;
+  margin: 5px;
+}
+
+.courseListItemContent {
+  background-color: #F9FEFC;
+  color: #8E1600;
+  padding: 5px 20px;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.calendarLink {
+  color: rgb(139,0,0);
+}
+
+.searchButton {
+  background-color: rgb(139,0,0);
+  color: white;
+  padding: 6px 6px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+/* POPUP */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.popup button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+}
+
+.popup button:hover {
+  background: #ddd;
+}
+
+.close-btn {
+  background: #ff4d4d;
+  color: white;
+}
+
+/*FILTERS*/
+
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 10px 0;
+    width: 100%;
+    align-items: center;
+}
+
+.filter-toggle{
+    display: inline-flex;
+      align-items: center;
+      background: #f1f1f1;
+      border-radius: 20px;
+      padding: 6px 10px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      gap: 8px;
+      width: auto;
+      max-width: fit-content;
+      white-space: nowrap;
+}
+
+/* INNER PILLS */
+.inner-pill {
+  display: inline-flex;
+  align-items: center;
+  background: white;
+  border-radius: 14px;
+  padding: 3px 8px;
+  border: 1px solid #bbb;
+  gap: 4px;
+}
+
+.inner-pill button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* PARENT PILL */
+.parent-pill {
+  display: inline-flex;
+  align-items: center;
+  background: #f1f1f1;
+  border-radius: 20px;
+  padding: 6px 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  gap: 8px;
+  width: auto;
+  max-width: fit-content;
+  white-space: nowrap;
+}
+
+/* INLINE ADD CONTROL */
+.inline-add {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.inline-add select,
+.inline-add input {
+  max-width: 120px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+/* REMOVE ENTIRE FILTER */
+.remove-parent {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 6px;
+}
+
+/*TABLE*/
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.results-table th {
+  background: #8E1600;
+  color: white;
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.results-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.results-table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.results-table tr:hover {
+  background: #f1f1f1;
+}
+
+.results-table button {
+  background: #8E1600;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.results-table button:hover {
+  background: #a51a00;
+}
