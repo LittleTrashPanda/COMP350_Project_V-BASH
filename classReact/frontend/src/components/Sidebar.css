@@ -1,8 +1,8 @@
 .sidebar {
   width: 50px;
   height: 100vh;
-  background-color: #2F4050;
-  color: white;
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
   padding: 20px;
   position: fixed;
   top: 0;
@@ -42,7 +42,7 @@
 
 .sidebar-link {
   text-decoration: none;
-  color: white;
+  color: var(--sidebar-text);
   padding: 10px;
   border-radius: 4px;
   transition: background-color 0.2s ease;
@@ -50,7 +50,7 @@
 }
 
 .sidebar-link:hover {
-  background-color: #444;
+  background-color: var(--sidebar-hover);
 }
 
 .calendar{
