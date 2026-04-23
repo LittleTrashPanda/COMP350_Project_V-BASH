@@ -15,6 +15,11 @@ export default function LoginPage() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password); //prompts firebase to see if the username and password is valid
+      await fetch("/loadUser", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(email)
+      });
       navigate("/profile"); //if yes, go ahead in to profile page
     } catch (err) {
       console.error(err)

@@ -101,6 +101,10 @@ async function searchCourses() {
                 }
 
                 courseContent.classList.add("courseListItemContent");
+                courseContent.style.backgroundColor = course.backgroundColor;
+                courseContent.style.color = course.color;
+                delete course.backgroundColor;
+                delete course.color;
                 li.appendChild(courseContent);
 
         li.classList.add("courseListItem");

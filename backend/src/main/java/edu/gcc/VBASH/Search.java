@@ -66,17 +66,31 @@ public class Search {
                 JSONObject temp = User.CourseToJSON(course);
 
                 // Default Color
-                temp.put("color", "red");
+                temp.put("backgroundColor", "#F9FEFC");
+                temp.put("color", "#8E1600");
 
                 // Is a Major Requirement
-                if (User.isMajorRequirement(course)) { temp.replace("color", "yellow"); }
+                if (User.isMajorRequirement(course)) {
+                    temp.replace("backgroundColor", "#C26969");
+                    temp.put("color", "#F9FEFC");
+                }
+
+                // Is Being Taken
+                if (User.isInCurrentSchedule(course)) {
+                    temp.replace("backgroundColor", "#5C3232");
+                    temp.put("color", "#F9FEFC");
+                }
 
                 // Already Taken Course
-                if (User.isTakenCourse(course)) { temp.replace("color", "grey"); }
+                if (User.isTakenCourse(course)) {
+                    temp.replace("backgroundColor", "#524646");
+                    temp.put("color", "#F9FEFC");
+                }
 
-                toReturn.add(course);
+                toReturn.add(temp);
             }
         }
+
         return toReturn;
     }
 
@@ -167,11 +181,5 @@ public class Search {
         return true;
     }
 
-    private static boolean currentScheduleSemesterFilter(Course course) {
-        System.out.print(course.getCourseCode());
-        System.out.print(" " + course.getSemester());
-        System.out.print(" " + Arrays.toString(course.getProfessors()));
-        System.out.println(" " + User.getCurrentSchedule().getSemester().equals(course.getSemester()));
-        return User.getCurrentSchedule().getSemester().equals(course.getSemester());
-    }
+    private static boolean currentScheduleSemesterFilter(Course course) { return User.getCurrentSchedule().getSemester().equals(course.getSemester()); }
 }

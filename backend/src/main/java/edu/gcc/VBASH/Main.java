@@ -125,6 +125,12 @@ public class Main {
         app.get("/userData", ctx -> ctx.json(User.getUserData()));
 
 
+        // Handling Login/Sign-Up
+        app.post("/newUser", ctx -> User.createUser(ctx.body(), 0));
+
+        app.post("/loadUser", ctx -> User.loadUser(ctx.body(), 0));
+
+
         // Add a Taken Course
         app.post("/takenCourse", ctx -> { User.addTakenCourse(ctx.body()); });
 

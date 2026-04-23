@@ -273,14 +273,20 @@ public class User {
     public static void removeTakenCourse(String courseName) { takenCourses.removeIf(course -> Objects.equals(course.getCourseName(), courseName)); }
 
     // Check if Taken
-    public static boolean isTakenCourse(Course course) { return takenCourses.contains(course); }
+    public static boolean isTakenCourse(Course course) {
+        for (Course takenCourse : takenCourses) { if (Objects.equals(takenCourse.getCourseName(), course.getCourseName())) { return true; } }
+        return false;
+    }
 
 
     // Set Major
     public static void setMajor(String newMajor) { major = newMajor; }
 
     // Check if Major Requirement
-    public static boolean isMajorRequirement(Course course) { return majorCourses.contains(course); }
+    public static boolean isMajorRequirement(Course course) {
+        for (Course majorRequirement : majorCourses) { if (Objects.equals(majorRequirement.getCourseName(), course.getCourseName())) { return true; } }
+        return false;
+    }
 
 
     // Load Major Course
@@ -294,6 +300,12 @@ public class User {
     }
 
 
+    // Check if Currently Taking Course
+    public static boolean isInCurrentSchedule(Course course) {
+        for (Course currentCourse : candidateSchedule.getCourses()) { if (Objects.equals(currentCourse.getCourseName(), course.getCourseName())) { return true; } }
+        return false;
+    }
+
     // Retrieving, Deleting, and Saving Schedules
     public static Schedule getCurrentSchedule() { return candidateSchedule; }
 
@@ -306,6 +318,20 @@ public class User {
     public static void deleteSchedule() {
         schedules.remove(candidateSchedule);
         newCandidateSchedule();
+    }
+
+    //for the pdf - Brehmx
+    public static String getTimes() throws IOException {
+        StringBuilder out = new StringBuilder();
+        ArrayList<Course> courses = candidateSchedule.getCourses();
+        for(int i = 0; i<courses.size(); i++){
+            int sTime = courses.get(i).getStartTimes()[0];
+            int eTime = courses.get(i).getStartTimes()[1];
+            out.append(sTime + " - " + eTime + "\n");
+        }
+
+        System.out.println(out.toString());
+        return out.toString();
     }
 
     // Legacy

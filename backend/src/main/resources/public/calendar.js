@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("saveSchedule").addEventListener("click", saveSchedule);
     document.getElementById("loadSchedule").addEventListener("click", loadSchedule);
     document.getElementById("deleteSchedule").addEventListener("click", deleteSchedule);
-
-    document.getElementById("clearSchedule").addEventListener("click", resetSchedule);
     document.getElementById("generatePDF").addEventListener("click", asPDF);
     loadCalendar();
 });
