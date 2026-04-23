@@ -49,14 +49,15 @@ public class User {
     private static Schedule candidateSchedule = new Schedule("default", new ArrayList<Course>(), "2025_Spring");
 
     // Create New User
-    public static boolean createUser(String username, int passwordHash) throws IOException {
+    public static void createUser(String username, int passwordHash) throws IOException {
         // Reading Existing Files
         FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
         JSONObject allUsers = new JSONObject();
         try { allUsers = (JSONObject) new JSONParser().parse(sourceFile); } catch (Exception e) { }
 
+        System.out.println("reading");
         // Fail if User Already Exists
-        if (allUsers.containsKey(username)) { return false; }
+        if (allUsers.containsKey(username)) { return; }
 
         // Add Basic User Values
         JSONObject newUser = new JSONObject();
@@ -67,6 +68,9 @@ public class User {
         newUser.put("major", "");
         newUser.put("majorCourses", new JSONArray());
 
+        System.out.println(username);
+        System.out.println(passwordHash);
+
         // Add User to Data
         allUsers.put(username, newUser);
 
@@ -75,26 +79,28 @@ public class User {
         newFile.write(allUsers.toJSONString());
         newFile.close();
 
+        System.out.println("done");
+
         // Successful Creation
-        return true;
+        return;
     }
 
 
     // Load User Data
-    public static boolean loadUser(String tryUsername, int tryPasswordHash) throws IOException, ParseException {
+    public static void loadUser(String tryUsername, int tryPasswordHash) throws IOException, ParseException {
         // Reading Existing Files
         FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
         JSONObject allUsers = new JSONObject();
         try { allUsers = (JSONObject) new JSONParser().parse(sourceFile); } catch (Exception e) { }
 
         // No Such User
-        if (!allUsers.containsKey(tryUsername)) { return false; }
+        if (!allUsers.containsKey(tryUsername)) { return; }
 
         // Load User Data
         JSONObject targetUser = (JSONObject) allUsers.get(tryUsername);
 
         // Incorrect Password
-        if ((int) targetUser.get("passwordHash") != tryPasswordHash) { return false; }
+        if ((int) targetUser.get("passwordHash") != tryPasswordHash) { return; }
 
         // Load Username
         username = tryUsername;
@@ -123,7 +129,7 @@ public class User {
 
 
         // Successful Load
-        return true;
+        return;
     }
 
     // JSON to Schedule

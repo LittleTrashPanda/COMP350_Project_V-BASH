@@ -88,6 +88,10 @@ export default function SearchPage() {
 
     const res = await fetch("/search");
     const data = await res.json();
+    data.forEach((item, index) => {
+        delete item.backgroundColor;
+        delete item.color;
+    });
     setCourses(data);
   }
 

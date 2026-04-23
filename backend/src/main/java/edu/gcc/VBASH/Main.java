@@ -10,6 +10,15 @@ public class Main {
     }
 
     public static void registerSearch(Javalin app) {
+        // Handling Login/Sign-Up
+        app.post("/newUser", ctx -> {
+            ArrayList<String> keySearchTerms = new ArrayList<>();
+            for (String keySearchTerm : ctx.body().split("\s+")) { keySearchTerms.add(keySearchTerm); }
+
+            Search.SetKeySearchTerms(keySearchTerms);
+            ctx.status(201);
+        });
+
         // Search Courses
         app.get("/search", ctx -> ctx.json(Search.search()));
 
@@ -43,6 +52,7 @@ public class Main {
 
         // Add Course to Schedule
         app.post("/addCourse", ctx -> {
+            System.out.println("Hi");
             Course toAdd = ctx.bodyAsClass(Course.class);
 
             //Detect "no meeting times"
@@ -115,6 +125,7 @@ public class Main {
         app.post("/loadSchedule", ctx -> {
             User.saveUserData();
             User.loadSchedule(ctx.body());
+            ctx.status(201);
         });
 
         // Delete the Open Schedule
@@ -123,10 +134,6 @@ public class Main {
 
         // Retrieve User Data
         app.get("/userData", ctx -> ctx.json(User.getUserData()));
-
-
-        // Handling Login/Sign-Up
-        app.post("/newUser", ctx -> User.createUser(ctx.body(), 0));
 
         app.post("/loadUser", ctx -> User.loadUser(ctx.body(), 0));
 
