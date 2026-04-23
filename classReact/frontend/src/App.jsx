@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import SearchPage from "./pages/SearchPage.jsx";
+import CalendarPage from "./pages/CalendarPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
