@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import "./Sidebar.css";
-import vbash from '../assets/vbash-logo.png';
-import calendar from '../assets/calendar.png';
-import search from '../assets/search.png';
-import account from '../assets/account.png';
+import vbashIcon from '../assets/vbash-logoIcon.png';
+import calendarIcon from '../assets/calendarIcon.png';
+import searchIcon from '../assets/searchIcon.png';
+import accountIcon from '../assets/accountIcon.png';
 
 
 export default function Sidebar({ isOpen, toggle }) {
@@ -11,7 +11,7 @@ export default function Sidebar({ isOpen, toggle }) {
      <div className={`sidebar ${isOpen ? "open" : "closed"}`}>
       <img
           className={`sidebar-image ${isOpen ? "open" : "closed"}`}
-          src={vbash}
+          src={vbashIcon}
           alt="VBASH"
           onClick={toggle}
           style={{ cursor: "pointer" }}
@@ -19,15 +19,15 @@ export default function Sidebar({ isOpen, toggle }) {
 
       <nav className="sidebar-links">
         <Link to="/" className="sidebar-link">
-            <img className="search" src={search} alt="SEARCH"  />
+            <img className="searchIcon" src={searchIcon} alt="SEARCH"  />
             {isOpen && <span className="link-text">Search</span>}
         </Link>
         <Link to="/calendar" className="sidebar-link">
-            <img className="calendar" src={calendar} alt="CALENDAR"  />
+            <img className="calendarIcon" src={calendarIcon} alt="CALENDAR"  />
             {isOpen && <span className="link-text">Calendar</span>}
         </Link>
        <Link className="sidebar-link">
-            <img className="account" src={account} alt="ACCOUNT" />
+            <img className="accountIcon" src={accountIcon} alt="ACCOUNT" />
             {isOpen && <span className="link-text">Account</span>}
        </Link>
       </nav>

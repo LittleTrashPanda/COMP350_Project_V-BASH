@@ -10,8 +10,8 @@ To initialize this project, navigate to the Main class in backend/src/main/java/
 
 Once the Javalin header has appeared in the terminal, open a web browser of your choice and go to http://localhost:7000/, this is the 'Search' page.
 
-Click on the 'Calendar' link in the top left corner, this will take you to the 'Calendar' page, where the 'Home' link will take you back to the 'Search' page.
-
+Click on the 'Calendar' link in the top left corner, this will take you to the 'Calendar' page, where the 'Home' link will take you back to the 'Search' page. 
+In order to run the code, first run cd .. then do cd "C:\Users\DEALSE23\Comp 350A\COMP350_Project_V-BASH\classReact\frontend" then run npm run dev
 ---
 
 ## 🚀 MVP Requirements

@@ -1,5 +1,5 @@
 .sidebar {
-  width: 50px;
+  width: 10vw;
   height: 100vh;
   background-color: #2F4050;
   color: white;
@@ -53,17 +53,17 @@
   background-color: #444;
 }
 
-.calendar{
+.calendarIcon{
     height:40px;
     width: 40px;
 }
 
-.search{
+.searchIcon{
     height:40px;
     width: 40px;
 }
 
-.account{
+.accountIcon{
     display: flex;
     position: fixed;
     bottom: 0;
