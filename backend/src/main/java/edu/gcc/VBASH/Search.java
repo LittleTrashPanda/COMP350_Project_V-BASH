@@ -28,7 +28,7 @@ public class Search {
     }
 
     // Retrieving Courses
-    public static ArrayList<Course> search() throws IOException, ParseException {
+    public static JSONArray search() throws IOException, ParseException {
         ArrayList<Course> queryResults = new ArrayList<Course>();
 
         // Use Previous Search as Basis
@@ -60,8 +60,23 @@ public class Search {
         previousKeySearchTerms = keySearchTerms;
 
         // Filter Results
-        ArrayList<Course> toReturn = new ArrayList<>();
-        for (Course course : resultingCourses) { if (currentFilter.filterCourse(course) && currentScheduleSemesterFilter(course)) { toReturn.add(course); } }
+        JSONArray toReturn = new JSONArray();
+        for (Course course : resultingCourses) {
+            if (currentFilter.filterCourse(course) && currentScheduleSemesterFilter(course)) {
+                JSONObject temp = User.CourseToJSON(course);
+
+                // Default Color
+                temp.put("color", "red");
+
+                // Is a Major Requirement
+                if (User.isMajorRequirement(course)) { temp.replace("color", "yellow"); }
+
+                // Already Taken Course
+                if (User.isTakenCourse(course)) { temp.replace("color", "grey"); }
+
+                toReturn.add(course);
+            }
+        }
         return toReturn;
     }
 

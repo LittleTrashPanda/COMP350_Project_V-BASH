@@ -127,7 +127,7 @@ public class User {
     }
 
     // JSON to Schedule
-    private static Schedule JSONToSchedule(JSONObject JSONSchedule) {
+    public static Schedule JSONToSchedule(JSONObject JSONSchedule) {
         Schedule toReturn = new Schedule();
 
         // Load Schedule Name
@@ -141,7 +141,7 @@ public class User {
     }
 
     // JSON to Course
-    private static Course JSONToCourse(JSONObject course) {
+    public static Course JSONToCourse(JSONObject course) {
         // Pre-Handling
         String[] professors = new String[((JSONArray) course.get("professors")).size()];
         int index = 0;
@@ -205,7 +205,7 @@ public class User {
     }
 
     // Schedule to JSON
-    private static JSONObject ScheduleToJSON(Schedule schedule) {
+    public static JSONObject ScheduleToJSON(Schedule schedule) {
         JSONObject toReturn = new JSONObject();
 
         // Add Name
@@ -220,7 +220,7 @@ public class User {
     }
 
     // Course to JSON
-    private static JSONObject CourseToJSON(Course course) {
+    public static JSONObject CourseToJSON(Course course) {
         JSONObject toReturn = new JSONObject();
 
         // Add Values
@@ -272,9 +272,15 @@ public class User {
 
     public static void removeTakenCourse(String courseName) { takenCourses.removeIf(course -> Objects.equals(course.getCourseName(), courseName)); }
 
+    // Check if Taken
+    public static boolean isTakenCourse(Course course) { return takenCourses.contains(course); }
+
 
     // Set Major
     public static void setMajor(String newMajor) { major = newMajor; }
+
+    // Check if Major Requirement
+    public static boolean isMajorRequirement(Course course) { return majorCourses.contains(course); }
 
 
     // Load Major Course
