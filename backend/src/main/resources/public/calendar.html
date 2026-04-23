@@ -7,6 +7,7 @@
     <link rel = "stylesheet" href = "calendar.css">
     <script src = "calendar.js"></script>
     <title>Search Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
 <body>
@@ -31,6 +32,16 @@
     <input id = "loadScheduleName" placeholder = "Load Schedule by Name">
     <button id = "loadSchedule">Load</button>
     <button id = "deleteSchedule">Delete Schedule</button>
+    <button id = "clearSchedule">Clear Schedule</button>
+    <button id ="generatePDF">Save as PDF</button>
+
+
+    <div id = "pdf-save" class="pdf">
+        <h1>Schedule</h1>
+        <p id = "pdf-text">test</p>
+    </div>
+
+
 
     <div class = "calendarContentContainer">
         <div class = "timeMarkers">

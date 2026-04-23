@@ -128,6 +128,16 @@ html {
 .dayCourseTitle {
     padding: 5%;
 }
+.pdf {
+    display: none;
+}
+@media print {
+    #pdf-save.pdf {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
 
 .pageLink{
     color: rgb(139,0,0);

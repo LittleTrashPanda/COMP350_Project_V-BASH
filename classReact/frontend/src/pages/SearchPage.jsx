@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import "./SearchPage.css";
+import dingSound from "../assets/546974__finix473__ui_click.wav";
 
 export default function SearchPage() {
+
 
   const [keySearchTerms, setKeySearchTerms] = useState("");
 
@@ -27,6 +29,12 @@ export default function SearchPage() {
 
   const [showFilterPopup, setShowFilterPopup] = useState(false);
   const [activeFilters, setActiveFilters] = useState([]);
+
+  const playSound = () => {
+      // Assumes sound.mp3 is in the /public folder
+      //new Audio('../assets/546974__finix473__ui_click.wav').play();
+      new Audio(dingSound).play();
+  };
 
 //   useEffect(() => {
 //     async function loadSchedule() {
@@ -102,7 +110,8 @@ export default function SearchPage() {
         replaceCourse(course);
       }
     } else {
-      alert(result.message);
+        playSound();
+      //alert(result.message);
     }
   }
 

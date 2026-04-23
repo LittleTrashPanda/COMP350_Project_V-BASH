@@ -312,6 +312,22 @@ public class User {
     /*
     // Saving Schedule in JSON
     public static void saveSchedule() throws IOException {
+    //for the pdf
+    public static String getTimes() throws IOException {
+        StringBuilder out = new StringBuilder();
+        ArrayList<Course> courses = candidateSchedule.getCourses();
+        for(int i = 0; i<courses.size(); i++){
+            int sTime = courses.get(i).getStartTimes()[0];
+            int eTime = courses.get(i).getStartTimes()[1];
+            out.append(sTime + " - " + eTime + "\n");
+        }
+
+        System.out.println(out.toString());
+        return out.toString();
+    }
+
+    // Format for the data file should ensure that a data set always starts with Name: ----- to separate the data points
+    public static void saveSchedule() throws IOException, ParseException {
         // Legacy
         /* System.out.println("Starting to Save");
         //TODO: Work on replacement function

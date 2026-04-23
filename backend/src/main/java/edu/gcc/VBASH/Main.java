@@ -13,6 +13,10 @@ public class Main {
         // Search Courses
         app.get("/search", ctx -> ctx.json(Search.search()));
 
+        app.get("/getTimes", ctx -> {
+            ctx.json(User.getTimes());
+        });
+
         // Set Key Search Terms
         app.post("/keySearchTerms", ctx -> {
             ArrayList<String> keySearchTerms = new ArrayList<>();

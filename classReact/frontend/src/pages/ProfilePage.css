@@ -1,0 +1,36 @@
+.profilePage,
+.profilePage * {
+  color: var(--text);
+}
+
+.profilePage h1,
+.profilePage h2 {
+  color: var(--text-h);
+}
+
+.profilePage button {
+  background: var(--accent);
+  color: var(--text-h);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.profilePage button:hover {
+  background: var(--accent-border);
+}
+
+.profilePage select,
+.profilePage input {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.profilePage input::placeholder {
+  color: var(--text);
+  opacity: 0.6;
+}
