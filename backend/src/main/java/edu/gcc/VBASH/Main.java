@@ -10,15 +10,6 @@ public class Main {
     }
 
     public static void registerSearch(Javalin app) {
-        // Handling Login/Sign-Up
-        app.post("/newUser", ctx -> {
-            ArrayList<String> keySearchTerms = new ArrayList<>();
-            for (String keySearchTerm : ctx.body().split("\s+")) { keySearchTerms.add(keySearchTerm); }
-
-            Search.SetKeySearchTerms(keySearchTerms);
-            ctx.status(201);
-        });
-
         // Search Courses
         app.get("/search", ctx -> ctx.json(Search.search()));
 
@@ -134,6 +125,10 @@ public class Main {
 
         // Retrieve User Data
         app.get("/userData", ctx -> ctx.json(User.getUserData()));
+
+
+        // Handling Login/Sign-Up
+        app.post("/newUser", ctx -> User.createUser(ctx.body(), 0));
 
         app.post("/loadUser", ctx -> User.loadUser(ctx.body(), 0));
 
