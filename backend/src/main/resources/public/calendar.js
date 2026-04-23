@@ -2,9 +2,14 @@
 document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("saveSchedule").addEventListener("click", saveSchedule);
     document.getElementById("loadSchedule").addEventListener("click", loadSchedule);
-    document.getElementById("clearSchedule").addEventListener("click", resetSchedule)
+    document.getElementById("clearSchedule").addEventListener("click", resetSchedule);
+    document.getElementById("generatePDF").addEventListener("click", asPDF);
     loadCalendar();
 });
+
+
+    // // Optional settings for the PDF layout
+
 
 /* Display Courses */
 async function loadCalendar() {
@@ -131,17 +136,37 @@ async function removeCourse(course) {
 
     fetch("/removeCourse", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(course)
     })
-    .then(res => res.json())
-    .then(result => {
-        alert(result.message);
+        .then(res => res.json())
+        .then(result => {
+            alert(result.message);
 
-        if (result.success) {
-            window.location.reload();
-        }
-    });
+            if (result.success) {
+                window.location.reload();
+            }
+        });
+
+}
+
+async function asPDF(){
+    const initialize = document.getElementById("generatePDF").value;
+    const courseTime = await fetch ("/getTimes", {method: "GET"})
+    const times = await courseTime.text();
+    const bodyText = document.getElementById('pdf-text');
+    bodyText.innerText = times;
+    const element = document.getElementById('pdf-save').innerHTML;
+    const options = {
+        margin:       10,
+        filename:     'advisor-please-approve-this.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 }, // Higher resolution
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } // A4 page
+    };
+
+    html2pdf().set(options).from(element).save();
+
 }
 
 async function saveSchedule() {

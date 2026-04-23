@@ -12,6 +12,10 @@ public class Main {
     public static void registerSearch(Javalin app) {
         app.get("/search", ctx -> ctx.json(Search.search()));
 
+        app.get("/getTimes", ctx -> {
+            ctx.json(User.getTimes());
+        });
+
         app.post("/keySearchTerms", ctx -> {
             ArrayList<String> keySearchTerms = new ArrayList<>();
             for (String keySearchTerm : ctx.body().split("\s+")) { keySearchTerms.add(keySearchTerm); }
