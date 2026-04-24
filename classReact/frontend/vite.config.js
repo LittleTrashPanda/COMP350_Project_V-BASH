@@ -30,4 +30,4 @@ export default defineConfig({
       "/majorRequirements": "http://localhost:7000"
     }
   }
-};
+});
