@@ -14,7 +14,8 @@ export default function SearchPage() {
   const [endTime, setEndTime] = useState(0);
   const [credits, setCredits] = useState(-1);
   const [courseCode, setCourseCode] = useState("");
-  const [semester, setSemester] = useState("");
+
+  const [currentSemester, setCurrentSemester] = useState("");
 
   const [days, setDays] = useState({
     M: false,
@@ -71,7 +72,7 @@ export default function SearchPage() {
       days: computeDaysValue(),
       startTimes: validTime ? Array(5).fill(startTime) : null,
       duration: validTime ? Array(5).fill(endTime - startTime) : null,
-      semester: semester || ""
+      // semester: semester || ""
     };
 
     await fetch("/keySearchTerms",{
@@ -92,10 +93,14 @@ export default function SearchPage() {
   }
 
   async function addCourse(course) {
+       const temp = course;
+       delete temp.backgroundColor;
+       delete temp.textColor;
+
     const res = await fetch("/addCourse", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(course),
+      body: JSON.stringify(temp),
     });
 
     const result = await res.json();
@@ -119,10 +124,14 @@ export default function SearchPage() {
     if (!window.confirm("Do you want to remove this course?"))
         return;
 
+    const temp = course;
+    delete temp.backgroundColor;
+    delete temp.textColor;
+
     const res = await fetch("/removeCourse", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(course),
+      body: JSON.stringify(temp),
     });
 
     const result = await res.json();
@@ -134,15 +143,36 @@ export default function SearchPage() {
   }
 
   async function replaceCourse(course) {
+       const temp = course;
+       delete temp.backgroundColor;
+       delete temp.textColor;
+
     const res = await fetch("/replaceCourse", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(course),
+      body: JSON.stringify(temp),
     });
 
     const result = await res.json();
     alert(result.message);
   }
+
+    const handleCurrentSemesterChange = (e) => {
+        console.log("hello");
+        changeCurrentSemester()
+    }
+
+    async function changeCurrentSemester() {
+        const currentSemester = document.getElementById("currentSemester");
+        console.log(currentSemester);
+        await fetch("/setCurrentSemester", {
+            method: "POST",
+            headers: { "Content-Type": "text/plain"},
+            body: currentSemester.value
+        });
+
+        searchCourses();
+    }
 
   function renderCourseSpecifics(course) {
     let text = `${course.department} ${course.professors} Credits: ${course.credits} Time: `;
@@ -377,7 +407,6 @@ export default function SearchPage() {
             <button onClick={() => addFilter("day")}>Day</button>
             <button onClick={() => addFilter("credits")}>Credits</button>
             <button onClick={() => addFilter("courseCode")}>Course Code</button>
-            <button onClick={() => addFilter("semester")}>Semester</button>
 
             <button className="close-btn" onClick={() => setShowFilterPopup(false)}>
               Close
@@ -397,6 +426,16 @@ export default function SearchPage() {
       <button onClick={searchCourses} className="searchButton">
         Search
       </button>
+
+      <p>Selected Semester</p>
+      <select id = "currentSemester" value = { currentSemester } onChange = { handleCurrentSemesterChange }>
+          <option value = "2025_Spring">Spring 2025</option>
+          <option value = "2024_Fall">Fall 2024</option>
+          <option value = "2024_Spring">Spring 2024</option>
+          <option value = "2023_Fall">Fall 2023</option>
+          <option value = "2023_Spring">Spring 2023</option>
+          <option value = "2022_Fall">Fall 2022</option>
+      </select>
 
       <table className="results-table">
         <thead>
@@ -419,7 +458,7 @@ export default function SearchPage() {
             );
 
             return (
-              <tr key={`${course.courseCode || "code"}-${course.semester || "sem"}`}>
+              <tr style={{ color: course.textColor, backgroundColor: course.backgroundColor }} key={`${course.courseCode + course.section || "code"}-${course.semester || "sem"}`}>
                 <td>{course.courseName} ({course.courseCode})</td>
                 <td>{course.professors.join(", ")}</td>
                 <td>{formatTime(course.startTimes.find(t => t > 0))}</td>

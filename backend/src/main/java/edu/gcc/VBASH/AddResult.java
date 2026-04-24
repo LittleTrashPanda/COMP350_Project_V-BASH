@@ -21,5 +21,3 @@ public class AddResult {
     public String getMessage() { return message; }
     public ArrayList<Course> getConflicts() { return conflicts; }
 }
-
-

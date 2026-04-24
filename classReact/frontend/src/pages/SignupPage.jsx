@@ -14,7 +14,6 @@ export default function SignupPage() {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/profile"); // user is now logged in
     } catch (err) {
       console.error(err);
 
@@ -30,11 +29,19 @@ export default function SignupPage() {
         break;
       default:
         setError("Something went wrong. Please try again.");
+      }
+
+      return;
     }
-  }
 
+    await fetch("/userCreation",{
+        method: "POST",
+        headers: { "Content-Type": "text/plain"},
+        body: email
+    });
+
+    navigate("/profile"); // user is now logged in
   };
-
 
   return (
     <div>

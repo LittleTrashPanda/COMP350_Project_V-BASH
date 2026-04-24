@@ -138,3 +138,7 @@ html {
         opacity: 1 !important;
     }
 }
+
+.pageLink{
+    color: rgb(139,0,0);
+}

@@ -11,15 +11,27 @@
 </head>
 
 <body>
-
     <h1>Calendar</h1>
 
-    <a href = "index.html">Home</a>
+    <a href = "index.html" class = "pageLink">Home</a>
+    <a href = "profile.html" class = "pageLink">Profile</a>
+
+    <h4>Semester</h4>
+    <select name = "semester" id="semester">
+        <option value = "2025_Spring">Spring 2025</option>
+        <option value = "2024_Fall"  >Fall   2024</option>
+        <option value = "2024_Spring">Spring 2024</option>
+        <option value = "2023_Fall"  >Fall   2023</option>
+        <option value = "2023_Spring">Spring 2023</option>
+        <option value = "2022_Fall"  >Fall   2022</option>
+    </select>
+    <button id = "semesterButton" class = "searchButton">Change Semester</button>
 
     <input id = "saveScheduleName" placeholder = "Save Schedule by Name">
     <button id = "saveSchedule">Save</button>
     <input id = "loadScheduleName" placeholder = "Load Schedule by Name">
     <button id = "loadSchedule">Load</button>
+    <button id = "deleteSchedule">Delete Schedule</button>
     <button id = "clearSchedule">Clear Schedule</button>
     <button id ="generatePDF">Save as PDF</button>
 
