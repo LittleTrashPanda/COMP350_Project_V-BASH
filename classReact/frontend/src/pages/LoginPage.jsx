@@ -15,16 +15,19 @@ export default function LoginPage() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password); //prompts firebase to see if the username and password is valid
-      await fetch("/loadUser", {
+    } catch (err) {
+      console.error(err)
+      setError("Invalid username or password. Check your email or password and try again."); //something went wrong when prompting firebase, so invalid login attempt
+        return;
+    }
+
+    const temp = await fetch("/loadUser", {
           method: "POST",
           headers: { "Content-Type": "text/plain" },
           body: email
       });
+
       navigate("/profile"); //if yes, go ahead in to profile page
-    } catch (err) {
-      console.error(err)
-      setError("Invalid username or password. Check your email or password and try again."); //something went wrong when prompting firebase, so invalid login attempt
-    }
   };
 
   return (

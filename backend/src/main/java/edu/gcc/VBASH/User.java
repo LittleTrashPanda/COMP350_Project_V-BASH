@@ -5,8 +5,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 
 /* DATA STRUCTURE */
 
@@ -49,13 +48,12 @@ public class User {
     private static Schedule candidateSchedule = new Schedule("default", new ArrayList<Course>(), "2025_Spring");
 
     // Create New User
-    public static void createUser(String username, int passwordHash) throws IOException {
+    public static void createUser(String username, int passwordHash) throws IOException, ParseException {
         // Reading Existing Files
         FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
         JSONObject allUsers = new JSONObject();
         try { allUsers = (JSONObject) new JSONParser().parse(sourceFile); } catch (Exception e) { }
 
-        System.out.println("reading");
         // Fail if User Already Exists
         if (allUsers.containsKey(username)) { return; }
 
@@ -68,9 +66,6 @@ public class User {
         newUser.put("major", "");
         newUser.put("majorCourses", new JSONArray());
 
-        System.out.println(username);
-        System.out.println(passwordHash);
-
         // Add User to Data
         allUsers.put(username, newUser);
 
@@ -79,10 +74,8 @@ public class User {
         newFile.write(allUsers.toJSONString());
         newFile.close();
 
-        System.out.println("done");
-
         // Successful Creation
-        return;
+        loadUser(username, passwordHash);
     }
 
 
@@ -99,8 +92,8 @@ public class User {
         // Load User Data
         JSONObject targetUser = (JSONObject) allUsers.get(tryUsername);
 
-        // Incorrect Password
-        if ((int) targetUser.get("passwordHash") != tryPasswordHash) { return; }
+        // Incorrect Password (Password is Already Taken Care of)
+        // if ((int) targetUser.get("passwordHash") != tryPasswordHash) { return; }
 
         // Load Username
         username = tryUsername;
@@ -124,12 +117,7 @@ public class User {
         major = targetUser.get("major").toString();
 
         // Load Major Courses
-        majorCourses = new ArrayList<Course>();
-        for (Object majorCourse : (JSONArray) targetUser.get("majorCourses")) { majorCourses.add(JSONToCourse((JSONObject) majorCourse)); }
-
-
-        // Successful Load
-        return;
+        loadMajorCourses();
     }
 
     // JSON to Schedule
@@ -162,6 +150,7 @@ public class User {
         // Constructor
         return new Course(
                 course.get("courseName").toString(),
+                course.get("section").toString(),
                 course.get("department").toString(),
                 course.get("courseCode").toString(),
                 course.get("description").toString(),
@@ -176,7 +165,7 @@ public class User {
 
 
     // Saving User Data
-    public static void saveUserData() throws IOException {
+    public static void saveUserData() throws IOException, ParseException {
         // Reading Existing Files
         FileReader sourceFile = new FileReader("backend/src/main/resources/private/userSchedules.json");
         JSONObject allUsers = new JSONObject();
@@ -231,6 +220,7 @@ public class User {
 
         // Add Values
         toReturn.put("courseName", course.getCourseName());
+        toReturn.put("section", course.getSection());
         toReturn.put("department", course.getDepartment());
         toReturn.put("courseCode", course.getCourseCode());
         toReturn.put("description", course.getDescription());
@@ -271,18 +261,21 @@ public class User {
     // Add Taken Course
     public static void addTakenCourse(Course newCourse) { takenCourses.add(newCourse); }
 
-    public static void addTakenCourse(String newCourseName) { takenCourses.add(new Course(newCourseName)); }
+    public static void addTakenCourse(String newCourseCode) { takenCourses.add(new Course(newCourseCode)); }
 
     // Remove Taken Course
-    public static void removeTakenCourse(Course courseToRemove) { takenCourses.removeIf(course -> Objects.equals(course.getCourseName(), courseToRemove.getCourseName())); }
+    public static void removeTakenCourse(Course courseToRemove) { takenCourses.removeIf(course -> Objects.equals(course.getCourseCode(), courseToRemove.getCourseCode())); }
 
-    public static void removeTakenCourse(String courseName) { takenCourses.removeIf(course -> Objects.equals(course.getCourseName(), courseName)); }
+    public static void removeTakenCourse(String courseCode) { takenCourses.removeIf(course -> Objects.equals(course.getCourseCode(), courseCode)); }
 
     // Check if Taken
     public static boolean isTakenCourse(Course course) {
-        for (Course takenCourse : takenCourses) { if (Objects.equals(takenCourse.getCourseName(), course.getCourseName())) { return true; } }
+        for (Course takenCourse : takenCourses) { if (Objects.equals(takenCourse.getCourseCode(), course.getCourseCode())) { return true; } }
         return false;
     }
+
+    // Retrieve Taken Courses
+    public static ArrayList<Course> getTakenCourses() { return takenCourses; }
 
 
     // Set Major
@@ -290,25 +283,31 @@ public class User {
 
     // Check if Major Requirement
     public static boolean isMajorRequirement(Course course) {
-        for (Course majorRequirement : majorCourses) { if (Objects.equals(majorRequirement.getCourseName(), course.getCourseName())) { return true; } }
+        for (Course majorRequirement : majorCourses) { if (Objects.equals(majorRequirement.getCourseCode(), course.getCourseCode())) { return true; } }
         return false;
     }
 
-
     // Load Major Course
-    public static void loadMajor() throws IOException, ParseException {
+    public static void loadMajorCourses() throws IOException, ParseException {
+        majorCourses = new ArrayList<Course>();
+
+        // Default if No Major
+        if (major == null || major.isEmpty()) { return; }
+
         // Read-In Courses
         FileReader sourceFile = new FileReader("backend/src/main/resources/private/majorCourses.json");
         JSONArray JSONMajorCourses = (JSONArray) ((JSONObject) new JSONParser().parse(sourceFile)).get(major);
 
-        majorCourses = new ArrayList<Course>();
         for (Object majorCourse : JSONMajorCourses) { majorCourses.add(JSONToCourse((JSONObject) majorCourse)); }
     }
+
+    // Retrieve Major Requirements
+    public static ArrayList<Course> getMajorCourses() { return majorCourses; }
 
 
     // Check if Currently Taking Course
     public static boolean isInCurrentSchedule(Course course) {
-        for (Course currentCourse : candidateSchedule.getCourses()) { if (Objects.equals(currentCourse.getCourseName(), course.getCourseName())) { return true; } }
+        for (Course currentCourse : candidateSchedule.getCourses()) { if (Objects.equals(currentCourse.getCourseCode(), course.getCourseCode())) { return true; } }
         return false;
     }
 
@@ -319,7 +318,7 @@ public class User {
 
     public static void loadSchedule(String scheduleName) { for (Schedule schedule : schedules) { if (schedule.getName().equals(scheduleName)) { candidateSchedule = schedule; } } }
 
-    public static void newCandidateSchedule() { candidateSchedule = new Schedule("default", new ArrayList<Course>(), "2025_Fall"); }
+    public static void newCandidateSchedule() { candidateSchedule = new Schedule("default", new ArrayList<Course>(), "2025_Spring"); }
 
     public static void deleteSchedule() {
         schedules.remove(candidateSchedule);
@@ -336,7 +335,6 @@ public class User {
             out.append(sTime + " - " + eTime + "\n");
         }
 
-        System.out.println(out.toString());
         return out.toString();
     }
 

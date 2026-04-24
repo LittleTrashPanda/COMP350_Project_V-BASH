@@ -3,8 +3,7 @@ html {
 }
 
 /* GENERAL TEXT FIX — ensures all text follows the theme */
-.searchPage,
-.searchPage * {
+.searchPage {
   color: var(--text);
 }
 

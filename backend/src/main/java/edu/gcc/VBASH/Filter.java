@@ -12,7 +12,7 @@ public class Filter {
     public Filter() { }
 
     // Constructor
-    public Filter(String department, String courseCode, String professor, int credits, int days, int[] startTimes, int[] duration, String semester) {
+    public Filter(String department, String courseCode, String professor, int credits, int days, int[] startTimes, int[] duration) {
         this.department = department;
         this.courseCode = courseCode;
         this.professor = professor;

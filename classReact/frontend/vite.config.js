@@ -24,7 +24,9 @@ export default {
       "/loadUser": "http://localhost:7000",
       "/takenCourse": "http://localhost:7000",
       "/notTakenCourse": "http://localhost:7000",
-      "/major": "http://localhost:7000"
+      "/takenCourses": "http://localhost:7000",
+      "/major": "http://localhost:7000",
+      "/majorRequirements": "http://localhost:7000"
     }
   }
 };

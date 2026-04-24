@@ -43,7 +43,6 @@ public class Main {
 
         // Add Course to Schedule
         app.post("/addCourse", ctx -> {
-            System.out.println("Hi");
             Course toAdd = ctx.bodyAsClass(Course.class);
 
             //Detect "no meeting times"
@@ -66,6 +65,7 @@ public class Main {
 
             //If no conflict add the course
             User.getCurrentSchedule().addCourse(toAdd);
+            User.saveUserData();
             ctx.json(new AddResult(true, "Course added successfully."));
         });
 
@@ -76,6 +76,8 @@ public class Main {
             int before = ((ArrayList<Course>) User.getCurrentSchedule().getCourses()).size();
             User.getCurrentSchedule().removeCourse(toRemove);
             int after = ((ArrayList<Course>) User.getCurrentSchedule().getCourses()).size();
+
+            User.saveUserData();
 
             if (before == after) {
                 ctx.json(new AddResult(false, "Course was not found in your schedule."));
@@ -96,6 +98,7 @@ public class Main {
             }
 
             User.getCurrentSchedule().replaceCourse(toAdd, conflicts);
+            User.saveUserData();
             ctx.json(new AddResult(true, "Course replaced successfully."));
         });
 
@@ -107,7 +110,10 @@ public class Main {
         });
 
         // Name the Open Schedule
-        app.post("/nameCurrentSchedule", ctx -> { User.getCurrentSchedule().setName(ctx.body()); });
+        app.post("/nameCurrentSchedule", ctx -> {
+            User.getCurrentSchedule().setName(ctx.body());
+            User.saveUserData();
+        });
 
         // Save the Open Schedule
         app.post("/saveSchedule", ctx -> { User.saveUserData(); });
@@ -120,7 +126,10 @@ public class Main {
         });
 
         // Delete the Open Schedule
-        app.post("/deleteSchedule", ctx -> { User.deleteSchedule();});
+        app.post("/deleteSchedule", ctx -> {
+            User.deleteSchedule();
+            User.saveUserData();
+        });
 
 
         // Retrieve User Data
@@ -130,17 +139,36 @@ public class Main {
         // Handling Login/Sign-Up
         app.post("/newUser", ctx -> User.createUser(ctx.body(), 0));
 
-        app.post("/loadUser", ctx -> User.loadUser(ctx.body(), 0));
+        app.post("/loadUser", ctx -> {
+            User.loadUser(ctx.body(), 0);
+            ctx.status(201);
+        });
 
 
         // Add a Taken Course
-        app.post("/takenCourse", ctx -> { User.addTakenCourse(ctx.body()); });
+        app.post("/takenCourse", ctx -> {
+            User.addTakenCourse(ctx.body());
+            User.saveUserData();
+        });
 
         // Remove a Taken Course
-        app.post("/notTakenCourse", ctx -> { User.removeTakenCourse(ctx.body()); });
+        app.post("/notTakenCourse", ctx -> {
+            User.removeTakenCourse(ctx.body());
+            User.saveUserData();
+        });
+
+        // Retrieve Taken Courses
+        app.get("/takenCourses", ctx -> ctx.json(User.getTakenCourses()));
 
 
         // Set User's Major
-        app.post("/major", ctx -> { User.setMajor(ctx.body()); });
+        app.post("/major", ctx -> {
+            User.setMajor(ctx.body());
+            User.loadMajorCourses();
+            User.saveUserData();
+        });
+
+        // Retrieve Major Requirements
+        app.get("/majorRequirements", ctx -> ctx.json(User.getMajorCourses()));
     }
 }

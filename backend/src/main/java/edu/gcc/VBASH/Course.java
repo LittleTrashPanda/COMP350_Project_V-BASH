@@ -3,6 +3,7 @@ package edu.gcc.VBASH;
 public class Course {
     // Course Attributes
     private String courseName = "";
+    private String section = "";
     private String department = "";
     private String courseCode = "";
     private String description = "";
@@ -18,10 +19,11 @@ public class Course {
     // Constructors
     public Course() { }
 
-    public Course(String courseName) { this.courseName = courseName; }
+    public Course(String courseCode) { this.courseCode = courseCode; }
 
-    public Course(String courseName, String department, String courseCode, String description, String[] professors, int credits, int days, int[] startTimes, int[] duration, String semester) {
+    public Course(String courseName, String section, String department, String courseCode, String description, String[] professors, int credits, int days, int[] startTimes, int[] duration, String semester) {
         this.courseName = courseName;
+        this.section = section;
         this.department = department;
         this.courseCode = courseCode;
         this.description = description;
@@ -37,6 +39,7 @@ public class Course {
 
     // Get Attributes
     public String getCourseName() { return courseName; }
+    public String getSection() { return section; }
     public String getDepartment() { return department; }
     public String getCourseCode() { return courseCode; }
     public String getDescription() { return description; }
@@ -49,6 +52,7 @@ public class Course {
 
     // ----------------------------------------------------------------------------------------------------
     public void setCourseName(String courseName) { this.courseName = courseName; }
+    public void setSection(String section) { this.section = section; }
     public void setDepartment(String department) { this.department = department; }
     public void setCourseCode(String courseCode) { this.courseCode = courseCode; }
     public void setDescription(String description) { this.description = description; }
@@ -66,13 +70,12 @@ public class Course {
 
         Course other = (Course) obj;
 
-        return courseCode.equals(other.courseCode)
-                && courseName.equals(other.courseName);
+        return courseCode.equals(other.courseCode);
     }
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(courseCode, courseName);
+        return java.util.Objects.hash(courseCode + " " + section, courseName);
     }
 
 
