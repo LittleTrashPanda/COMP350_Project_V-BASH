@@ -14,11 +14,24 @@
 
 <h1>Search Page (Index for Now)</h1>
 
-<a href = "calendar.html" class ="calendarLink">Calendar</a>
+<a href = "calendar.html" class ="pageLink">Calendar</a>
+<a href = "profile.html" class ="pageLink">Profile</a>
+
+<h4>Semester</h4>
+<select name = "semester" id="semester">
+    <option value = "2025_Spring">Spring 2025</option>
+    <option value = "2024_Fall"  >Fall   2024</option>
+    <option value = "2024_Spring">Spring 2024</option>
+    <option value = "2023_Fall"  >Fall   2023</option>
+    <option value = "2023_Spring">Spring 2023</option>
+    <option value = "2022_Fall"  >Fall   2022</option>
+</select>
+<button id = "semesterButton" class = "searchButton">Change Semester</button>
+
 
 <input id = "keySearchTerms" placeholder = "Search for your class">
 
-<button id = "searchButton" class="searchButton">Search</button>
+<button id = "searchButton" class = "searchButton">Search</button>
 
 <a href = "clubs.html" class = "clubsLink">Clubs</a>
 
@@ -396,9 +409,6 @@
 
 <h4>Course Code</h4>
 <input id = "courseCode" placeholder = "">
-
-<h4>Semester</h4>
-<input id = "semester" placeholder = "">
 
 <ul id = "resultingCourses" class = "courseList"></ul>
 

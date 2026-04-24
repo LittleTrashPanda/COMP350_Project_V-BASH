@@ -1,10 +1,24 @@
 /* Document Creation */
 document.addEventListener("DOMContentLoaded", async () => {
+	document.getElementById("semesterButton").addEventListener("click", setSemester);
+
     document.getElementById("saveSchedule").addEventListener("click", saveSchedule);
     document.getElementById("loadSchedule").addEventListener("click", loadSchedule);
-    document.getElementById("clearSchedule").addEventListener("click", resetSchedule)
+    document.getElementById("deleteSchedule").addEventListener("click", deleteSchedule);
+    document.getElementById("generatePDF").addEventListener("click", asPDF);
     loadCalendar();
 });
+
+/* Set Semester */
+async function setSemester() {
+    const semester = document.getElementById("semester").value;
+    await fetch("/setCurrentSemester", { method: "POST", headers: { "Content-Type": "text/plain" }, body: semester });
+    window.location.reload();
+}
+
+
+    // // Optional settings for the PDF layout
+
 
 /* Display Courses */
 async function loadCalendar() {
@@ -131,17 +145,37 @@ async function removeCourse(course) {
 
     fetch("/removeCourse", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(course)
     })
-    .then(res => res.json())
-    .then(result => {
-        alert(result.message);
+        .then(res => res.json())
+        .then(result => {
+            alert(result.message);
 
-        if (result.success) {
-            window.location.reload();
-        }
-    });
+            if (result.success) {
+                window.location.reload();
+            }
+        });
+
+}
+
+async function asPDF(){
+    const initialize = document.getElementById("generatePDF").value;
+    const courseTime = await fetch ("/getTimes", {method: "GET"})
+    const times = await courseTime.text();
+    const bodyText = document.getElementById('pdf-text');
+    bodyText.innerText = times;
+    const element = document.getElementById('pdf-save').innerHTML;
+    const options = {
+        margin:       10,
+        filename:     'advisor-please-approve-this.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 }, // Higher resolution
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } // A4 page
+    };
+
+    html2pdf().set(options).from(element).save();
+
 }
 
 async function saveSchedule() {
@@ -155,8 +189,8 @@ async function loadSchedule() {
     const resLoad = await fetch("/loadSchedule", { method: "POST", body: JSON.stringify(loadName) })
     window.location.reload();
 }
-async function resetSchedule(){
-    const resetname = document.getElementById("clearSchedule").value;
-    const resReset = await fetch("/resetSchedule", {method:"POST"})
+async function deleteSchedule(){
+    const deletename = document.getElementById("deleteSchedule").value;
+    const resDelete = await fetch("/deleteSchedule", {method:"POST"})
     window.location.reload();
 }

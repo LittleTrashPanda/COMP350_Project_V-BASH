@@ -12,7 +12,7 @@ public class Search {
     private static ArrayList<Course> resultingCourses = null;
     private static ArrayList<String> previousKeySearchTerms = null;
 
-    private static Filter currentFilter = new Filter("", "", "", -1, 1, null, null, "");
+    private static Filter currentFilter = new Filter("", "", "", -1, 1, null, null);
 
     // ----------------------------------------------------------------------------------------------------
     // Search Terms
@@ -28,9 +28,8 @@ public class Search {
     }
 
     // Retrieving Courses
-    public static ArrayList<Course> search() throws IOException, ParseException {
-
-
+    public static JSONArray search() throws IOException, ParseException {
+        System.out.println("hello there");
         ArrayList<Course> queryResults = new ArrayList<Course>();
 
         // Use Previous Search as Basis
@@ -62,8 +61,37 @@ public class Search {
         previousKeySearchTerms = keySearchTerms;
 
         // Filter Results
-        ArrayList<Course> toReturn = new ArrayList<>();
-        for (Course course : resultingCourses) { if (currentFilter.filterCourse(course)) { toReturn.add(course); } }
+        JSONArray toReturn = new JSONArray();
+        for (Course course : resultingCourses) {
+            if (currentFilter.filterCourse(course) && currentScheduleSemesterFilter(course)) {
+                JSONObject temp = User.CourseToJSON(course);
+
+                // Default Color
+                temp.put("backgroundColor", "#F9FEFC");
+                temp.put("textColor", "#8E1600");
+
+                // Is a Major Requirement
+                if (User.isMajorRequirement(course)) {
+                    temp.replace("backgroundColor", "#C26969");
+                    temp.put("textColor", "#F9FEFC");
+                }
+
+                // Is Being Taken
+                if (User.isInCurrentSchedule(course)) {
+                    temp.replace("backgroundColor", "#5C3232");
+                    temp.put("textColor", "#F9FEFC");
+                }
+
+                // Already Taken Course
+                if (User.isTakenCourse(course)) {
+                    temp.replace("backgroundColor", "#524646");
+                    temp.put("textColor", "#F9FEFC");
+                }
+
+                toReturn.add(temp);
+            }
+        }
+
         return toReturn;
     }
 
@@ -71,8 +99,9 @@ public class Search {
     private static Course courseCreator(JSONObject course) {
         return new Course(
                 /* Course Name */   course.get("name").toString(),
+                /* Section */       course.get("section").toString(),
                 /* Department */    course.get("subject").toString(),
-                /* Course Number */ (course.get("subject") + course.get("number").toString() + " " + course.get("section")),
+                /* Course Number */ (course.get("subject") + course.get("number").toString()),
                 /* Description */   "No Description Provided",
                 /* Professors */    professorParsing((JSONArray) course.get("faculty")),
                 /* Credits */       Math.toIntExact((long) course.get("credits")),
@@ -86,7 +115,6 @@ public class Search {
     public static void setFilter(Filter newFilter) {
         currentFilter = newFilter;
     }
-
 
     // Transforming Data
     private static String[] professorParsing(JSONArray professors) {
@@ -154,4 +182,6 @@ public class Search {
         // All Key Search Terms Found
         return true;
     }
+
+    private static boolean currentScheduleSemesterFilter(Course course) { return User.getCurrentSchedule().getSemester().equals(course.getSemester()); }
 }
