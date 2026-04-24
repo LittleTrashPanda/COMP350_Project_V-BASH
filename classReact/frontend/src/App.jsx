@@ -6,6 +6,7 @@ import CalendarPage from "./pages/CalendarPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
+import SchedulePage from "./pages/SchedulePage.jsx";
 import ProtectedRoute from "./firebase/ProtectedRoute.jsx";
 import { themes } from "./themes";
 import { auth } from "./firebase/firebase";
@@ -66,6 +67,24 @@ export default function App() {
                 </ProtectedRoute>
             }
           />
+
+          <Route
+              path="/calendar"
+              element={
+                <ProtectedRoute>
+                  <CalendarPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/schedule"
+              element={
+                <ProtectedRoute>
+                  <SchedulePage />
+                </ProtectedRoute>
+              }
+            />
         </Routes>
       </div>
     </>

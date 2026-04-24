@@ -36,14 +36,14 @@ export default function SearchPage() {
       new Audio(dingSound).play();
   };
 
-//   useEffect(() => {
-//     async function loadSchedule() {
-//       const res = await fetch("/loadCalendar");
-//       const data = await res.json();
-//       setScheduledCourses(data);
-//     }
-//     loadSchedule();
-//   }, []);
+  useEffect(() => {
+    async function loadSchedule() {
+      const res = await fetch("/loadCalendar");
+      const data = await res.json();
+      setScheduledCourses(data);
+    }
+    loadSchedule();
+  }, []);
 
   function computeDaysValue() {
     let value = 1;
@@ -306,6 +306,12 @@ export default function SearchPage() {
     setShowFilterPopup(false);
   }
 
+function hasSameCourseCode(course) {
+  return scheduledCourses.some(
+    (sc) => sc.courseCode === course.courseCode
+  );
+}
+
   return (
     <div className="searchPage">
 
@@ -407,6 +413,7 @@ export default function SearchPage() {
             <th>End Time</th>
             <th>Days</th>
             <th>Credits</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
@@ -427,12 +434,13 @@ export default function SearchPage() {
                 <td>{formatDays(course.days)}</td>
                 <td>{course.credits}</td>
                 <td>
-                  {!isInSchedule && (
-                    <button onClick={() => addCourse(course)}>Add</button>
-                  )}
-                  {isInSchedule && (
-                    <button onClick={() => removeCourse(course)}>Remove</button>
-                  )}
+                  {isInSchedule ? (
+                      <button onClick={() => removeCourse(course)}>Remove</button>
+                    ) : hasSameCourseCode(course) ? (
+                      <button onClick={() => replaceCourse(course)}>Replace</button>
+                    ) : (
+                      <button onClick={() => addCourse(course)}>Add</button>
+                    )}
                 </td>
               </tr>
             );
