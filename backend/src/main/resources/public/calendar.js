@@ -182,10 +182,16 @@ async function saveSchedule() {
     const saveName = document.getElementById("saveScheduleName").value;
     const resName = await fetch("/nameCurrentSchedule", { method: "POST", body: JSON.stringify(saveName) })
     const resSave = await fetch("/saveSchedule", { method: "POST" })
+    const select = document.getElementById("loadScheduleName")
+    // const addName = Option(saveName, saveName)
+    // select.add(addName);
+    select.add(new Option(JSON.stringify(saveName), "value1"));
+
 }
 
 async function loadSchedule() {
     const loadName = document.getElementById("loadScheduleName").value;
+
     const resLoad = await fetch("/loadSchedule", { method: "POST", body: JSON.stringify(loadName) })
     window.location.reload();
 }

@@ -29,7 +29,13 @@
 
     <input id = "saveScheduleName" placeholder = "Save Schedule by Name">
     <button id = "saveSchedule">Save</button>
-    <input id = "loadScheduleName" placeholder = "Load Schedule by Name">
+<!--    <input id = "loadScheduleName" placeholder = "Load Schedule by Name">-->
+    <label for="loadScheduleName">Choose yo name</label>
+    <select name = "Names" id = "loadScheduleName">
+    </select>
+
+    <input type="text" id="newItemText" placeholder="New option text">
+    <button onclick="addNewOption()">Add Option</button>
     <button id = "loadSchedule">Load</button>
     <button id = "deleteSchedule">Delete Schedule</button>
     <button id = "clearSchedule">Clear Schedule</button>
@@ -43,7 +49,7 @@
 
 
 
-    <div class = "calendarContentContainer">
+    <div id ="calendarContent" class = "calendarContentContainer">
         <div class = "timeMarkers">
             <p style = "top: calc(0/13 * 100% - 0.5vh); left: 5.5vw; opacity: 0.5;" class = "time"> 8:00</p>
             <div style = "top: calc( 0.5/13 * 100%);" class = "timeMarker"><p class = "time"> 8:30</p></div>
