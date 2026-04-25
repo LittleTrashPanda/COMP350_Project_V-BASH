@@ -7,6 +7,7 @@ public class Main {
     public static void main(String[] args) {
         Javalin app = Javalin.create(config -> { config.staticFiles.add("public"); }).start(7000);
         registerSearch(app);
+        clubAdds(app);
     }
 
     public static void registerSearch(Javalin app) {
@@ -170,5 +171,25 @@ public class Main {
 
         // Retrieve Major Requirements
         app.get("/majorRequirements", ctx -> ctx.json(User.getMajorCourses()));
+
+    }
+    public static void clubAdds(Javalin app){
+        app.post("/saveClubs", ctx ->{
+            ArrayList<String> clubs = new ArrayList<>();
+            String json = ctx.body().replace("[", "")
+                    .replace("]", "")
+                    .replace("\"", "");
+            if (!json.trim().isEmpty()) {
+                for (String club : json.split(",")) {
+                    clubs.add(club.trim());
+                }
+            }
+                User.setClubs(clubs);
+                User.saveUserData();
+                ctx.status(201);
+                });
+            app.get("/loadClubs", ctx ->{
+                ctx.json(User.getClubs());
+            });
     }
 }

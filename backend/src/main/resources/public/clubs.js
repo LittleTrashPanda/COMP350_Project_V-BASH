@@ -3,9 +3,11 @@ const input = document.getElementById("clubinput");
 const dropdown = document.getElementById("clubDropdown");
 const button = document.getElementById("enterBtn");
 const list = document.getElementById("list");
+const save = document.getElementById("saveClubsBtn");
 
 
 button.addEventListener("click", addClub);
+save.addEventListener("click", saveClubs)
 
 input.addEventListener("keydown", (event) => {
 if(event.key === "Enter"){
@@ -33,7 +35,7 @@ if(event.key === "Enter"){
          const delBtn = document.createElement("button");
          delBtn.textContent = "Delete";
 
-         delBtn.onclick = () => deleteClub(name, li);
+         delBtn.onclick = () => deleteClub(li);
 
          li.appendChild(delBtn);
          list.appendChild(li);
@@ -44,11 +46,23 @@ if(event.key === "Enter"){
          }
 
 
-         async function deleteClub(name, li){
-         await fetch('/items/${id}',{
-            method: "DELETE"
-
-         });
+         async function deleteClub(li){
          li.remove();
+         }
+
+         async function saveClubs(){
+            const clubs = [];
+
+            for (const li of list.querySelectorAll("li")){
+                clubs.push(li.firstChild.nodeValue.trim());}
+
+            await fetch("/saveClubs", {
+                method: "POST",
+                headers: {
+                        "Content-Type": "application/json"},
+                body: JSON.stringify(clubs)
+                });
+                alert("Clubs saved.");
+
          }
 });

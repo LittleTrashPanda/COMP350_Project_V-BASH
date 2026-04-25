@@ -127,18 +127,6 @@
 
 
 <ul id="list"></ul>
-<script>
-document.getElementById("enterBtn").addEventListener("click", addClub);
-
-
-    async function addClub(){
-        const input = document.getElementById("clubinput");
-        if(input.value == null){
-            input = document.getElementById("clubDropdown");
-        }
-        const name = input.value.trim();
-    }
-</script>
-
+<button id="saveClubsBtn">SAVE</button>
 </body>
 </html>
