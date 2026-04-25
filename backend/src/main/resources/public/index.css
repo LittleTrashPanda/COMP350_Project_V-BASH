@@ -38,6 +38,9 @@ html {
 .pageLink{
     color: rgb(139,0,0);
 }
+.clubsLink{
+    color: rgb(139, 0, 0);
+}
 .searchButton{
     background-color: rgb(139,0,0);
     color: white;
