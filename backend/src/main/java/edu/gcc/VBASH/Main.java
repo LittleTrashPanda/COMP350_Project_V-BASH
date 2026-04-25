@@ -175,18 +175,10 @@ public class Main {
     }
     public static void clubAdds(Javalin app){
         app.post("/saveClubs", ctx ->{
-            ArrayList<String> clubs = new ArrayList<>();
-            String json = ctx.body().replace("[", "")
-                    .replace("]", "")
-                    .replace("\"", "");
-            if (!json.trim().isEmpty()) {
-                for (String club : json.split(",")) {
-                    clubs.add(club.trim());
-                }
-            }
-                User.setClubs(clubs);
-                User.saveUserData();
-                ctx.status(201);
+            org.json.simple.JSONArray clubs = (org.json.simple.JSONArray) new org.json.simple.parser.JSONParser().parse(ctx.body());
+            User.setClubs(clubs);
+            User.saveUserData();
+            ctx.status(201);
                 });
             app.get("/loadClubs", ctx ->{
                 User.saveUserData();

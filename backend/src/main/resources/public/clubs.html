@@ -12,7 +12,10 @@
 </head>
 <body>
 <h1>Clubs</h1>
+
+<div>
 <a href = "index.html" class = "indexLink">Home</a>
+</div>
 
 <input id="clubinput" placeholder="Enter Club...">
 <select id="clubDropdown">
@@ -126,7 +129,22 @@
 </select>
 <button id="enterBtn">Enter</button>
 
+<br><br>
+<label>Meeting Days:</label><br>
+<input type ="checkbox" value="Monday"> Monday
+<input type ="checkbox" value="Tuesday"> Tuesday
+<input type ="checkbox" value="Wednesday"> Wednesday
+<input type ="checkbox" value="Thursday"> Thursday
+<input type ="checkbox" value="Friday"> Friday
+<input type ="checkbox" value="Saturday"> Saturday
+<input type ="checkbox" value="Sunday"> Sunday
+<br><br>
 
+<label>Start Time:</label>
+<input type="time" id="startTime">
+
+<label>End Time:</label>
+<input type="time" id="endTime">
 
 <ul id="list"></ul>
 <button id="saveClubsBtn">SAVE</button>

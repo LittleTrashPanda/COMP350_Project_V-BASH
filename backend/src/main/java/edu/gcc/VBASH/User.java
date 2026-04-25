@@ -48,7 +48,7 @@ public class User {
     private static Schedule candidateSchedule = new Schedule("default", new ArrayList<Course>(), "2025_Spring");
 
     // User Clubs
-    private static ArrayList<String> clubs = new ArrayList<>();
+    private static JSONArray clubs = new JSONArray();
 
     // Create New User
     public static void createUser(String username, int passwordHash) throws IOException, ParseException {
@@ -118,8 +118,9 @@ public class User {
 
         // Load Clubs
         JSONArray jsonClubs = (JSONArray) targetUser.get("clubs");
-        if(jsonClubs != null){clubs = JSONToClubs(jsonClubs);}
-        else{ clubs = new ArrayList<>();}
+
+        if(jsonClubs != null){clubs = jsonClubs;}
+        else{ clubs = new JSONArray();}
 
         // Load Major
         major = targetUser.get("major").toString();
@@ -196,7 +197,7 @@ public class User {
         user.put("takenCourses", JSONTakenCourses);
 
         // Add Clubs
-        user.put("clubs", ClubsToJSON(clubs));
+        user.put("clubs", clubs);
 
         // Add Major
         user.put("major", major);
@@ -366,10 +367,10 @@ public class User {
         return toReturn;
     }
 
-    public static void setClubs(ArrayList<String> newClubs){
+    public static void setClubs(JSONArray newClubs){
         clubs = newClubs;
     }
-    public static ArrayList<String> getClubs(){
+    public static JSONArray getClubs(){
         return clubs;
     }
 

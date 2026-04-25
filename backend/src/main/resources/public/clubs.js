@@ -20,33 +20,26 @@ if(event.key === "Enter"){
          });
 
          function addClub(){
-         let name = input.value.trim();
-         if(!name){
-         name = dropdown.value.trim();}
-
+         let name = input.value.trim() || dropdown.value.trim();
          if(!name) return;
 
          const existingClubs = list.querySelectorAll("li");
          for(const item of existingClubs){
-         if(item.firstChild.nodeValue.trim() === name){
-                   alert("That club is already added.");
-                   return;
+              if(item.firstChild.nodeValue.trim() === name){
+                          alert("That club is already added.");
+                          return;
+              }
          }
+
+         const days = getSelectedDays();
+         const startTime = document.getElementById("startTime").value;
+         const endTime = document.getElementById("endTime").value;
+
+         if(days.length === 0 || !startTime || !endTime){
+         alert("Please select meeting days and times.");
+         return;
          }
-
-         const li = document.createElement("li");
-         li.textContent = name + " ";
-         const delBtn = document.createElement("button");
-         delBtn.textContent = "Delete";
-
-         delBtn.onclick = () => deleteClub(li);
-
-         li.appendChild(delBtn);
-         list.appendChild(li);
-
-
-         input.value = "";
-         dropdown.selectedIndex = 0;
+         renderClub({ name, days, startTime, endTime });
          }
 
 
@@ -58,7 +51,14 @@ if(event.key === "Enter"){
             const clubs = [];
 
             for (const li of list.querySelectorAll("li")){
-                clubs.push(li.firstChild.nodeValue.trim());}
+                clubs.push({
+                name: li.dataset.name,
+                days: JSON.parse(li.dataset.days),
+                 startTime : li.dataset.startTime,
+                 endTime : li.dataset.endTime
+
+                });
+                }
 
             await fetch("/saveClubs", {
                 method: "POST",
@@ -74,15 +74,29 @@ if(event.key === "Enter"){
          const response = await fetch("/loadClubs");
          const clubs = await response.json();
 
-         for(const name of clubs){
-         const li = document.createElement("li");
-         li.textContent = name + " ";
+         for(const club of clubs){
+            renderClub(club);}
+         }
 
-         const delBtn = document.createElement("button");
-         delBtn.textContent = "Delete";
-         delBtn.onclick = () => li.remove();
+         function getSelectedDays(){
+         const checked = document.querySelectorAll('input[type="checkbox"]:checked'
+         );
+         return Array.from(checked).map(cb =>cb.value)}
 
-         li.appendChild(delBtn);
-         list.appendChild(li);}
+         function renderClub(club){
+                  const li = document.createElement("li");
+                  li.dataset.name = club.name;
+                  li.dataset.days = JSON.stringify(club.days);
+                  li.dataset.startTime = club.startTime;
+                  li.dataset.endTime = club.endTime;
+
+                  li.textContent = `${club.name} - ${club.days.join(", ")} ${club.startTime} - ${club.endTime} `;
+
+                const delBtn = document.createElement("button");
+                delBtn.textContent = "Delete";
+                delBtn.onclick = () => deleteClub(li);
+
+                li.appendChild(delBtn);
+                list.appendChild(li);
          }
 });
