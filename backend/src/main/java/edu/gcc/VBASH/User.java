@@ -28,13 +28,20 @@ public class User {
     public static String getTimes() throws IOException {
         StringBuilder out = new StringBuilder();
         ArrayList<Course> courses = candidateSchedule.getCourses();
+        String week = "MTWRF";
         for(int i = 0; i<courses.size(); i++){
-            int sTime = courses.get(i).getStartTimes()[0];
-            int eTime = courses.get(i).getStartTimes()[1];
+            StringBuilder daysofweek = new StringBuilder();
+            for (int j = 0; j<5; j++){
+                if (courses.get(i).getStartTimes()[j] != 0){
+                    daysofweek.append(week.charAt(i));
+                }
+
+            }
+            int sTime = courses.get(i).getStartTimes()[0]/60;
+            String eTime ="" + sTime + ":"+((courses.get(i).getStartTimes()[0] / sTime) - 10);
             out.append(sTime + " - " + eTime + "\n");
         }
 
-        System.out.println(out.toString());
         return out.toString();
     }
 
