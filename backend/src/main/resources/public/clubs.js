@@ -10,7 +10,8 @@ const save = document.getElementById("saveClubsBtn");
 
 
 button.addEventListener("click", addClub);
-save.addEventListener("click", saveClubs)
+save.addEventListener("click", saveClubs);
+
 
 input.addEventListener("keydown", (event) => {
 if(event.key === "Enter"){
