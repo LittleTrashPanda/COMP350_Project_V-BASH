@@ -189,6 +189,7 @@ public class Main {
                 ctx.status(201);
                 });
             app.get("/loadClubs", ctx ->{
+                User.saveUserData();
                 ctx.json(User.getClubs());
             });
     }

@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+const list = document.getElementById("list");
+
+loadClubs();
+
 const input = document.getElementById("clubinput");
 const dropdown = document.getElementById("clubDropdown");
 const button = document.getElementById("enterBtn");
-const list = document.getElementById("list");
 const save = document.getElementById("saveClubsBtn");
 
 
@@ -64,5 +67,21 @@ if(event.key === "Enter"){
                 });
                 alert("Clubs saved.");
 
+         }
+
+         async function loadClubs(){
+         const response = await fetch("/loadClubs");
+         const clubs = await response.json();
+
+         for(const name of clubs){
+         const li = document.createElement("li");
+         li.textContent = name + " ";
+
+         const delBtn = document.createElement("button");
+         delBtn.textContent = "Delete";
+         delBtn.onclick = () => li.remove();
+
+         li.appendChild(delBtn);
+         list.appendChild(li);}
          }
 });
