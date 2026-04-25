@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CourseTest {
-    Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
+    Course testGetCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "A", "ASTR",
             "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
             new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
 
@@ -60,7 +60,7 @@ class CourseTest {
     }
 
 // ========willConflict Tests========
-Course testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
+Course testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "A", "ASTR",
         "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
         new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
 
@@ -72,7 +72,7 @@ Course testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
     @Test
     void conflictSameTimesAndDurations() {
         //course 1 has the exact same start times and durations as course 2
-        testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
+        testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "A", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{13,13,13}, new int[]{50,50,50}, "2023_Fall");
 
@@ -82,7 +82,7 @@ Course testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
     @Test
     void conflictDifferentTimes() {
         //course 1 has different start times and duration does not overlap with course 2
-        testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
+        testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "A", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{10,10,10}, new int[]{50,50,50}, "2023_Fall");
         assertFalse(testGetCourse.willConflict(testGetCourse));
@@ -91,7 +91,7 @@ Course testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
     @Test
     void testCourseDurationOverlap(){
         //course 1 has no conflicts except for a long period on one of the days
-        testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
+        testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "A", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 110,
                 new int[]{10,12,10}, new int[]{50,120,50}, "2023_Fall");
         assertTrue(testGetCourse.willConflict(testConflictCourse));
@@ -99,7 +99,7 @@ Course testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
 
     @Test
     void testCourseOneDayConflict(){
-        testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "ASTR",
+        testConflictCourse = new Course("INTRO TO SKY MOTIONS & PLANETS", "A", "ASTR",
                 "206", "Dummy description", new String[]{"Clem, James L."}, 3, 42,
                 new int[]{13,11,11}, new int[]{50,75,75}, "2023_Fall");
         assertTrue(testGetCourse.willConflict(testConflictCourse));

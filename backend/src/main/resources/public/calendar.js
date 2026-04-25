@@ -1,11 +1,20 @@
 /* Document Creation */
 document.addEventListener("DOMContentLoaded", async () => {
+	document.getElementById("semesterButton").addEventListener("click", setSemester);
+
     document.getElementById("saveSchedule").addEventListener("click", saveSchedule);
     document.getElementById("loadSchedule").addEventListener("click", loadSchedule);
-    document.getElementById("clearSchedule").addEventListener("click", resetSchedule);
+    document.getElementById("deleteSchedule").addEventListener("click", deleteSchedule);
     document.getElementById("generatePDF").addEventListener("click", asPDF);
     loadCalendar();
 });
+
+/* Set Semester */
+async function setSemester() {
+    const semester = document.getElementById("semester").value;
+    await fetch("/setCurrentSemester", { method: "POST", headers: { "Content-Type": "text/plain" }, body: semester });
+    window.location.reload();
+}
 
 
     // // Optional settings for the PDF layout
@@ -180,8 +189,8 @@ async function loadSchedule() {
     const resLoad = await fetch("/loadSchedule", { method: "POST", body: JSON.stringify(loadName) })
     window.location.reload();
 }
-async function resetSchedule(){
-    const resetname = document.getElementById("clearSchedule").value;
-    const resReset = await fetch("/resetSchedule", {method:"POST"})
+async function deleteSchedule(){
+    const deletename = document.getElementById("deleteSchedule").value;
+    const resDelete = await fetch("/deleteSchedule", {method:"POST"})
     window.location.reload();
 }

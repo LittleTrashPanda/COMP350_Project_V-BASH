@@ -1,5 +1,5 @@
 html {
-    background-color: #F9FEFC;
+    background-color: var(--bg);
     width: 90vw;
 }
 

@@ -7,6 +7,11 @@ import "./ProfilePage.css";
 export default function ProfilePage() {
   const user = auth.currentUser;
 
+    function refresh() {
+        populateMajorRequirements();
+        populateTakenCourses();
+    }
+
   const handleLogout = async () => {
     await signOut(auth);
   };
@@ -15,6 +20,7 @@ export default function ProfilePage() {
     return localStorage.getItem("theme") || "light";
   });
 
+    const [userMajor, setUserMajor] = useState("");
 
     const applyTheme = (themeName) => {
       const theme = themes[themeName];
@@ -35,7 +41,61 @@ export default function ProfilePage() {
       localStorage.setItem("theme", theme);
     };
 
+    const handleMajorChange = (e) => {
+        console.log("hello");
+        changeMajor()
+    }
 
+    async function changeMajor() {
+        const major = document.getElementById("major");
+        await fetch("/major", {
+            method: "POST",
+            headers: { "Content-Type": "text/plain"},
+            body: major.value
+        });
+
+        populateMajorRequirements();
+    }
+
+    async function populateMajorRequirements() {
+        const majorRequirementsList = document.getElementById("majorRequirementsList");
+        majorRequirementsList.innerHTML = "";
+        const data = await fetch("/majorRequirements");
+        const majorRequirements = await data.json();
+
+        for (const majorRequirement of majorRequirements) {
+            const temp = document.createElement("li");
+            temp.textContent = majorRequirement.courseCode;
+            majorRequirementsList.appendChild(temp);
+        }
+    }
+
+    async function populateTakenCourses() {
+        const takenCoursesList = document.getElementById("takenCoursesList");
+        takenCoursesList.innerHTML = "";
+        const data = await fetch("/takenCourses");
+        const takenCourses = await data.json();
+
+        for (const takenCourse of takenCourses) {
+            const temp = document.createElement("li");
+            temp.textContent = takenCourse.courseCode;
+            takenCoursesList.appendChild(temp);
+        }
+    }
+
+    async function addTakenCourse() {
+        const userInput = document.getElementById("newTakenCourseInput");
+        await fetch("/takenCourse", {
+            method: "POST",
+            headers: { "Content-Type": "text/plain"},
+            body: userInput.value.toUpperCase()
+        });
+
+        const takenCoursesList = document.getElementById("takenCoursesList");
+        const newTakenCourse = document.createElement("li");
+        newTakenCourse.textContent = userInput.value.toUpperCase();
+        takenCoursesList.appendChild(newTakenCourse);
+    }
 
   return (
     <div style={{ padding: "20px" }}>
@@ -58,6 +118,26 @@ export default function ProfilePage() {
          <option value="sunset">Sunset</option>
          <option value="bubblegum">Bubblegum</option>
        </select>
+
+       <p>DATA:</p>
+       <button onClick = { () => refresh() }>Refresh Profile Data</button>
+
+       <p>Major: </p>
+       <select id = "major" placeholder = "Major" value = { userMajor } onChange = { handleMajorChange }>
+           <option value = "">None</option>
+           <option value = "B.S. Computer Science">B.S. Computer Science</option>
+           <option value = "B.S. Mechanical Engineering">B.S. Mechanical Engineering</option>
+       </select>
+
+       <p>Major Required Courses: </p>
+       <ul id = "majorRequirementsList" onLoad = { () => populateMajorRequirements() }></ul>
+
+       <p>Taken Courses: </p>
+       <ul id = "takenCoursesList" onLoad = { () => populateTakenCourses() }></ul>
+
+       <p>Add Taken Course: </p>
+       <input id = "newTakenCourseInput" placeholder = "Course Code"/>
+       <button onClick = { () => addTakenCourse() }>Add Course</button>
      </div>
     </div>
   );

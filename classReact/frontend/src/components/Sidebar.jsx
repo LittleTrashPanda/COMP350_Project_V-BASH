@@ -32,8 +32,8 @@ export default function Sidebar({ isOpen, toggle }) {
             {isOpen && <span className="link-text">Schedule</span>}
        </Link>
        <Link to="profile" className="sidebar-link">
-                   <img className="account" src={accountIcon} alt="ACCOUNT" />
-                   {isOpen && <span className="link-text">Account</span>}
+            <img className="accountIcon" src={accountIcon} alt="ACCOUNT" />
+            {isOpen && <span className="link-text">Account</span>}
        </Link>
       </nav>
     </div>
