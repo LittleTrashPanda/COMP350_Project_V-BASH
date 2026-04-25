@@ -1,22 +1,25 @@
 html {
-	background-color: #F9FEFC;
+    background-color: var(--bg);
+    width: 90vw;
 }
 
+/* Main container */
 .calendarContentContainer {
     background-color: #8E1600;
 
     display: flex;
 
-    width: 94vw;
+    width: 90vw;
 
     padding: 10px;
-    margin: 0vw;
+    margin: 0;
 
     position: absolute;
 
     border-radius: 10px;
 }
 
+/* Time marker column */
 .timeMarkers {
     width: 10vw;
     height: 134vh;
@@ -29,6 +32,7 @@ html {
     position: relative;
 }
 
+/* Horizontal time lines */
 .timeMarker {
     background-color: #000000;
     opacity: 0.5;
@@ -42,6 +46,7 @@ html {
     z-index: 5;
 }
 
+/* Time labels */
 .time {
     background: none;
     color: #F9FEFC;
@@ -60,9 +65,8 @@ html {
     position: absolute;
 }
 
+/* Calendar grid */
 .calendar {
-    background-color: #F9FEFC;
-
     display: flex;
     list-style-type: none;
 
@@ -72,11 +76,14 @@ html {
     margin-bottom: 10px;
 
     border-radius: 10px;
+
+    width: 70vw;
 }
 
+/* Each day column */
 .calendarDay {
     text-align: center;
-    color: #8E1600;
+    background-color: #8E1600;
 
     width: 10vw;
     height: 140vh;
@@ -90,13 +97,16 @@ html {
     border-radius: 10px;
 }
 
+/* Day title */
 .dayTitle {
     height: 3vh;
+    color: #F9FEFC;
 
     padding: 1vh;
     margin: 0;
 }
 
+/* Course container inside each day */
 .dayCourseTimeTable {
     background-color: #F0EAD6;
     text-align: left;
@@ -111,6 +121,7 @@ html {
     border-radius: 10px;
 }
 
+/* Course block */
 .dayCourse {
     background-color: #8E1600;
     color: #F9FEFC;
@@ -125,20 +136,27 @@ html {
     border-radius: 10px;
 }
 
+/* Course title text */
 .dayCourseTitle {
     padding: 5%;
 }
-.pdf {
-    display: none;
-}
-@media print {
-    #pdf-save.pdf {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
+
+/* Remove button */
+.removeButton {
+    background-color: #F9FEFC;
+    color: #8E1600;
+
+    border: none;
+    border-radius: 6px;
+
+    width: 80%;
+    margin: 5% 10%;
+    padding: 5px;
+
+    cursor: pointer;
+    font-weight: bold;
 }
 
-.pageLink{
-    color: rgb(139,0,0);
+.removeButton:hover {
+    background-color: #dcdcdc;
 }

@@ -1,16 +1,22 @@
 html {
-  background-color: #F9FEFC;
+  background-color: var(--bg);
 }
+
+/* GENERAL TEXT FIX — ensures all text follows the theme */
+.searchPage {
+  color: var(--text);
+}
+
 
 .divider {
   height: 2px;
-  background-color: #ccc;
+  background-color: var(--border);
   width: 100%;
 }
 
 /* COURSE LIST */
 .courseList {
-  background-color: #8E1600;
+  background-color: var(--accent);
   padding: 0;
   margin: 0;
   border-radius: 10px;
@@ -23,20 +29,20 @@ html {
 }
 
 .courseListItemContent {
-  background-color: #F9FEFC;
-  color: #8E1600;
+  background-color: var(--bg);
+  color: var(--text);
   padding: 5px 20px;
   margin: 10px;
   border-radius: 10px;
 }
 
 .calendarLink {
-  color: rgb(139,0,0);
+  color: var(--accent);
 }
 
 .searchButton {
-  background-color: rgb(139,0,0);
-  color: white;
+  background-color: var(--accent);
+  color: var(--text-h);
   padding: 6px 6px;
   border-radius: 10px;
   border: none;
@@ -58,7 +64,7 @@ html {
 }
 
 .popup {
-  background: white;
+  background: var(--bg);
   padding: 20px;
   border-radius: 10px;
   min-width: 250px;
@@ -71,55 +77,55 @@ html {
   padding: 8px 12px;
   border-radius: 6px;
   border: none;
-  background: #eee;
+  background: var(--code-bg);
   cursor: pointer;
 }
 
 .popup button:hover {
-  background: #ddd;
+  background: var(--border);
 }
 
 .close-btn {
-  background: #ff4d4d;
-  color: white;
+  background: var(--accent);
+  color: var(--text-h);
 }
 
 /*FILTERS*/
 
 .active-filters {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    align-items: flex-start;
-    gap: 10px;
-    margin: 10px 0;
-    width: 100%;
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 10px 0;
+  width: 100%;
+  align-items: center;
 }
 
-.filter-toggle{
-    display: inline-flex;
-      align-items: center;
-      background: #f1f1f1;
-      border-radius: 20px;
-      padding: 6px 10px;
-      margin-right: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      gap: 8px;
-      width: auto;
-      max-width: fit-content;
-      white-space: nowrap;
+.filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: var(--social-bg);
+  border-radius: 20px;
+  padding: 6px 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border);
+  gap: 8px;
+  width: auto;
+  max-width: fit-content;
+  white-space: nowrap;
 }
 
 /* INNER PILLS */
 .inner-pill {
   display: inline-flex;
   align-items: center;
-  background: white;
+  background: var(--bg);
   border-radius: 14px;
   padding: 3px 8px;
-  border: 1px solid #bbb;
+  border: 1px solid var(--border);
   gap: 4px;
 }
 
@@ -134,12 +140,12 @@ html {
 .parent-pill {
   display: inline-flex;
   align-items: center;
-  background: #f1f1f1;
+  background: var(--social-bg);
   border-radius: 20px;
   padding: 6px 10px;
   margin-right: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   gap: 8px;
   width: auto;
   max-width: fit-content;
@@ -174,14 +180,14 @@ html {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  background: white;
+  background: var(--bg);
   border-radius: 10px;
   overflow: hidden;
 }
 
 .results-table th {
-  background: #8E1600;
-  color: white;
+  background: var(--accent);
+  color: var(--text-h);
   padding: 10px;
   text-align: left;
   font-weight: 600;
@@ -189,20 +195,20 @@ html {
 
 .results-table td {
   padding: 10px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--text);
 }
 
 .results-table tr:nth-child(even) {
-  background: #f9f9f9;
+  background: var(--code-bg);
 }
 
 .results-table tr:hover {
-  background: #f1f1f1;
+  background: var(--social-bg);
 }
 
 .results-table button {
-  background: #8E1600;
-  color: white;
+  background: var(--accent);
+  color: var(--text-h);
   border: none;
   padding: 6px 10px;
   border-radius: 6px;
@@ -210,5 +216,5 @@ html {
 }
 
 .results-table button:hover {
-  background: #a51a00;
+  background: var(--accent-border);
 }

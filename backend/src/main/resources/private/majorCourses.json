@@ -1,0 +1,39 @@
+{ "": [
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"HUMA102","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"HUMA200","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"HUMA202","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"HUMA204","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"HUMA303","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]}
+],
+
+  "B.S. Computer Science": [
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"HUMA102","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"HUMA200","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"HUMA202","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"HUMA204","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"HUMA303","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP141","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP155","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP220","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP222","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP230","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP244","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP314","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP325","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP342","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP205","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP340","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP350","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP422","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP424","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP448","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP451","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"COMP452","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"MATH161","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"MATH162","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"MATH213","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]},
+  {"duration":[0,0,0,0,0],"courseName":"","credits":0,"courseCode":"MATH214","professors":[],"description":"","days":1,"section":"","semester":"","department":"","startTimes":[0,0,0,0,0]}
+]}
