@@ -47,6 +47,9 @@ public class User {
     private static ArrayList<Schedule> schedules = new ArrayList<Schedule>();
     private static Schedule candidateSchedule = new Schedule("default", new ArrayList<Course>(), "2025_Spring");
 
+    // User Clubs
+    private static JSONArray clubs = new JSONArray();
+
     // Create New User
     public static void createUser(String username, int passwordHash) throws IOException, ParseException {
         // Reading Existing Files
@@ -112,6 +115,12 @@ public class User {
         // Load Taken Courses
         takenCourses = new ArrayList<Course>();
         for (Object takenCourse : (JSONArray) targetUser.get("takenCourses")) { takenCourses.add(JSONToCourse((JSONObject) takenCourse)); }
+
+        // Load Clubs
+        JSONArray jsonClubs = (JSONArray) targetUser.get("clubs");
+
+        if(jsonClubs != null){clubs = jsonClubs;}
+        else{ clubs = new JSONArray();}
 
         // Load Major
         major = targetUser.get("major").toString();
@@ -186,6 +195,9 @@ public class User {
         JSONArray JSONTakenCourses = new JSONArray();
         for (Course takenCourse : takenCourses) { JSONTakenCourses.add(CourseToJSON(takenCourse)); }
         user.put("takenCourses", JSONTakenCourses);
+
+        // Add Clubs
+        user.put("clubs", clubs);
 
         // Add Major
         user.put("major", major);
@@ -337,6 +349,31 @@ public class User {
 
         return out.toString();
     }
+
+    public static JSONArray ClubsToJSON(ArrayList<String> clubs){
+        JSONArray toReturn = new JSONArray();
+
+        for(String club : clubs){
+            toReturn.add(club);
+        }
+        return toReturn;
+    }
+
+    public static ArrayList<String> JSONToClubs(JSONArray jsonClubs){
+        ArrayList<String> toReturn = new ArrayList<>();
+        for(Object club : jsonClubs){
+            toReturn.add(club.toString());
+        }
+        return toReturn;
+    }
+
+    public static void setClubs(JSONArray newClubs){
+        clubs = newClubs;
+    }
+    public static JSONArray getClubs(){
+        return clubs;
+    }
+
 
     // Legacy
     /*
