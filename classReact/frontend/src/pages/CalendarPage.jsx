@@ -5,6 +5,12 @@ export default function CalendarPage() {
     const [courses, setCourses] = useState([]);
     const [saveName, setSaveName] = useState("");
     const [loadName, setLoadName] = useState("");
+    const [deleteName, setDeleteName] = useState("");
+
+    const generatePDF = () => {
+      const element = document.getElementById("calendar-container");
+      window.html2pdf().from(element).save();
+    };
 
     useEffect(() => {
         loadCalendar();
@@ -28,7 +34,8 @@ export default function CalendarPage() {
         const result = await res.json();
         alert(result.message);
 
-        if (result.success) loadCalendar();
+        if (result.success)
+        loadCalendar();
     }
 
     async function saveSchedule() {
@@ -38,6 +45,12 @@ export default function CalendarPage() {
         });
 
         await fetch("/saveSchedule", { method: "POST" });
+
+        // Add the saved name to the load dropdown
+        const select = document.getElementById("loadScheduleName");
+        select.add(new Option(saveName, saveName));
+
+        loadCalendar();
     }
 
     async function loadSchedule() {
@@ -47,6 +60,44 @@ export default function CalendarPage() {
         });
 
         loadCalendar();
+    }
+
+    async function asPDF() {
+        const courseTime = await fetch("/getTimes", { method: "GET" });
+        const times = await courseTime.text();
+
+        const bodyText = document.getElementById("pdf-text");
+        bodyText.innerText = times;
+
+        const element = document.getElementById("pdf-save");
+
+        const options = {
+            margin: 10,
+            filename: "advisor-please-approve-this.pdf",
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+        };
+
+        await window.html2pdf().set(options).from(element).save();
+    }
+
+    async function deleteSchedule() {
+        await fetch("/deleteSchedule", {
+            method: "POST",
+            body: JSON.stringify(deleteName)
+        });
+
+        loadCalendar();
+    }
+
+    function addNewOption() {
+        const select = document.getElementById("loadScheduleName");
+        const text = document.getElementById("newItemText").value;
+
+        if (!text.trim()) return;
+
+        select.add(new Option(text, text));
     }
 
     async function resetSchedule() {
@@ -68,9 +119,10 @@ export default function CalendarPage() {
         <div className="calendarPage">
 
             <h1>Calendar</h1>
-            <a href="/">Home</a>
 
             <div className="controls">
+
+                {/* Save Schedule */}
                 <input
                     id="saveScheduleName"
                     placeholder="Save Schedule by Name"
@@ -79,15 +131,39 @@ export default function CalendarPage() {
                 />
                 <button id="saveSchedule" onClick={saveSchedule}>Save</button>
 
-                <input
+                {/* Load Schedule Dropdown */}
+                <label htmlFor="loadScheduleName">Choose yo name</label>
+                <select
+                    name="Names"
                     id="loadScheduleName"
-                    placeholder="Load Schedule by Name"
                     value={loadName}
                     onChange={(e) => setLoadName(e.target.value)}
+                >
+                    {/* Options added dynamically */}
+                </select>
+
+                {/* Add Option */}
+                <input
+                    type="text"
+                    id="newItemText"
+                    placeholder="New option text"
                 />
+                <button onClick={addNewOption}>Add Option</button>
+
+                {/* Load */}
                 <button id="loadSchedule" onClick={loadSchedule}>Load</button>
 
-                <button id="clearSchedule" onClick={resetSchedule}>Clear Schedule</button>
+                {/* Delete */}
+                <button id="deleteSchedule" onClick={deleteSchedule}>Delete Schedule</button>
+
+                {/* PDF */}
+                <button onClick={generatePDF}>Download PDF</button>
+
+                <div id="pdf-save" className="pdf" style={{ display: "none" }}>
+                    <h1>Schedule</h1>
+                    <p id="pdf-text">test</p>
+                </div>
+
             </div>
 
             <div className="calendarContentContainer">
