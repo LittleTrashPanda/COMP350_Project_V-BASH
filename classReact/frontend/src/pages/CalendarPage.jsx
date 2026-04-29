@@ -7,10 +7,6 @@ export default function CalendarPage() {
     const [loadName, setLoadName] = useState("");
     const [deleteName, setDeleteName] = useState("");
 
-    const generatePDF = () => {
-      const element = document.getElementById("calendar-container");
-      window.html2pdf().from(element).save();
-    };
 
     useEffect(() => {
         loadCalendar();
@@ -157,8 +153,9 @@ export default function CalendarPage() {
                 <button id="deleteSchedule" onClick={deleteSchedule}>Delete Schedule</button>
 
                 {/* PDF */}
-                <button onClick={generatePDF}>Download PDF</button>
+                <button id="generatePDF" onClick={asPDF}>Save as PDF</button>
 
+                {/* Hidden PDF container */}
                 <div id="pdf-save" className="pdf" style={{ display: "none" }}>
                     <h1>Schedule</h1>
                     <p id="pdf-text">test</p>
