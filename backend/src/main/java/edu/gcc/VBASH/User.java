@@ -341,10 +341,43 @@ public class User {
     public static String getTimes() throws IOException {
         StringBuilder out = new StringBuilder();
         ArrayList<Course> courses = candidateSchedule.getCourses();
+        String day = "MTWRF";
         for(int i = 0; i<courses.size(); i++){
-            int sTime = courses.get(i).getStartTimes()[0];
-            int eTime = courses.get(i).getStartTimes()[1];
-            out.append(sTime + " - " + eTime + "\n");
+            StringBuilder dayoweek = new StringBuilder();
+            for (int j = 0; j < day.length(); j++){
+                if(courses.get(i).getStartTimes()[j] != 0)
+                    dayoweek.append(day.charAt(j));
+            }
+            System.out.println("MADE IT");
+
+            int sTime = 0;
+            int eTime = 0;
+
+            if (dayoweek.toString().contains("M") || dayoweek.toString().contains("W")||dayoweek.toString().contains("F")){
+                for(int j = 0; j <day.length();j++){
+                    if(courses.get(i).getStartTimes()[j] != 0){
+                        sTime = courses.get(i).getStartTimes()[j] % 60;
+                        eTime = sTime + 50;
+                        j = day.length();
+                    }
+                }
+            }
+            else{
+                for(int j = 0; j <day.length();j++){
+                    if(courses.get(i).getStartTimes()[j] != 0){
+                        sTime = courses.get(i).getStartTimes()[j] %60;
+                        eTime = sTime + 115;
+                        j = day.length();
+                    }
+                }
+            }
+            String name = courses.get(i).getCourseName() + ": ";
+
+            System.out.println(name);
+            System.out.println(sTime);
+            System.out.println(eTime);
+            System.out.println(dayoweek);
+            out.append(name + sTime + " - " + eTime + " " + dayoweek + "\n");
         }
 
         return out.toString();

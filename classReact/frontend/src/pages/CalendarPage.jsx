@@ -67,15 +67,20 @@ export default function CalendarPage() {
 
         const element = document.getElementById("pdf-save");
 
+
+        element.style.display = "block";
+
         const options = {
             margin: 10,
             filename: "advisor-please-approve-this.pdf",
             image: { type: "jpeg", quality: 0.98 },
-            html2canvas: { scale: 2 },
+            html2canvas: { scale: 2, useCORS: true},
             jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
         };
 
         await window.html2pdf().set(options).from(element).save();
+        element.style.display = "none";
+
     }
 
     async function deleteSchedule() {
