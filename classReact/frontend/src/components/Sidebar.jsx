@@ -5,7 +5,7 @@ import calendarIcon from '../assets/calendarIcon.png';
 import searchIcon from '../assets/searchIcon.png';
 import scheduleIcon from '../assets/scheduleIcon.png';
 import accountIcon from '../assets/accountIcon.png';
-
+import clubIcon from '../assets/clubIcon.png';
 
 export default function Sidebar({ isOpen, toggle }) {
   return (
@@ -31,10 +31,13 @@ export default function Sidebar({ isOpen, toggle }) {
             <img className="scheduleIcon" src={scheduleIcon} alt="SCHEDULE" />
             {isOpen && <span className="link-text">Schedule</span>}
        </Link>
-       <Link to="/clubs">Clubs</Link>
+       <Link to="/clubs" className="sidebar-link">
+            <img className="clubIcon" src={clubIcon} alt="CLUB" />
+            {isOpen && <span className="link-text">Schedule</span>}
+       </Link>
        <Link to="profile" className="sidebar-link">
             <img className="accountIcon" src={accountIcon} alt="ACCOUNT" />
-            {isOpen && <span className="link-text">Account</span>}
+            {isOpen && <span className="profile-link-text">Account</span>}
        </Link>
       </nav>
     </div>
