@@ -88,7 +88,6 @@ html {
 .calendarDay {
     text-align: center;
     background-color: var(--sidebar-bg);
-
     width: 10vw;
     height: 140vh;
 

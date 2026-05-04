@@ -16,7 +16,11 @@ html {
 
     border-radius: 10px;
 }
-
+#pdf-save {
+    position: fixed;
+    top: -9999px;
+    left: -9999px;
+    width: 210mm;}
 .timeMarkers {
     width: 10vw;
     height: 134vh;
