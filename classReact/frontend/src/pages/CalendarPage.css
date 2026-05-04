@@ -3,9 +3,13 @@ html {
     width: 90vw;
 }
 
+.calendarTitle{
+  color: var(--text);
+}
+
 /* Main container */
 .calendarContentContainer {
-    background-color: #8E1600;
+    background-color: var(--sidebar-bg);
 
     display: flex;
 
@@ -34,7 +38,7 @@ html {
 
 /* Horizontal time lines */
 .timeMarker {
-    background-color: #000000;
+    background-color: var(--text);
     opacity: 0.5;
 
     width: calc(20px + 10vh + 50vw);
@@ -49,7 +53,7 @@ html {
 /* Time labels */
 .time {
     background: none;
-    color: #F9FEFC;
+    color: var(--sidebar-text);
     opacity: 1;
 
     width: 3vw;
@@ -83,7 +87,7 @@ html {
 /* Each day column */
 .calendarDay {
     text-align: center;
-    background-color: #8E1600;
+    background-color: var(--sidebar-bg);
 
     width: 10vw;
     height: 140vh;
@@ -100,7 +104,7 @@ html {
 /* Day title */
 .dayTitle {
     height: 3vh;
-    color: #F9FEFC;
+    color: var(--sidebar-text);
 
     padding: 1vh;
     margin: 0;
@@ -108,7 +112,7 @@ html {
 
 /* Course container inside each day */
 .dayCourseTimeTable {
-    background-color: #F0EAD6;
+    background-color: var(--code-bg);
     text-align: left;
 
     height: 134vh;
@@ -123,8 +127,8 @@ html {
 
 /* Course block */
 .dayCourse {
-    background-color: #8E1600;
-    color: #F9FEFC;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
 
     width: 100%;
 
@@ -143,8 +147,8 @@ html {
 
 /* Remove button */
 .removeButton {
-    background-color: #F9FEFC;
-    color: #8E1600;
+    background-color:  var(--sidebar-text);
+    color: var(--accent);
 
     border: none;
     border-radius: 6px;
@@ -158,5 +162,5 @@ html {
 }
 
 .removeButton:hover {
-    background-color: #dcdcdc;
+    background-color: var(--accent-border);
 }

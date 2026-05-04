@@ -67,7 +67,7 @@ export default function CalendarPage() {
     return (
         <div className="calendarPage">
 
-            <h1>Calendar</h1>
+            <h1 className = "calendarTitle">Calendar</h1>
             <a href="/">Home</a>
 
             <div className="controls">
