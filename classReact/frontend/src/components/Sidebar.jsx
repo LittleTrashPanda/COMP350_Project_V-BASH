@@ -31,6 +31,7 @@ export default function Sidebar({ isOpen, toggle }) {
             <img className="scheduleIcon" src={scheduleIcon} alt="SCHEDULE" />
             {isOpen && <span className="link-text">Schedule</span>}
        </Link>
+       <Link to="/clubs">Clubs</Link>
        <Link to="profile" className="sidebar-link">
             <img className="accountIcon" src={accountIcon} alt="ACCOUNT" />
             {isOpen && <span className="link-text">Account</span>}
