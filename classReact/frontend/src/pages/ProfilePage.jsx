@@ -17,7 +17,7 @@ export default function ProfilePage() {
   };
 
   const [selectedTheme, setSelectedTheme] = useState(() => {
-    return localStorage.getItem("theme") || "light";
+    return localStorage.getItem("theme") || "gcc";
   });
 
     const [userMajor, setUserMajor] = useState("");
