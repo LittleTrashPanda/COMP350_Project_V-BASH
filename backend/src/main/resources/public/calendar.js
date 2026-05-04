@@ -2,6 +2,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
 	document.getElementById("semesterButton").addEventListener("click", setSemester);
 
+//PDF
     document.getElementById("saveSchedule").addEventListener("click", saveSchedule);
     document.getElementById("loadSchedule").addEventListener("click", loadSchedule);
     document.getElementById("deleteSchedule").addEventListener("click", deleteSchedule);
@@ -159,6 +160,7 @@ async function removeCourse(course) {
 
 }
 
+//PDF
 async function asPDF(){
     const initialize = document.getElementById("generatePDF").value;
     const courseTime = await fetch ("/getTimes", {method: "GET"})
@@ -175,7 +177,6 @@ async function asPDF(){
     };
 
     html2pdf().set(options).from(element).save();
-
 }
 
 async function saveSchedule() {
