@@ -7,6 +7,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 import SchedulePage from "./pages/SchedulePage.jsx";
+import ClubsPage from "./pages/ClubsPage.jsx";
 import ProtectedRoute from "./firebase/ProtectedRoute.jsx";
 import { themes } from "./themes";
 import { auth } from "./firebase/firebase";
@@ -85,6 +86,16 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+
+            <Route
+              path="/clubs"
+              element={
+                <ProtectedRoute>
+                  <ClubsPage />
+                </ProtectedRoute>
+              }
+            />
+
         </Routes>
       </div>
     </>
