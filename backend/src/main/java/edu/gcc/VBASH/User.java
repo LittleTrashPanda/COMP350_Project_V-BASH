@@ -139,6 +139,9 @@ public class User {
         // Load Schedule Courses
         for (Object course : (JSONArray) JSONSchedule.get("courses")) { toReturn.addCourse(JSONToCourse((JSONObject) course)); }
 
+        // Load Current Semester
+        toReturn.setSemester(JSONSchedule.get("currentSemester").toString());
+
         // Return Schedule
         return toReturn;
     }
@@ -187,6 +190,9 @@ public class User {
         JSONObject user = (JSONObject) allUsers.get(username);
 
         // Add Schedules
+        for (Schedule schedule : schedules) { if (Objects.equals(candidateSchedule.getName(), schedule.getName())) { schedules.remove(schedule); break; } }
+        schedules.add(candidateSchedule);
+
         JSONObject JSONSchedules = new JSONObject();
         for (Schedule schedule : schedules) { JSONSchedules.put(schedule.getName(), ScheduleToJSON(schedule)); }
         user.put("schedules", JSONSchedules);
@@ -219,8 +225,12 @@ public class User {
         toReturn.put("name", schedule.getName());
 
         // Add Courses
-        JSONArray classes = new JSONArray();
-        for (Course course : schedule.getCourses()) { classes.add(CourseToJSON(course)); }
+        JSONArray courses = new JSONArray();
+        for (Course course : schedule.getCourses()) { courses.add(CourseToJSON(course)); }
+        toReturn.put("courses", courses);
+
+        // Add Current Semester
+        toReturn.put("currentSemester", schedule.getSemester());
 
         // Return Schedule
         return toReturn;
@@ -328,7 +338,11 @@ public class User {
     // Retrieving, Deleting, and Saving Schedules
     public static Schedule getCurrentSchedule() { return candidateSchedule; }
 
-    public static ArrayList<Schedule> getSchedules() { return schedules; }
+    public static ArrayList<String> getSchedules() {
+        ArrayList<String> toReturn = new ArrayList<String>();
+        for (Schedule schedule : schedules) { toReturn.add(schedule.getName()); }
+        return toReturn;
+    }
 
     public static void loadSchedule(String scheduleName) { for (Schedule schedule : schedules) { if (schedule.getName().equals(scheduleName)) { candidateSchedule = schedule; } } }
 

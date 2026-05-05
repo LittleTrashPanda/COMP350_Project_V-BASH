@@ -28,7 +28,7 @@ public class Main {
         });
 
         // Set Search Filters
-        app.put("/searchFilter", ctx -> {
+        app.put("/search/filter", ctx -> {
             Filter providedFilter = ctx.bodyAsClass(Filter.class);
             Search.setFilter(providedFilter);
             ctx.status(201);
@@ -36,10 +36,10 @@ public class Main {
 
 
         // Retrieve Open Schedule
-        app.get("/calendar", ctx -> ctx.json(User.getCurrentSchedule().getCurrentCourses()));
+        app.get("/user/calendar", ctx -> ctx.json(User.getCurrentSchedule().getCurrentCourses()));
 
         // Set Semester for Open Schedule
-        app.put("/currentSemester", ctx -> User.getCurrentSchedule().setSemester(ctx.body()));
+        app.put("/semester", ctx -> User.getCurrentSchedule().setSemester(ctx.body()));
 
 
         // Add Course to Schedule
@@ -116,11 +116,13 @@ public class Main {
             User.saveUserData();
         });
 
+        app.get("/user/schedules", ctx -> ctx.json(User.getSchedules()));
+
         // Save the Open Schedule
         app.post("/schedule/save", ctx -> { User.saveUserData(); });
 
         // Load a Saved Schedule
-        app.get("/schedule", ctx -> {
+        app.put("/schedule/current", ctx -> {
             User.saveUserData();
             User.loadSchedule(ctx.body());
             ctx.status(201);

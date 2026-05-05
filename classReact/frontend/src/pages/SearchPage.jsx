@@ -39,7 +39,7 @@ export default function SearchPage() {
 
   useEffect(() => {
     async function loadSchedule() {
-      const res = await fetch("/calendar");
+      const res = await fetch("/user/calendar");
       const data = await res.json();
       setScheduledCourses(data);
     }
@@ -81,7 +81,7 @@ export default function SearchPage() {
         body: keySearchTerms
     });
 
-    await fetch("/searchFilter", {
+    await fetch("/search/filter", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(filter)
@@ -166,7 +166,7 @@ export default function SearchPage() {
     async function changeCurrentSemester() {
         const currentSemester = document.getElementById("currentSemester");
         console.log(currentSemester);
-        await fetch("/currentSemester", {
+        await fetch("/semester", {
             method: "PUT",
             headers: { "Content-Type": "text/plain"},
             body: currentSemester.value

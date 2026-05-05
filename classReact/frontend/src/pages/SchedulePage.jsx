@@ -5,13 +5,14 @@ export default function SchedulePage() {
   const [schedule, setSchedule] = useState([]);
 
   useEffect(() => {
+    loadSchedule();
+  }, []);
+
     async function loadSchedule() {
-      const res = await fetch("/calendar");
+      const res = await fetch("/user/calendar");
       const data = await res.json();
       setSchedule(data);
     }
-    loadSchedule();
-  }, []);
 
   function formatTime(minutes) {
     if (minutes == null) return "—";

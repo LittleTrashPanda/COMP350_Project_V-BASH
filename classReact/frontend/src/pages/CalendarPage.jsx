@@ -4,10 +4,10 @@ import "./CalendarPage.css";
 export default function CalendarPage() {
     const [courses, setCourses] = useState([]);
     const [saveName, setSaveName] = useState("");
-    const [loadName, setLoadName] = useState("");
     const [deleteName, setDeleteName] = useState("");
 
     const [currentSemester, setCurrentSemester] = useState("");
+    const [currentSchedule, setCurrentSchedule] = useState("");
 
 
     useEffect(() => {
@@ -15,9 +15,16 @@ export default function CalendarPage() {
     }, []);
 
     async function loadCalendar() {
-        const res = await fetch("/calendar");
+        const res = await fetch("/user/calendar");
         const data = await res.json();
         setCourses(data);
+
+        const temp = await fetch("/user/schedules");
+        const names = await temp.json();
+
+        const scheduleList = document.getElementById("loadScheduleName");
+        scheduleList.innerHTML = "";
+        names.forEach(name => scheduleList.add(new Option(name, name)));
     }
 
     async function removeCourse(course) {
@@ -52,10 +59,16 @@ export default function CalendarPage() {
     }
 
     async function loadSchedule() {
-        await fetch("/schedule", {
-            method: "GET",
-            body: JSON.stringify(loadName)
+        await fetch("/schedule/current", {
+            method: "PUT",
+            body: JSON.stringify(currentSchedule)
         });
+
+        loadCalendar();
+    }
+
+    async function newSchedule() {
+        const res = await fetch("/schedule", { method: "POST" });
 
         loadCalendar();
     }
@@ -108,6 +121,39 @@ export default function CalendarPage() {
         loadCalendar();
     }
 
+    const handleCurrentSemesterChange = (e) => {
+        console.log("hello");
+        changeCurrentSemester()
+        setCurrentSemester(e.target.value)
+    }
+
+    const handleScheduleChange = (e) => {
+        changeCurrentSchedule(e.target.value)
+        setCurrentSchedule(e.target.value)
+    }
+
+    async function changeCurrentSemester() {
+        const currentSemester = document.getElementById("currentSemester");
+        console.log(currentSemester);
+        await fetch("/semester", {
+            method: "PUT",
+            headers: { "Content-Type": "text/plain"},
+            body: currentSemester.value
+        });
+
+        loadCalendar();
+    }
+
+    async function changeCurrentSchedule(name) {
+        await fetch("/schedule/current", {
+            method: "PUT",
+            headers: { "Content-Type": "text/plain"},
+            body: name
+        });
+
+        loadCalendar();
+    }
+
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
     const divisors = [2, 3, 5, 7, 11];
 
@@ -145,26 +191,16 @@ export default function CalendarPage() {
                 <button id="saveSchedule" onClick={saveSchedule}>Save</button>
 
                 {/* Load Schedule Dropdown */}
-                <label htmlFor="loadScheduleName">Choose yo name</label>
-                <select
-                    name="Names"
-                    id="loadScheduleName"
-                    value={loadName}
-                    onChange={(e) => setLoadName(e.target.value)}
-                >
+                <label htmlFor="loadScheduleName">Schedules</label>
+                <select id ="loadScheduleName" value = { currentSchedule } onChange={ handleScheduleChange }>
                     {/* Options added dynamically */}
                 </select>
 
-                {/* Add Option */}
-                <input
-                    type="text"
-                    id="newItemText"
-                    placeholder="New option text"
-                />
-                <button onClick={addNewOption}>Add Option</button>
-
                 {/* Load */}
                 <button id="loadSchedule" onClick={loadSchedule}>Load</button>
+
+                {/* New Schedule */}
+                <button id="newSchedule" onClick={newSchedule}>New Schedule</button>
 
                 {/* Delete */}
                 <button id="deleteSchedule" onClick={deleteSchedule}>Delete Schedule</button>
