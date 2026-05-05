@@ -90,9 +90,4 @@
     bottom: 0;
 }
 
-.profile-sidebar-link:hover {
-  background-color: var(--sidebar-hover);
-  display: flex;
-  position: fixed;
-  bottom: 0;
-}
+

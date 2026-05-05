@@ -46,6 +46,19 @@ export default function SearchPage() {
     loadSchedule();
   }, []);
 
+  useEffect(() => {
+    searchCourses();
+  }, [
+    keySearchTerms,
+    departments,
+    professors,
+    credits,
+    days,
+    startTime,
+    endTime,
+    courseCode
+  ]);
+
   function computeDaysValue() {
     let value = 1;
     if (days.M) value *= 2;
@@ -57,23 +70,27 @@ export default function SearchPage() {
   }
 
   async function searchCourses() {
-
-//     const daysValue = computeDaysValue();
-
     setCourses([]);
 
     const validTime = startTime && endTime && endTime > startTime;
 
-    const filter = {
-      department: departments[0] || "",
-      professor: professors[0] || "",
-      courseCode: courseCode || "",
-      credits: credits >= 0 ? credits : -1,
-      days: computeDaysValue(),
-      startTimes: validTime ? Array(5).fill(startTime) : null,
-      duration: validTime ? Array(5).fill(endTime - startTime) : null,
-      // semester: semester || ""
-    };
+    const allResults = [];
+
+    const deptList = departments.length > 0 ? departments : [""];
+    const profList = professors.length > 0 ? professors : [""];
+
+    for (const dept of deptList) {
+      for (const prof of profList) {
+
+        const filter = {
+          department: dept,
+          professor: prof,
+          courseCode: courseCode || "",
+          credits: credits >= 0 ? credits : -1,
+          days: computeDaysValue(),
+          startTimes: validTime ? Array(5).fill(startTime) : null,
+          duration: validTime ? Array(5).fill(endTime - startTime) : null,
+        };
 
     await fetch("/keySearchTerm",{
         method: "PUT",
@@ -87,10 +104,27 @@ export default function SearchPage() {
         body: JSON.stringify(filter)
     });
 
-    const res = await fetch("/search");
-    const data = await res.json();
-    setCourses(data);
-  }
+        const res = await fetch("/search");
+        const data = await res.json();
+
+        allResults.push(...data);
+      }
+    }
+
+    // remove duplicates
+    const unique = [];
+    const seen = new Set();
+
+    for (const c of allResults) {
+      const key = c.courseCode + c.section + c.semester;
+      if (!seen.has(key)) {
+        seen.add(key);
+        unique.push(c);
+      }
+    }
+
+    setCourses(unique);
+              }
 
   async function addCourse(course) {
        const temp = course;
