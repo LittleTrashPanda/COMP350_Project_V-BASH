@@ -39,7 +39,7 @@ export default function SearchPage() {
 
   useEffect(() => {
     async function loadSchedule() {
-      const res = await fetch("/loadCalendar");
+      const res = await fetch("/calendar");
       const data = await res.json();
       setScheduledCourses(data);
     }
@@ -75,14 +75,14 @@ export default function SearchPage() {
       // semester: semester || ""
     };
 
-    await fetch("/keySearchTerms",{
-        method: "POST",
+    await fetch("/keySearchTerm",{
+        method: "PUT",
         headers: { "Content-Type": "text/plain"},
         body: keySearchTerms
     });
 
-    await fetch("/setFilters", {
-        method: "POST",
+    await fetch("/searchFilter", {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(filter)
     });
@@ -97,7 +97,7 @@ export default function SearchPage() {
        delete temp.backgroundColor;
        delete temp.textColor;
 
-    const res = await fetch("/addCourse", {
+    const res = await fetch("/course", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(temp),
@@ -128,8 +128,8 @@ export default function SearchPage() {
     delete temp.backgroundColor;
     delete temp.textColor;
 
-    const res = await fetch("/removeCourse", {
-      method: "POST",
+    const res = await fetch("/course", {
+      method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(temp),
     });
@@ -147,8 +147,8 @@ export default function SearchPage() {
        delete temp.backgroundColor;
        delete temp.textColor;
 
-    const res = await fetch("/replaceCourse", {
-      method: "POST",
+    const res = await fetch("/course", {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(temp),
     });
@@ -160,13 +160,14 @@ export default function SearchPage() {
     const handleCurrentSemesterChange = (e) => {
         console.log("hello");
         changeCurrentSemester()
+        setCurrentSemester(e.target.value)
     }
 
     async function changeCurrentSemester() {
         const currentSemester = document.getElementById("currentSemester");
         console.log(currentSemester);
-        await fetch("/setCurrentSemester", {
-            method: "POST",
+        await fetch("/currentSemester", {
+            method: "PUT",
             headers: { "Content-Type": "text/plain"},
             body: currentSemester.value
         });
@@ -465,7 +466,7 @@ function hasSameCourseCode(course) {
             );
 
             return (
-              <tr style={{ color: course.textColor, backgroundColor: course.backgroundColor }} key={`${course.courseCode + course.section || "code"}-${course.semester || "sem"}`}>
+              <tr style={{ color: "var(" + course.textColor + ")", backgroundColor: "var(" + course.backgroundColor + ")" }} key={`${course.courseCode + course.section || "code"}-${course.semester || "sem"}`}>
                 <td>{course.courseName} ({course.courseCode})</td>
                 <td>{course.professors.join(", ")}</td>
                 <td>{formatTime(course.startTimes.find(t => t > 0))}</td>

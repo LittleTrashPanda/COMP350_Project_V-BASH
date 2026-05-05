@@ -6,7 +6,7 @@ export default function SchedulePage() {
 
   useEffect(() => {
     async function loadSchedule() {
-      const res = await fetch("/loadCalendar");
+      const res = await fetch("/calendar");
       const data = await res.json();
       setSchedule(data);
     }

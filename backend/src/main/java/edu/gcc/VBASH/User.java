@@ -293,6 +293,8 @@ public class User {
     // Set Major
     public static void setMajor(String newMajor) { major = newMajor; }
 
+    public static String getMajor() { return major; }
+
     // Check if Major Requirement
     public static boolean isMajorRequirement(Course course) {
         for (Course majorRequirement : majorCourses) { if (Objects.equals(majorRequirement.getCourseCode(), course.getCourseCode())) { return true; } }
@@ -348,7 +350,6 @@ public class User {
                 if(courses.get(i).getStartTimes()[j] != 0)
                     dayoweek.append(day.charAt(j));
             }
-            System.out.println("MADE IT");
 
             int sTime = 0;
             int eTime = 0;

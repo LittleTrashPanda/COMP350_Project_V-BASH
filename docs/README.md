@@ -8,10 +8,16 @@ If the process has not automatically begun, first load the Gradle project so as 
 
 To initialize this project, navigate to the Main class in backend/src/main/java/edu.gcc.VBASH/Main.java and click the run button.
 
-Once the Javalin header has appeared in the terminal, open a web browser of your choice and go to http://localhost:7000/, this is the 'Search' page.
+To initialize the frontend, navigate to ...\frontend in the terminal and run the command npm run dev.
 
-Click on the 'Calendar' link in the top left corner, this will take you to the 'Calendar' page, where the 'Home' link will take you back to the 'Search' page. 
-In order to run the code, first run cd .. then do cd "C:\Users\DEALSE23\Comp 350A\COMP350_Project_V-BASH\classReact\frontend" then run npm run dev
+Once the Javalin header has appeared in the terminal, open a web browser of your choice and go to http://localhost:5173/, this is the 'Search' page.
+
+Click on the 'Calendar' icon on the left, this will take you to the 'Calendar' page, where the 'Magnifying Glass' icon will take you back to the 'Search' page. 
+
+Click on the 'User' icon on the bottom left, this will take you to a 'Log In' page where you can log in by putting in your email and password and clicking the 'Log In' button, or create an account through navigating via the 'Create Account' button.
+
+After logging in or creating a new account, you will be taken to the 'Profile' page, here you can input your major, add taken courses, and change the theme of the product.
+
 ---
 
 ## 🚀 MVP Requirements

@@ -72,7 +72,7 @@ public class Schedule {
 
     public void setName(String newName) { if (!newName.isEmpty()) { name = newName; } }
 
-    public static Course getCourse(String cCode) throws IOException, ParseException {
+    /* public static Course getCourse(String cCode) throws IOException, ParseException {
         Search search = new Search();
         ArrayList<String> tempList = new ArrayList<>();
         tempList.add(cCode);
@@ -80,11 +80,8 @@ public class Schedule {
         Iterable<Course> temp = search.search();
         //unless smth goes wrong, the code above should only return one class
         return temp.iterator().next();
-    }
+    } */
 
     public String getSemester() { return currentSemester; }
-    public void setSemester(String currentSemester) {
-        System.out.print(currentSemester);
-        this.currentSemester = currentSemester;
-    }
+    public void setSemester(String currentSemester) { this.currentSemester = currentSemester; }
 }

@@ -34,7 +34,7 @@ export default function SignupPage() {
       return;
     }
 
-    await fetch("/userCreation",{
+    await fetch("/user",{
         method: "POST",
         headers: { "Content-Type": "text/plain"},
         body: email
