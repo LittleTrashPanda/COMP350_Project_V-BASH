@@ -121,7 +121,7 @@ export default function CalendarPage() {
     return (
         <div className="calendarPage">
 
-            <h1>Calendar</h1>
+            <h1 className = "calendarTitle">Calendar</h1>
 
             <p>Selected Semester</p>
                 <select id = "currentSemester" value = { currentSemester } onChange = { handleCurrentSemesterChange }>

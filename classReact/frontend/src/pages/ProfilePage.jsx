@@ -24,9 +24,9 @@ export default function ProfilePage() {
         await signOut(auth);
     };
 
-    const [selectedTheme, setSelectedTheme] = useState(() => {
-        return localStorage.getItem("theme") || "light";
-    });
+  const [selectedTheme, setSelectedTheme] = useState(() => {
+    return localStorage.getItem("theme") || "gcc";
+  });
 
     const [userMajor, setUserMajor] = useState("");
 
