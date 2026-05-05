@@ -10,17 +10,16 @@ export default function ClubsPage() {
   const [endTime, setEndTime] = useState("");
   const [clubs, setClubs] = useState([]);
 
-  // ✅ Load saved clubs on page load (replaces loadClubs())
+  const loadClubs = async () => {
+        const res = await fetch("/loadClubs");
+        const data = await res.json();
+        setClubs(data);
+      };
+
   useEffect(() => {
-    async function loadClubs() {
-      const res = await fetch("/loadClubs");
-      const data = await res.json();
-      setClubs(data);
-    }
     loadClubs();
   }, []);
 
-  // ✅ Toggle meeting days (replaces querySelectorAll logic)
   const toggleDay = (day) => {
     setMeetingDays((prev) =>
       prev.includes(day)
@@ -29,8 +28,7 @@ export default function ClubsPage() {
     );
   };
 
-  // ✅ Add club (replaces addClub())
-  const handleEnter = () => {
+  const handleEnter = async () => {
     const clubName = clubInput || selectedClub;
     if (!clubName) return;
 
@@ -44,36 +42,36 @@ export default function ClubsPage() {
       return;
     }
 
-    setClubs((prev) => [
-      ...prev,
-      {
+    const newClub = {
         name: clubName,
         days: meetingDays,
         startTime,
         endTime,
-      },
-    ]);
+        };
+
+    const updated = [...clubs, newClub];
+    setClubs(updated);
+    await saveClubs(updated);
 
     setClubInput("");
     setSelectedClub("");
     setMeetingDays([]);
     setStartTime("");
     setEndTime("");
-  };
+    };
 
-  // ✅ Delete club (replaces deleteClub())
-  const deleteClub = (name) => {
-    setClubs((prev) => prev.filter((c) => c.name !== name));
-  };
+  const deleteClub = async (name) => {
+      const updated = clubs.filter(c => c.name !== name);
+      setClubs(updated);
+      await saveClubs(updated);
+      };
 
-  // ✅ Save clubs (replaces saveClubs())
-  const saveClubs = async () => {
+  const saveClubs = async (clubsToSave = clubs) => {
     await fetch("/saveClubs", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(clubs),
+      body: JSON.stringify(clubsToSave),
     });
-    alert("Clubs saved.");
+    await loadClubs();
   };
 
   return (
@@ -256,8 +254,6 @@ export default function ClubsPage() {
           </li>
         ))}
       </ul>
-
-      <button onClick={saveClubs}>SAVE</button>
     </div>
   );
 }
