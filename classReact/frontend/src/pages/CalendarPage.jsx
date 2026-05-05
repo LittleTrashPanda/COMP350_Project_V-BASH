@@ -142,15 +142,6 @@ export default function CalendarPage() {
                 >
                     {/* Options added dynamically */}
                 </select>
-
-                {/* Add Option */}
-                <input
-                    type="text"
-                    id="newItemText"
-                    placeholder="New option text"
-                />
-                <button onClick={addNewOption}>Add Option</button>
-
                 {/* Load */}
                 <button id="loadSchedule" onClick={loadSchedule}>Load</button>
 
