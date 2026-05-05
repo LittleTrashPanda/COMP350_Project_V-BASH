@@ -78,12 +78,6 @@ export default function ClubsPage() {
     <div className="clubs-page">
       <h1>Clubs</h1>
 
-      <div>
-        <Link to="/" className="indexLink">
-          Home
-        </Link>
-      </div>
-
       <input
         placeholder="Enter Club..."
         value={clubInput}
