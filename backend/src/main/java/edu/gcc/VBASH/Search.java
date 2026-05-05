@@ -29,7 +29,6 @@ public class Search {
 
     // Retrieving Courses
     public static JSONArray search() throws IOException, ParseException {
-        System.out.println("hello there");
         ArrayList<Course> queryResults = new ArrayList<Course>();
 
         // Use Previous Search as Basis
@@ -67,25 +66,25 @@ public class Search {
                 JSONObject temp = User.CourseToJSON(course);
 
                 // Default Color
-                temp.put("backgroundColor", "#F9FEFC");
-                temp.put("textColor", "#8E1600");
+                temp.put("backgroundColor", "--bg");
+                temp.put("textColor", "#--text");
 
                 // Is a Major Requirement
                 if (User.isMajorRequirement(course)) {
-                    temp.replace("backgroundColor", "#C26969");
-                    temp.put("textColor", "#F9FEFC");
+                    temp.replace("backgroundColor", "--code-bg");
+                    temp.put("textColor", "--accent");
                 }
 
                 // Is Being Taken
                 if (User.isInCurrentSchedule(course)) {
-                    temp.replace("backgroundColor", "#5C3232");
-                    temp.put("textColor", "#F9FEFC");
+                    temp.replace("backgroundColor", "--accent");
+                    temp.put("textColor", "--code-bg");
                 }
 
                 // Already Taken Course
                 if (User.isTakenCourse(course)) {
-                    temp.replace("backgroundColor", "#524646");
-                    temp.put("textColor", "#F9FEFC");
+                    temp.replace("backgroundColor", "--text");
+                    temp.put("textColor", "--bg");
                 }
 
                 toReturn.add(temp);

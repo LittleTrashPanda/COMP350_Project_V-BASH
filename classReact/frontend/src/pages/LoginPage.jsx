@@ -21,8 +21,8 @@ export default function LoginPage() {
         return;
     }
 
-    const temp = await fetch("/loadUser", {
-          method: "POST",
+    const temp = await fetch("/user", {
+          method: "PUT",
           headers: { "Content-Type": "text/plain" },
           body: email
       });

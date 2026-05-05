@@ -4,8 +4,10 @@ import "./CalendarPage.css";
 export default function CalendarPage() {
     const [courses, setCourses] = useState([]);
     const [saveName, setSaveName] = useState("");
-    const [loadName, setLoadName] = useState("");
     const [deleteName, setDeleteName] = useState("");
+
+    const [currentSemester, setCurrentSemester] = useState("");
+    const [currentSchedule, setCurrentSchedule] = useState("");
 
 
     useEffect(() => {
@@ -13,16 +15,23 @@ export default function CalendarPage() {
     }, []);
 
     async function loadCalendar() {
-        const res = await fetch("/loadCalendar");
+        const res = await fetch("/user/calendar");
         const data = await res.json();
         setCourses(data);
+
+        const temp = await fetch("/user/schedules");
+        const names = await temp.json();
+
+        const scheduleList = document.getElementById("loadScheduleName");
+        scheduleList.innerHTML = "";
+        names.forEach(name => scheduleList.add(new Option(name, name)));
     }
 
     async function removeCourse(course) {
         if (!window.confirm("Do you want to remove this course?")) return;
 
-        const res = await fetch("/removeCourse", {
-            method: "POST",
+        const res = await fetch("/course", {
+            method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(course)
         });
@@ -35,12 +44,12 @@ export default function CalendarPage() {
     }
 
     async function saveSchedule() {
-        await fetch("/nameCurrentSchedule", {
-            method: "POST",
+        await fetch("/schedule/name", {
+            method: "PUT",
             body: JSON.stringify(saveName)
         });
 
-        await fetch("/saveSchedule", { method: "POST" });
+        await fetch("/schedule/save", { method: "POST" });
 
         // Add the saved name to the load dropdown
         const select = document.getElementById("loadScheduleName");
@@ -50,10 +59,16 @@ export default function CalendarPage() {
     }
 
     async function loadSchedule() {
-        await fetch("/loadSchedule", {
-            method: "POST",
-            body: JSON.stringify(loadName)
+        await fetch("/schedule/current", {
+            method: "PUT",
+            body: JSON.stringify(currentSchedule)
         });
+
+        loadCalendar();
+    }
+
+    async function newSchedule() {
+        const res = await fetch("/schedule", { method: "POST" });
 
         loadCalendar();
     }
@@ -84,8 +99,8 @@ export default function CalendarPage() {
     }
 
     async function deleteSchedule() {
-        await fetch("/deleteSchedule", {
-            method: "POST",
+        await fetch("/schedule", {
+            method: "DELETE",
             body: JSON.stringify(deleteName)
         });
 
@@ -102,7 +117,40 @@ export default function CalendarPage() {
     }
 
     async function resetSchedule() {
-        await fetch("/resetSchedule", { method: "POST" });
+        await fetch("/schedule", { method: "POST" });
+        loadCalendar();
+    }
+
+    const handleCurrentSemesterChange = (e) => {
+        console.log("hello");
+        changeCurrentSemester()
+        setCurrentSemester(e.target.value)
+    }
+
+    const handleScheduleChange = (e) => {
+        changeCurrentSchedule(e.target.value)
+        setCurrentSchedule(e.target.value)
+    }
+
+    async function changeCurrentSemester() {
+        const currentSemester = document.getElementById("currentSemester");
+        console.log(currentSemester);
+        await fetch("/semester", {
+            method: "PUT",
+            headers: { "Content-Type": "text/plain"},
+            body: currentSemester.value
+        });
+
+        loadCalendar();
+    }
+
+    async function changeCurrentSchedule(name) {
+        await fetch("/schedule/current", {
+            method: "PUT",
+            headers: { "Content-Type": "text/plain"},
+            body: name
+        });
+
         loadCalendar();
     }
 
@@ -121,6 +169,16 @@ export default function CalendarPage() {
 
             <h1 className = "calendarTitle">Calendar</h1>
 
+            <p>Selected Semester</p>
+                <select id = "currentSemester" value = { currentSemester } onChange = { handleCurrentSemesterChange }>
+                    <option value = "2025_Spring">Spring 2025</option>
+                    <option value = "2024_Fall">Fall 2024</option>
+                    <option value = "2024_Spring">Spring 2024</option>
+                    <option value = "2023_Fall">Fall 2023</option>
+                    <option value = "2023_Spring">Spring 2023</option>
+                    <option value = "2022_Fall">Fall 2022</option>
+                </select>
+
             <div className="controls">
 
                 {/* Save Schedule */}
@@ -133,17 +191,16 @@ export default function CalendarPage() {
                 <button id="saveSchedule" onClick={saveSchedule}>Save</button>
 
                 {/* Load Schedule Dropdown */}
-                <label htmlFor="loadScheduleName">Choose yo name</label>
-                <select
-                    name="Names"
-                    id="loadScheduleName"
-                    value={loadName}
-                    onChange={(e) => setLoadName(e.target.value)}
-                >
+                <label htmlFor="loadScheduleName">Schedules</label>
+                <select id ="loadScheduleName" value = { currentSchedule } onChange={ handleScheduleChange }>
                     {/* Options added dynamically */}
                 </select>
+
                 {/* Load */}
                 <button id="loadSchedule" onClick={loadSchedule}>Load</button>
+
+                {/* New Schedule */}
+                <button id="newSchedule" onClick={newSchedule}>New Schedule</button>
 
                 {/* Delete */}
                 <button id="deleteSchedule" onClick={deleteSchedule}>Delete Schedule</button>

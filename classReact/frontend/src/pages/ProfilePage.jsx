@@ -5,16 +5,24 @@ import { themes } from "../themes";
 import "./ProfilePage.css";
 
 export default function ProfilePage() {
-  const user = auth.currentUser;
+    const user = auth.currentUser;
+
+    useEffect(() => {
+        loadProfilePage();
+    }, []);
+
+    async function loadProfilePage() {
+        refresh();
+    }
 
     function refresh() {
         populateMajorRequirements();
         populateTakenCourses();
     }
 
-  const handleLogout = async () => {
-    await signOut(auth);
-  };
+    const handleLogout = async () => {
+        await signOut(auth);
+    };
 
   const [selectedTheme, setSelectedTheme] = useState(() => {
     return localStorage.getItem("theme") || "gcc";
@@ -49,7 +57,7 @@ export default function ProfilePage() {
     async function changeMajor() {
         const major = document.getElementById("major");
         await fetch("/major", {
-            method: "POST",
+            method: "PUT",
             headers: { "Content-Type": "text/plain"},
             body: major.value
         });
@@ -60,7 +68,7 @@ export default function ProfilePage() {
     async function populateMajorRequirements() {
         const majorRequirementsList = document.getElementById("majorRequirementsList");
         majorRequirementsList.innerHTML = "";
-        const data = await fetch("/majorRequirements");
+        const data = await fetch("/majorRequirement");
         const majorRequirements = await data.json();
 
         for (const majorRequirement of majorRequirements) {
@@ -73,7 +81,7 @@ export default function ProfilePage() {
     async function populateTakenCourses() {
         const takenCoursesList = document.getElementById("takenCoursesList");
         takenCoursesList.innerHTML = "";
-        const data = await fetch("/takenCourses");
+        const data = await fetch("/takenCourse");
         const takenCourses = await data.json();
 
         for (const takenCourse of takenCourses) {

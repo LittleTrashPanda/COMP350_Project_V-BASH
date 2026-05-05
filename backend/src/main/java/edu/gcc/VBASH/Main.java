@@ -19,7 +19,7 @@ public class Main {
         });
 
         // Set Key Search Terms
-        app.post("/keySearchTerms", ctx -> {
+        app.put("/keySearchTerm", ctx -> {
             ArrayList<String> keySearchTerms = new ArrayList<>();
             for (String keySearchTerm : ctx.body().split("\s+")) { keySearchTerms.add(keySearchTerm); }
 
@@ -28,7 +28,7 @@ public class Main {
         });
 
         // Set Search Filters
-        app.post("/setFilters", ctx -> {
+        app.put("/search/filter", ctx -> {
             Filter providedFilter = ctx.bodyAsClass(Filter.class);
             Search.setFilter(providedFilter);
             ctx.status(201);
@@ -36,14 +36,14 @@ public class Main {
 
 
         // Retrieve Open Schedule
-        app.get("/loadCalendar", ctx -> ctx.json(User.getCurrentSchedule().getCurrentCourses()));
+        app.get("/user/calendar", ctx -> ctx.json(User.getCurrentSchedule().getCurrentCourses()));
 
         // Set Semester for Open Schedule
-        app.post("/setCurrentSemester", ctx -> User.getCurrentSchedule().setSemester(ctx.body()));
+        app.put("/semester", ctx -> User.getCurrentSchedule().setSemester(ctx.body()));
 
 
         // Add Course to Schedule
-        app.post("/addCourse", ctx -> {
+        app.post("/course", ctx -> {
             Course toAdd = ctx.bodyAsClass(Course.class);
 
             //Detect "no meeting times"
@@ -71,7 +71,7 @@ public class Main {
         });
 
         // Remove Course from Schedule
-        app.post("/removeCourse", ctx -> {
+        app.delete("/course", ctx -> {
             Course toRemove = ctx.bodyAsClass(Course.class);
 
             int before = ((ArrayList<Course>) User.getCurrentSchedule().getCourses()).size();
@@ -88,7 +88,7 @@ public class Main {
         });
 
         // Replace Course in Schedule
-        app.post("/replaceCourse", ctx -> {
+        app.put("/course", ctx -> {
             Course toAdd = ctx.bodyAsClass(Course.class);
             ArrayList<Course> conflicts = new ArrayList<Course>();
 
@@ -105,29 +105,31 @@ public class Main {
 
 
         // Create a New Schedule
-        app.post("/newSchedule", ctx -> {
+        app.post("/schedule", ctx -> {
             User.saveUserData();
             User.newCandidateSchedule();
         });
 
         // Name the Open Schedule
-        app.post("/nameCurrentSchedule", ctx -> {
+        app.put("/schedule/name", ctx -> {
             User.getCurrentSchedule().setName(ctx.body());
             User.saveUserData();
         });
 
+        app.get("/user/schedules", ctx -> ctx.json(User.getSchedules()));
+
         // Save the Open Schedule
-        app.post("/saveSchedule", ctx -> { User.saveUserData(); });
+        app.post("/schedule/save", ctx -> { User.saveUserData(); });
 
         // Load a Saved Schedule
-        app.post("/loadSchedule", ctx -> {
+        app.put("/schedule/current", ctx -> {
             User.saveUserData();
             User.loadSchedule(ctx.body());
             ctx.status(201);
         });
 
         // Delete the Open Schedule
-        app.post("/deleteSchedule", ctx -> {
+        app.delete("/schedule", ctx -> {
             User.deleteSchedule();
             User.saveUserData();
         });
@@ -138,9 +140,9 @@ public class Main {
 
 
         // Handling Login/Sign-Up
-        app.post("/newUser", ctx -> User.createUser(ctx.body(), 0));
+        app.post("/user", ctx -> User.createUser(ctx.body(), 0));
 
-        app.post("/loadUser", ctx -> {
+        app.put("/user", ctx -> {
             User.loadUser(ctx.body(), 0);
             ctx.status(201);
         });
@@ -153,26 +155,29 @@ public class Main {
         });
 
         // Remove a Taken Course
-        app.post("/notTakenCourse", ctx -> {
+        app.delete("/takenCourse", ctx -> {
             User.removeTakenCourse(ctx.body());
             User.saveUserData();
         });
 
         // Retrieve Taken Courses
-        app.get("/takenCourses", ctx -> ctx.json(User.getTakenCourses()));
+        app.get("/takenCourse", ctx -> ctx.json(User.getTakenCourses()));
 
 
         // Set User's Major
-        app.post("/major", ctx -> {
+        app.put("/major", ctx -> {
             User.setMajor(ctx.body());
             User.loadMajorCourses();
             User.saveUserData();
         });
 
+        app.get("/major", ctx -> ctx.json(User.getMajor()));
+
         // Retrieve Major Requirements
-        app.get("/majorRequirements", ctx -> ctx.json(User.getMajorCourses()));
+        app.get("/majorRequirement", ctx -> ctx.json(User.getMajorCourses()));
 
     }
+
     public static void clubAdds(Javalin app){
         app.post("/saveClubs", ctx ->{
             org.json.simple.JSONArray clubs = (org.json.simple.JSONArray) new org.json.simple.parser.JSONParser().parse(ctx.body());
