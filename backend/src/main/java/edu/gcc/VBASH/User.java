@@ -348,36 +348,65 @@ public class User {
                 if(courses.get(i).getStartTimes()[j] != 0)
                     dayoweek.append(day.charAt(j));
             }
-            System.out.println("MADE IT");
-
-            int sTime = 0;
-            int eTime = 0;
-
-            if (dayoweek.toString().contains("M") || dayoweek.toString().contains("W")||dayoweek.toString().contains("F")){
+            String ampmS = "AM";
+            String ampmE = "AM";
+            String zeros = "0 ";
+            String zeroe = "0 ";
+            double sTime = 0;
+            double eTime = 0;
                 for(int j = 0; j <day.length();j++){
                     if(courses.get(i).getStartTimes()[j] != 0){
-                        sTime = courses.get(i).getStartTimes()[j] % 60;
-                        eTime = sTime + 50;
+                        int put = (courses.get(i).getStartTimes()[j] / 60) * 100;
+                        sTime = put;
+                        sTime += (((double)courses.get(i).getStartTimes()[j] % 60));
+
+
+                        int add = 0;
+                       // if  (courses.get(i).getDuration()[j]>60){
+                            add = (courses.get(i).getDuration()[j] / 60)* 100;
+                            add += (courses.get(i).getDuration()[j]%60);
+                       // }
+                        eTime = (sTime) + add;
                         j = day.length();
-                    }
-                }
-            }
-            else{
-                for(int j = 0; j <day.length();j++){
-                    if(courses.get(i).getStartTimes()[j] != 0){
-                        sTime = courses.get(i).getStartTimes()[j] %60;
-                        eTime = sTime + 115;
-                        j = day.length();
-                    }
+
                 }
             }
             String name = courses.get(i).getCourseName() + ": ";
 
-            System.out.println(name);
-            System.out.println(sTime);
-            System.out.println(eTime);
-            System.out.println(dayoweek);
-            out.append(name + sTime + " - " + eTime + " " + dayoweek + "\n");
+            if (sTime >= 1200) {
+                if (sTime > 1259)
+                    sTime = sTime - 1200;
+
+                ampmS = "PM";
+            }
+
+            if (eTime >= 1200) {
+                if (eTime>1259)
+                     eTime = eTime - 1200;
+
+                ampmE = "PM";
+            }
+
+            double Stime = (double) sTime /100;
+            double Etime = (double) eTime / 100;
+            String temp1 = Double.toString(Stime);
+            String temp2 = Double.toString(Etime);
+
+            String[] start = temp1.split("\\.");
+            String[] end = temp2.split("\\.");
+
+            if(Objects.equals(start[1], "15")  ||
+                    Objects.equals(start[1], "45") ){
+                zeros = " ";
+            }
+            if(Objects.equals(end[1], "15")  ||
+                    Objects.equals(end[1], "45") ){
+                zeroe = " ";
+            }
+            System.out.println(end[1]);
+
+            out.append(name + start[0] + ":" + start[1]  + zeros + ampmS + " - " + end[0] + ":" +
+                    end[1] + zeroe + ampmE + " " + dayoweek + "\n\n");
         }
 
         return out.toString();
